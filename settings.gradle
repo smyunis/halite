@@ -1,2 +1,3 @@
 rootProject.name = 'halite'
+include 'halite-domain'
 include 'halite-web'

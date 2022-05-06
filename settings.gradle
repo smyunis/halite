@@ -1,4 +1,5 @@
 rootProject.name = 'halite'
 include 'halite-domain'
 include 'halite-application'
+include 'halite-persistence'
 include 'halite-web'

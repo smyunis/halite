@@ -1,4 +1,4 @@
-package com.smyunis.halite.domain.client;
+package com.smyunis.halite.domain.cateringeventhost;
 
 import java.util.Arrays;
 import java.util.Optional;

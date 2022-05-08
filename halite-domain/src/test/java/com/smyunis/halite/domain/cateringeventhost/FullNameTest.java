@@ -1,4 +1,4 @@
-package com.smyunis.halite.domain.client;
+package com.smyunis.halite.domain.cateringeventhost;
 
 import org.junit.jupiter.api.Test;
 
@@ -67,6 +67,16 @@ public class FullNameTest {
 
         assertEquals("James",fullName.getFirstName());
         assertEquals("Bond",fullName.getLastName());
+    }
+
+    @Test
+    void canSetNameWithMiddleName() {
+        String fullNameString = "James Herbert Bond";
+        FullName fullName = new FullName(fullNameString);
+
+        assertEquals("James",fullName.getFirstName());
+        assertEquals("Herbert Bond",fullName.getLastName());
+        assertEquals(fullNameString,fullName.getFullName());
     }
 
     private void assertFullNameIsReturned(String fullNameWithOnlyFirstName) {

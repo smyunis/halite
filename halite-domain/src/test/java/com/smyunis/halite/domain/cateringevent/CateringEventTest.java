@@ -1,6 +1,7 @@
 package com.smyunis.halite.domain.cateringevent;
 
-import com.smyunis.halite.domain.InvalidValueException;
+import com.smyunis.halite.domain.cateringeventhost.domainevents.CateringEventUpdatedEvent;
+import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,11 +55,15 @@ public class CateringEventTest {
     }
 
     @Test
-    void canAssignAHostForCateringEvent() {
-        cateringEvent.assignCateringEventHost(new CateringEventHostId("Client-id-0014"));
+    void canHandleCateringEventUpdatedEvent() {
+        CateringEvent updatedCateringEvent = new CateringEvent();
+        updatedCateringEvent.setDescription("This is a fancy wedding");
+
+        cateringEvent.new DomainEventHandler()
+                .handleCateringEventUpdated(new CateringEventUpdatedEvent(updatedCateringEvent));
+
+        assertEquals("This is a fancy wedding",cateringEvent.getDescription());
     }
-
-
 
 
 }

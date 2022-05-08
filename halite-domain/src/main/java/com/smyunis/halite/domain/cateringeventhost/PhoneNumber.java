@@ -1,6 +1,6 @@
 package com.smyunis.halite.domain.cateringeventhost;
 
-import com.smyunis.halite.domain.InvalidValueException;
+import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 
 import java.util.regex.Pattern;
 

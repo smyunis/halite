@@ -1,6 +1,6 @@
 package com.smyunis.halite.domain.cateringevent;
 
-import com.smyunis.halite.domain.InvalidValueException;
+import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 
 public record NumberOfAttendees (int numberOfAttendees) {
     public NumberOfAttendees {

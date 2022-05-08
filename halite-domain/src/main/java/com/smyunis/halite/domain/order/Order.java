@@ -13,4 +13,8 @@ public class Order {
     private CateringEventHostId cateringEventHostId;
     private CatererId catererId;
     private List<CateringMenuItemId> cateringMenuItems;
+
+    public class DomainEventHandler {
+
+    }
 }

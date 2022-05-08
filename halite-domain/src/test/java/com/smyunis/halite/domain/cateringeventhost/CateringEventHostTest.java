@@ -1,7 +1,13 @@
 package com.smyunis.halite.domain.cateringeventhost;
 
+import com.smyunis.halite.domain.DomainEvent;
+import com.smyunis.halite.domain.cateringevent.CateringEvent;
+import com.smyunis.halite.domain.cateringevent.CateringEventId;
+import com.smyunis.halite.domain.cateringeventhost.domainevents.CateringEventUpdatedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +41,35 @@ public class CateringEventHostTest {
         cateringEventHost.setPhoneNumber(new PhoneNumber(phoneNumber));
 
         assertEquals(phoneNumber, cateringEventHost.getPhoneNumber().phoneNumber());
-
     }
+
+    @Test
+    void canHostANewEvent() {
+        CateringEventId cateringEventId = new CateringEventId();
+        cateringEventHost.hostNewCateringEvent(cateringEventId);
+
+        assertTrue(cateringEventHost.getHostedCateringEvents().contains(cateringEventId));
+    }
+
+    @Test
+    void canRemoveHostedCateringEvent() {
+        CateringEventId cateringEventId = new CateringEventId();
+        cateringEventHost.hostNewCateringEvent(cateringEventId);
+
+        cateringEventHost.removeCateringEvent(cateringEventId);
+
+        assertFalse(cateringEventHost.getHostedCateringEvents().contains(cateringEventId));
+    }
+
+    @Test
+    void canRaiseCateringEventUpdatedEventWhenUpdate() {
+        CateringEvent cateringEvent = new CateringEvent();
+
+        cateringEventHost.updateCateringEvent(cateringEvent);
+
+        List<DomainEvent> domainEvents = cateringEventHost.getDomainEvents();
+        assertTrue(domainEvents.get(0) instanceof CateringEventUpdatedEvent);
+    }
+
 
 }

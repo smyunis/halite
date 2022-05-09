@@ -1,6 +1,7 @@
 package com.smyunis.halite.domain.cateringevent;
 
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
+import com.smyunis.halite.domain.order.OrderId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -67,6 +68,14 @@ public class CateringEventTest {
         assertThrows(InvalidValueException.class, () -> {
             cateringEvent.setEventEndTime(yesterday);
         });
+    }
+
+    @Test
+    void canAddOrderToACateringEvent() {
+        OrderId orderId = new OrderId();
+        cateringEvent.addAcceptedOrder(orderId);
+
+        assertTrue(cateringEvent.getAcceptedOrders().contains(orderId));
     }
 
 

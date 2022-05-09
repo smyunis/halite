@@ -1,13 +1,8 @@
 package com.smyunis.halite.domain.cateringeventhost;
 
-import com.smyunis.halite.domain.DomainEvent;
-import com.smyunis.halite.domain.cateringevent.CateringEvent;
 import com.smyunis.halite.domain.cateringevent.CateringEventId;
-import com.smyunis.halite.domain.cateringeventhost.domainevents.CateringEventUpdatedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

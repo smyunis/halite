@@ -10,9 +10,10 @@ import java.util.Set;
 
 public class Caterer {
     private CatererId id = new CatererId();
-    private List<DomainEvent> domainEvents = new ArrayList<>();
     private String name;
+    private int recommendationMetric;
     private Set<CateringMenuId> cateringMenuIds = new HashSet<>();
+    private List<DomainEvent> domainEvents = new ArrayList<>();
     private List<Review> reviews = new ArrayList<>();
 
     public List<DomainEvent> getDomainEvents() {
@@ -56,4 +57,7 @@ public class Caterer {
     }
 
 
+    public int getRecommendationMetric() {
+        return recommendationMetric;
+    }
 }

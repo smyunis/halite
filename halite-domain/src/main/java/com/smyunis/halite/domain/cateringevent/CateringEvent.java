@@ -1,25 +1,23 @@
 package com.smyunis.halite.domain.cateringevent;
 
-import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererId;
-import com.smyunis.halite.domain.cateringeventhost.domainevents.CateringEventUpdatedEvent;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
+import com.smyunis.halite.domain.order.OrderId;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 public class CateringEvent {
     private CateringEventId id = new CateringEventId();
     private NumberOfAttendees expectedNumberOfAttendees;
     private Venue venue;
-    private Set<CatererId> catererIds;
     private CateringEventStatus status = CateringEventStatus.Open;
     private String description;
     private LocalDateTime eventStartTime;
     private LocalDateTime eventEndTime;
 
+    private Set<OrderId> acceptedOrders = new HashSet<>();
 
     public CateringEventId getId() {
         return id;
@@ -75,4 +73,11 @@ public class CateringEvent {
         this.eventEndTime = eventEndTime;
     }
 
+    public Set<OrderId> getAcceptedOrders() {
+        return acceptedOrders;
+    }
+
+    public void addAcceptedOrder(OrderId orderId) {
+        acceptedOrders.add(orderId);
+    }
 }

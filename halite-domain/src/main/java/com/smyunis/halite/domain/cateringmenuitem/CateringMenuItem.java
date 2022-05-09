@@ -1,13 +1,13 @@
-package com.smyunis.halite.domain.cateringmenu;
+package com.smyunis.halite.domain.cateringmenuitem;
 
 import java.net.URL;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 public class CateringMenuItem {
     private CateringMenuItemId id;
     private String name;
-    private List<String> ingredients;
     private double price;
-    private Optional<List<URL>> images;
+    private Set<String> ingredients;
+    private List<URL> images;
 }

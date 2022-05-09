@@ -63,28 +63,28 @@ public class CatererTest {
         assertFalse(menuIds.contains(cateringMenuId));
     }
 
-    @Test
-    void updateCateringMenuEnsuresItIsInCaterersMenu() {
-        CateringMenu updatedCateringMenu = new CateringMenu();
-
-        caterer.updateCateringMenu(updatedCateringMenu);
-
-        assertTrue(caterer.getCateringMenus().contains(updatedCateringMenu.getId()));
-    }
-
-    @Test
-    void updateCateringMenuRaisesCateringMenuUpdatedDomainEvent() {
-        CateringMenu oldCateringMenu = new CateringMenu();
-        oldCateringMenu.setName("Gourmet Meal Menu");
-        caterer.addCateringMenu(oldCateringMenu.getId());
-
-        CateringMenu updatedCateringMenu = oldCateringMenu;
-        updatedCateringMenu.setName("New Fancy Meal Menu");
-        caterer.updateCateringMenu(updatedCateringMenu);
-        List<DomainEvent> domainEvents = caterer.getDomainEvents();
-
-        assertTrue(domainEvents.get(0) instanceof CateringMenuUpdatedEvent);
-    }
+//    @Test
+//    void updateCateringMenuEnsuresItIsInCaterersMenu() {
+//        CateringMenu updatedCateringMenu = new CateringMenu();
+//
+//        caterer.updateCateringMenu(updatedCateringMenu);
+//
+//        assertTrue(caterer.getCateringMenus().contains(updatedCateringMenu.getId()));
+//    }
+//
+//    @Test
+//    void updateCateringMenuRaisesCateringMenuUpdatedDomainEvent() {
+//        CateringMenu oldCateringMenu = new CateringMenu();
+//        oldCateringMenu.setName("Gourmet Meal Menu");
+//        caterer.addCateringMenu(oldCateringMenu.getId());
+//
+//        CateringMenu updatedCateringMenu = oldCateringMenu;
+//        updatedCateringMenu.setName("New Fancy Meal Menu");
+//        caterer.updateCateringMenu(updatedCateringMenu);
+//        List<DomainEvent> domainEvents = caterer.getDomainEvents();
+//
+//        assertTrue(domainEvents.get(0) instanceof CateringMenuUpdatedEvent);
+//    }
 
 
 

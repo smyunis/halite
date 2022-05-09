@@ -1,18 +1,18 @@
 package com.smyunis.halite.domain.caterer;
 
 import com.smyunis.halite.domain.DomainEvent;
-import com.smyunis.halite.domain.caterer.domainevents.CateringMenuUpdatedEvent;
-import com.smyunis.halite.domain.cateringmenu.CateringMenu;
 import com.smyunis.halite.domain.cateringmenu.CateringMenuId;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Caterer {
     private CatererId id = new CatererId();
     private List<DomainEvent> domainEvents = new ArrayList<>();
     private String name;
-    private List<CateringMenuId> cateringMenuIds = new ArrayList<>();
+    private Set<CateringMenuId> cateringMenuIds = new HashSet<>();
     private List<Review> reviews = new ArrayList<>();
 
     public List<DomainEvent> getDomainEvents() {
@@ -43,7 +43,7 @@ public class Caterer {
         return reviews;
     }
 
-    public List<CateringMenuId> getCateringMenus() {
+    public Set<CateringMenuId> getCateringMenus() {
         return cateringMenuIds;
     }
 
@@ -53,12 +53,6 @@ public class Caterer {
 
     public void removeCateringMenu(CateringMenuId cateringMenuId) {
         cateringMenuIds.remove(cateringMenuId);
-    }
-
-    public void updateCateringMenu(CateringMenu updatedCateringMenu) {
-        if (!cateringMenuIds.contains(updatedCateringMenu.getId()))
-            cateringMenuIds.add(updatedCateringMenu.getId());
-        domainEvents.add(new CateringMenuUpdatedEvent(updatedCateringMenu));
     }
 
 

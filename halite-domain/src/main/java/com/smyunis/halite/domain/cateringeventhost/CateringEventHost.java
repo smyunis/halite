@@ -6,7 +6,9 @@ import com.smyunis.halite.domain.cateringevent.CateringEventId;
 import com.smyunis.halite.domain.cateringeventhost.domainevents.CateringEventUpdatedEvent;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CateringEventHost {
@@ -14,7 +16,7 @@ public class CateringEventHost {
     private final List<DomainEvent> domainEvents = new ArrayList<>();
     private String name;
     private PhoneNumber phoneNumber;
-    private List<CateringEventId> hostedCateringEventsIds = new ArrayList<>();
+    private Set<CateringEventId> hostedCateringEventsIds = new HashSet<>();
 
     public CateringEventHostId getId() {
         return id;
@@ -40,7 +42,7 @@ public class CateringEventHost {
         this.name = name;
     }
 
-    public List<CateringEventId> getHostedCateringEvents() {
+    public Set<CateringEventId> getHostedCateringEvents() {
         return hostedCateringEventsIds;
     }
 
@@ -56,7 +58,5 @@ public class CateringEventHost {
         return domainEvents;
     }
 
-    public void updateCateringEvent(CateringEvent updatedCateringEvent) {
-        domainEvents.add(new CateringEventUpdatedEvent(updatedCateringEvent));
-    }
+
 }

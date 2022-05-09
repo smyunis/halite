@@ -61,15 +61,15 @@ public class CateringEventHostTest {
         assertFalse(cateringEventHost.getHostedCateringEvents().contains(cateringEventId));
     }
 
-    @Test
-    void canRaiseCateringEventUpdatedEventWhenUpdate() {
-        CateringEvent cateringEvent = new CateringEvent();
-
-        cateringEventHost.updateCateringEvent(cateringEvent);
-
-        List<DomainEvent> domainEvents = cateringEventHost.getDomainEvents();
-        assertTrue(domainEvents.get(0) instanceof CateringEventUpdatedEvent);
-    }
+//    @Test
+//    void canRaiseCateringEventUpdatedEventWhenUpdate() {
+//        CateringEvent cateringEvent = new CateringEvent();
+//
+//        cateringEventHost.updateCateringEvent(cateringEvent);
+//
+//        List<DomainEvent> domainEvents = cateringEventHost.getDomainEvents();
+//        assertTrue(domainEvents.get(0) instanceof CateringEventUpdatedEvent);
+//    }
 
 
 }

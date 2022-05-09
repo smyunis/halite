@@ -1,11 +1,10 @@
 package com.smyunis.halite.domain.cateringevent;
 
-import com.smyunis.halite.domain.cateringeventhost.domainevents.CateringEventUpdatedEvent;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
-import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,21 +24,21 @@ public class CateringEventTest {
         cateringEvent.setId(eventId);
         CateringEventId id = cateringEvent.getId();
 
-        assertEquals(eventId,id);
+        assertEquals(eventId, id);
     }
 
     @Test
-    void moreAtLeastOnePersonWillBeAttendingTheEvent () {
+    void moreAtLeastOnePersonWillBeAttendingTheEvent() {
 
-        int randomNoOfAttendees = new Random().nextInt(1,1000);
+        int randomNoOfAttendees = new Random().nextInt(1, 1000);
         var noOfExpectedAttendees = new NumberOfAttendees(randomNoOfAttendees);
 
         cateringEvent.setExpectedNumberOfAttendees(noOfExpectedAttendees);
         NumberOfAttendees noOfAttendees = cateringEvent.getExpectedNumberOfAttendees();
 
-        assertEquals(noOfExpectedAttendees.numberOfAttendees(),noOfAttendees.numberOfAttendees());
+        assertEquals(noOfExpectedAttendees.numberOfAttendees(), noOfAttendees.numberOfAttendees());
         assertTrue(noOfAttendees.numberOfAttendees() >= 1);
-        assertThrows(InvalidValueException.class,() -> {
+        assertThrows(InvalidValueException.class, () -> {
             cateringEvent.setExpectedNumberOfAttendees(new NumberOfAttendees(-1));
             cateringEvent.setExpectedNumberOfAttendees(new NumberOfAttendees(0));
         });
@@ -51,18 +50,23 @@ public class CateringEventTest {
         cateringEvent.setVenue(moonVenue);
         Venue venue = cateringEvent.getVenue();
 
-        assertEquals(moonVenue,venue);
+        assertEquals(moonVenue, venue);
     }
 
     @Test
-    void canHandleCateringEventUpdatedEvent() {
-        CateringEvent updatedCateringEvent = new CateringEvent();
-        updatedCateringEvent.setDescription("This is a fancy wedding");
+    void eventEndTimeShouldBeAfterEventStartTime() {
+        LocalDateTime now = LocalDateTime.now();
+        cateringEvent.setEventStartTime(now);
 
-        cateringEvent.new DomainEventHandler()
-                .handleCateringEventUpdated(new CateringEventUpdatedEvent(updatedCateringEvent));
+        LocalDateTime yesterday = now.minusDays(1);
+        LocalDateTime tomorrow = now.plusDays(1);
 
-        assertEquals("This is a fancy wedding",cateringEvent.getDescription());
+        assertDoesNotThrow(() -> {
+            cateringEvent.setEventEndTime(tomorrow);
+        });
+        assertThrows(InvalidValueException.class, () -> {
+            cateringEvent.setEventEndTime(yesterday);
+        });
     }
 
 

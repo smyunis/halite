@@ -1,4 +1,4 @@
-package com.smyunis.halite.domain.cateringmenu;
+package com.smyunis.halite.domain.cateringmenuitem;
 
 import com.smyunis.halite.domain.DomainEntityId;
 

@@ -1,13 +1,13 @@
 package com.smyunis.halite.domain.cateringmenu;
 
-import com.smyunis.halite.domain.caterer.domainevents.CateringMenuUpdatedEvent;
+import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 
-import java.util.List;
+import java.util.Set;
 
 public class CateringMenu {
     private CateringMenuId id = new CateringMenuId();
     private String name;
-    private List<CateringMenuItem> cateringMenuItems;
+    private Set<CateringMenuItemId> cateringMenuItemIds;
 
     public CateringMenuId getId() {
         return id;
@@ -17,21 +17,8 @@ public class CateringMenu {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
-    public void updateCateringMenu(CateringMenu newCateringMenu) {
-        this.name = newCateringMenu.name;
-        this.id = newCateringMenu.id;
-        this.cateringMenuItems = newCateringMenu.cateringMenuItems;
-    }
-
-    public class DomainEventHandler {
-        public void handleCateringMenuUpdated(CateringMenuUpdatedEvent cateringMenuUpdatedEvent) {
-            CateringMenu updatedCateringMenu = cateringMenuUpdatedEvent.getUpdatedCateringMenu();
-            name = updatedCateringMenu.name;
-            cateringMenuItems = updatedCateringMenu.cateringMenuItems;
-        }
-    }
 }

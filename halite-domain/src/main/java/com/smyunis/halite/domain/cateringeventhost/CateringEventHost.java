@@ -1,15 +1,6 @@
 package com.smyunis.halite.domain.cateringeventhost;
 
-import com.smyunis.halite.domain.DomainEvent;
-import com.smyunis.halite.domain.cateringevent.CateringEventId;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 public class CateringEventHost {
-    private final List<DomainEvent> domainEvents = new ArrayList<>();
     private CateringEventHostId id = new CateringEventHostId();
     private String name;
     private PhoneNumber phoneNumber;
@@ -36,10 +27,6 @@ public class CateringEventHost {
 
     void setName(String name) {
         this.name = name;
-    }
-
-    public List<DomainEvent> getDomainEvents() {
-        return domainEvents;
     }
 
 }

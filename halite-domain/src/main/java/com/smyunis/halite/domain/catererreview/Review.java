@@ -1,4 +1,4 @@
-package com.smyunis.halite.domain.catererReview;
+package com.smyunis.halite.domain.catererreview;
 
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;

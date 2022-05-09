@@ -9,11 +9,10 @@ import java.util.List;
 import java.util.Set;
 
 public class CateringEventHost {
+    private final List<DomainEvent> domainEvents = new ArrayList<>();
     private CateringEventHostId id = new CateringEventHostId();
     private String name;
     private PhoneNumber phoneNumber;
-    private Set<CateringEventId> hostedCateringEventsIds = new HashSet<>();
-    private final List<DomainEvent> domainEvents = new ArrayList<>();
 
     public CateringEventHostId getId() {
         return id;
@@ -39,21 +38,8 @@ public class CateringEventHost {
         this.name = name;
     }
 
-    public Set<CateringEventId> getHostedCateringEvents() {
-        return hostedCateringEventsIds;
-    }
-
-    public void hostNewCateringEvent(CateringEventId cateringEventId) {
-        this.hostedCateringEventsIds.add(cateringEventId);
-    }
-
-    public void removeCateringEvent(CateringEventId cateringEventId) {
-        this.hostedCateringEventsIds.remove(cateringEventId);
-    }
-
     public List<DomainEvent> getDomainEvents() {
         return domainEvents;
     }
-
 
 }

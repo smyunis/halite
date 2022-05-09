@@ -1,24 +1,9 @@
 package com.smyunis.halite.domain.caterer;
 
-import com.smyunis.halite.domain.DomainEvent;
-import com.smyunis.halite.domain.cateringmenu.CateringMenuId;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 public class Caterer {
     private CatererId id = new CatererId();
     private String name;
     private int recommendationMetric;
-    private Set<CateringMenuId> cateringMenuIds = new HashSet<>();
-    private List<DomainEvent> domainEvents = new ArrayList<>();
-    private List<Review> reviews = new ArrayList<>();
-
-    public List<DomainEvent> getDomainEvents() {
-        return domainEvents;
-    }
 
     public CatererId getId() {
         return id;
@@ -35,27 +20,6 @@ public class Caterer {
     void setName(String name) {
         this.name = name;
     }
-
-    public void addReview(Review review) {
-        reviews.add(review);
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public Set<CateringMenuId> getCateringMenus() {
-        return cateringMenuIds;
-    }
-
-    void addCateringMenu(CateringMenuId cateringMenuId) {
-        this.cateringMenuIds.add(cateringMenuId);
-    }
-
-    public void removeCateringMenu(CateringMenuId cateringMenuId) {
-        cateringMenuIds.remove(cateringMenuId);
-    }
-
 
     public int getRecommendationMetric() {
         return recommendationMetric;

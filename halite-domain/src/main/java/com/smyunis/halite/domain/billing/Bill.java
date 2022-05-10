@@ -1,11 +1,15 @@
 package com.smyunis.halite.domain.billing;
 
+import com.smyunis.halite.domain.DomainEvent;
+import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.cateringevent.CateringEventId;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bill {
     private BillId id;
@@ -17,15 +21,21 @@ public class Bill {
     private LocalDateTime settledDateTime;
     private OutstandingAmount outstandingAmount;
     private String remark;
-
+    private List<DomainEvent> domainEvents = new ArrayList<>();
 
     public void settle() {
-        var now = LocalDateTime.now();
-        if (dueDate.isBefore(now)) {
-            throw new InvalidOperationException("Due for for bill has passed");
+        if (isDueForSettlement()) {
+            throw new InvalidOperationException("");
         }
-        status = BillStatus.Paid;
-        settledDateTime = now;
+        status = BillStatus.Settled;
+        settledDateTime = LocalDateTime.now();
+        domainEvents.add(new BillSettledEvent(this));
+    }
+
+    public void cancel() {
+        if (status == BillStatus.Settled)
+            throw new InvalidOperationException("Bill already paid");
+        status = BillStatus.Cancelled;
     }
 
     public BillStatus getStatus() {
@@ -36,13 +46,27 @@ public class Bill {
         this.dueDate = dueDate;
     }
 
-    public void setOutstandingAmount(OutstandingAmount outstandingAmount) {
+    void setOutstandingAmount(OutstandingAmount outstandingAmount) {
         this.outstandingAmount = outstandingAmount;
     }
 
-    public void cancel() {
-        if(status == BillStatus.Paid)
-            throw new InvalidOperationException("Bill already paid");
-        status = BillStatus.Cancelled;
+    public void addRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    private boolean isDueForSettlement() {
+        return status != BillStatus.Pending || dueDate.isBefore(LocalDateTime.now());
+    }
+
+    public List<DomainEvent> getDomainEvents() {
+        return this.domainEvents;
+    }
+
+    public OutstandingAmount getOutstandingAmount() {
+        return outstandingAmount;
     }
 }

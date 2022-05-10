@@ -1,5 +1,8 @@
 package com.smyunis.halite.domain.caterer;
 
+import com.smyunis.halite.domain.DomainEvent;
+import com.smyunis.halite.domain.billing.Bill;
+import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,17 +16,15 @@ public class CatererTest {
         caterer = new Caterer();
     }
 
+
     @Test
-    void canSetAndGetId() {
-        CatererId newId = new CatererId("Caterer-Id-001");
+    void canHandleBillSettledEvent() {
+        BillSettledEvent billSettledEvent = new BillSettledEvent(new Bill());
+        caterer.new DomainEventHandler()
+                .handleBillSettledEvent(billSettledEvent);
 
-        caterer.setId(newId);
-        CatererId id = caterer.getId();
+        assertEquals(5,caterer.getRecommendationMetric());
 
-        assertEquals(newId, id);
-        assertEquals(newId.toString(),id.toString());
-        assertNotNull(new Caterer().getId().toString());
-        assertNotEquals("",new Caterer().getId().toString());
     }
 
 }

@@ -16,7 +16,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	implementation project(':halite-domain')
+	implementation project(':halite-application')
 }
 
 tasks.named('test') {

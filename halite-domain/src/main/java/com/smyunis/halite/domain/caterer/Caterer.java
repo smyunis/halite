@@ -13,15 +13,5 @@ public class Caterer {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    void setName(String name) {
-        this.name = name;
-    }
-
-    public int getRecommendationMetric() {
-        return recommendationMetric;
-    }
 }

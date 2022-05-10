@@ -11,19 +11,5 @@ public class CateringMenu {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    void setName(String name) {
-        this.name = name;
-    }
-
-    public CatererId getCatererId() {
-        return catererId;
-    }
-
-    void setCatererId(CatererId catererId) {
-        this.catererId = catererId;
-    }
 }

@@ -14,6 +14,6 @@ public abstract class DomainEntityId {
 
     @Override
     public String toString() {
-        return id.toString();
+        return id;
     }
 }

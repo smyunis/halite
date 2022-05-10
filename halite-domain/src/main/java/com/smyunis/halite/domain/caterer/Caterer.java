@@ -11,7 +11,6 @@ public class Caterer {
         return id;
     }
 
-
     public int getRecommendationMetric() {
         return recommendationMetric;
     }

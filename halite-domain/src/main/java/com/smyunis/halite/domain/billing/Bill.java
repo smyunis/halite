@@ -12,23 +12,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bill {
-    private BillId id;
+    private final BillId id;
     private BillStatus status = BillStatus.Pending;
     private CatererId payeeId;
     private CateringEventHostId payerId;
     private CateringEventId cateringEventId;
-    private LocalDateTime dueDate;
-    private LocalDateTime settledDateTime;
     private OutstandingAmount outstandingAmount;
+    private LocalDateTime dueDate = LocalDateTime.now().plusMonths(1);
+    private LocalDateTime settlementDateTime;
     private String remark;
-    private List<DomainEvent> domainEvents = new ArrayList<>();
+    private final List<DomainEvent> domainEvents = new ArrayList<>();
+
+    public Bill(BillId id,
+         CatererId payeeId,
+         CateringEventHostId payerId,
+         CateringEventId cateringEventId,
+         OutstandingAmount outstandingAmount) {
+        this.id = id;
+        this.payeeId = payeeId;
+        this.payerId = payerId;
+        this.cateringEventId = cateringEventId;
+        this.outstandingAmount = outstandingAmount;
+    }
+
 
     public void settle() {
-        if (isDueForSettlement()) {
+        if (billNotDueForSettlement()) {
             throw new InvalidOperationException("");
         }
         status = BillStatus.Settled;
-        settledDateTime = LocalDateTime.now();
+        settlementDateTime = LocalDateTime.now();
         domainEvents.add(new BillSettledEvent(this));
     }
 
@@ -38,16 +51,28 @@ public class Bill {
         status = BillStatus.Cancelled;
     }
 
+    public BillId getId() {
+        return id;
+    }
+
+    public CatererId getPayeeId() {
+        return payeeId;
+    }
+
+    public CateringEventHostId getPayerId() {
+        return payerId;
+    }
+
+    public CateringEventId getCateringEventId() {
+        return cateringEventId;
+    }
+
+    public LocalDateTime getDueDate() {
+        return dueDate;
+    }
+
     public BillStatus getStatus() {
         return status;
-    }
-
-    void setDueDate(LocalDateTime dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    void setOutstandingAmount(OutstandingAmount outstandingAmount) {
-        this.outstandingAmount = outstandingAmount;
     }
 
     public void addRemark(String remark) {
@@ -58,15 +83,15 @@ public class Bill {
         return remark;
     }
 
-    private boolean isDueForSettlement() {
-        return status != BillStatus.Pending || dueDate.isBefore(LocalDateTime.now());
-    }
-
     public List<DomainEvent> getDomainEvents() {
         return this.domainEvents;
     }
 
     public OutstandingAmount getOutstandingAmount() {
         return outstandingAmount;
+    }
+
+    private boolean billNotDueForSettlement() {
+        return status != BillStatus.Pending || dueDate.isBefore(LocalDateTime.now());
     }
 }

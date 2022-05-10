@@ -39,4 +39,10 @@ public class Bill {
     public void setOutstandingAmount(OutstandingAmount outstandingAmount) {
         this.outstandingAmount = outstandingAmount;
     }
+
+    public void cancel() {
+        if(status == BillStatus.Paid)
+            throw new InvalidOperationException("Bill already paid");
+        status = BillStatus.Cancelled;
+    }
 }

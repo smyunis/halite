@@ -43,5 +43,21 @@ public class BillTest {
         });
     }
 
+    @Test
+    void canCancelBill() {
+        bill.cancel();
+        assertEquals(BillStatus.Cancelled, bill.getStatus());
+    }
+
+    @Test
+    void canCancelBillThatHasNotBeenPaidAlready() {
+        bill.setDueDate(LocalDateTime.now().plusDays(2));
+        bill.settle();
+
+        assertThrows(InvalidOperationException.class, () -> {
+            bill.cancel();
+        });
+    }
+
 
 }

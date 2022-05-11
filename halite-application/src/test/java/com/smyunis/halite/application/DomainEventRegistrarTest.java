@@ -1,9 +1,11 @@
 package com.smyunis.halite.application;
 
 import com.smyunis.halite.domain.DomainEvent;
+import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class DomainEventRegistrarTest {
@@ -11,9 +13,7 @@ public class DomainEventRegistrarTest {
     @Test
     void canAssignHandlerToARegisteredEvent() {
         var domainEventRegistrar = new DomainEventRegistrar();
-        domainEventRegistrar.assignHandler(new DomainEvent() {
-        }, (DomainEvent event) -> {
-        });
+        domainEventRegistrar.assignHandler(BillSettledEvent.class, (DomainEvent event) -> {});
     }
 
     @Test

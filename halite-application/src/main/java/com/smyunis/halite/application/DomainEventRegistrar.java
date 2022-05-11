@@ -10,8 +10,8 @@ public class DomainEventRegistrar {
     private final List<DomainEvent> registeredDomainEvents = new ArrayList<>();
     private final List<DomainEventHandlerCatalogue> domainEventHandlerCatalogue = new ArrayList<>();
 
-    public void assignHandler(DomainEvent domainEvent, DomainEventHandler handler) {
-        domainEventHandlerCatalogue.add(new DomainEventHandlerCatalogue(domainEvent, handler));
+    public void assignHandler(Class<?> domainEventClass, DomainEventHandler handler) {
+        domainEventHandlerCatalogue.add(new DomainEventHandlerCatalogue(domainEventClass, handler));
     }
 
     public void registerDomainEvents(List<DomainEvent> domainEvents) {
@@ -21,12 +21,12 @@ public class DomainEventRegistrar {
     public void publish() {
         for (var event : registeredDomainEvents) {
             var handlerPairs = domainEventHandlerCatalogue.stream()
-                    .filter(e -> e.domainEvent().getClass().equals(event.getClass())).toList();
+                    .filter(e -> e.domainEventClass.equals(event.getClass())).toList();
             handlerPairs.forEach(e -> e.domainEventHandler().handleEvent(event));
         }
     }
 
-    private record DomainEventHandlerCatalogue(DomainEvent domainEvent, DomainEventHandler domainEventHandler) {
+    private record DomainEventHandlerCatalogue(Class<?> domainEventClass, DomainEventHandler domainEventHandler) {
     }
 }
 

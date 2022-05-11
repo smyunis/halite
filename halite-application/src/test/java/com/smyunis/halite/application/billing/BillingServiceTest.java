@@ -1,6 +1,7 @@
 package com.smyunis.halite.application.billing;
 
 import com.smyunis.halite.domain.billing.*;
+import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,9 @@ public class BillingServiceTest {
 
         billingService.settleBill(billId);
 
-        assertEquals(BillStatus.Settled, billRepository.get(billId).getBillStatus());
+        Bill settledBill = billRepository.get(billId);
+        assertEquals(BillStatus.Settled, settledBill.getBillStatus());
+        assertEquals(BillSettledEvent.class,settledBill.getDomainEvents().get(0).getClass());
     }
 
     @Test

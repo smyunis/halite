@@ -1,5 +1,6 @@
 package com.smyunis.halite.domain.caterer;
 
+import com.smyunis.halite.domain.DomainEventHandler;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 
 public class Caterer {
@@ -15,8 +16,9 @@ public class Caterer {
         return recommendationMetric;
     }
 
-    public class DomainEventHandler {
-        public void handleBillSettledEvent(BillSettledEvent billSettledEvent) {
+    public class BillSettledEventHandler implements DomainEventHandler<BillSettledEvent> {
+        @Override
+        public void handleEvent(BillSettledEvent billSettledEvent) {
             var settledBill = billSettledEvent.getBill();
             if (settledBill.getOutstandingAmount().amount() > 5000)
                 recommendationMetric += 5;

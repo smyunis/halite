@@ -10,7 +10,7 @@ public class DomainEventRegistrar {
     private final List<DomainEvent> registeredDomainEvents = new ArrayList<>();
     private final List<DomainEventHandlerCatalogue> domainEventHandlerCatalogue = new ArrayList<>();
 
-    public void assignHandler(Class<?> domainEventClass, DomainEventHandler handler) {
+    public void assignHandler(Class<? extends DomainEvent> domainEventClass, DomainEventHandler handler) {
         domainEventHandlerCatalogue.add(new DomainEventHandlerCatalogue(domainEventClass, handler));
     }
 
@@ -26,7 +26,7 @@ public class DomainEventRegistrar {
         }
     }
 
-    private record DomainEventHandlerCatalogue(Class<?> domainEventClass, DomainEventHandler domainEventHandler) {
+    private record DomainEventHandlerCatalogue(Class<? extends DomainEvent> domainEventClass, DomainEventHandler domainEventHandler) {
     }
 }
 

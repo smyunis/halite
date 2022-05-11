@@ -58,4 +58,18 @@ public class MockitoLearningTest {
 
         assertThrows(IndexOutOfBoundsException.class, mockedList::clear);
     }
+
+    @Test
+    void customAnswer() {
+        List<Integer> mockedList = mock(List.class);
+        StringBuilder s = new StringBuilder("init");
+        doAnswer(invocation -> {
+            Integer indexArg = invocation.getArgument(0);
+            s.append("sec");
+            return 4;
+        }).when(mockedList).get(2);
+
+        assertEquals(4,mockedList.get(2));
+        assertEquals("initsec",s.toString());
+    }
 }

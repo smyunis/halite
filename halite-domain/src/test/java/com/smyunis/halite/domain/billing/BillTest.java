@@ -4,6 +4,7 @@ import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -13,57 +14,71 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BillTest {
+    private BillData billData;
+    private Bill bill;
+
+    @BeforeEach
+    void setup() {
+        billData = new BillData();
+        bill = new Bill(billData);
+    }
 
     @Test
     void outStandingBillAmountIsAValidPositiveNumber() {
         assertThrows(InvalidValueException.class, () -> {
-            Bill bill = new Bill(new BillId(),null,null,null,new OutstandingAmount(0.00));
+            billData.setOutstandingAmount(new OutstandingAmount(0.00));
         });
         assertDoesNotThrow(() -> {
-            Bill bill = new Bill(new BillId(),null,null,null,new OutstandingAmount(1500.00));
+            billData.setOutstandingAmount(new OutstandingAmount(1000.00));
         });
     }
 
     @Test
     void canSettleBill() {
-        Bill bill = new Bill(new BillId(),null,null,null,new OutstandingAmount(1000.00));
+        billData.setOutstandingAmount(new OutstandingAmount(1000));
 
         bill.settle();
-        assertEquals(BillStatus.Settled, bill.getStatus());
+        assertEquals(BillStatus.Settled, bill.getBillStatus());
     }
 
     @Test
-    @Disabled("setDueDate should not be exposed")
     void canNotSettleBillWhoseDueDateHasPassed() {
-        Bill bill = new Bill(new BillId(),null,null,null,new OutstandingAmount(1000.00));
-        //bill.setDueDate(LocalDateTime.now().minusDays(2));
+        billData.setDueDateTime(LocalDateTime.now().minusDays(2));
 
-        assertThrows(InvalidOperationException.class, () -> {
-            bill.settle();
-        });
+        assertThrows(InvalidOperationException.class, bill::settle);
     }
 
     @Test
     void canCancelBill() {
-        Bill bill = new Bill(new BillId(),null,null,null,new OutstandingAmount(1000.00));
-        bill.cancel();
-        assertEquals(BillStatus.Cancelled, bill.getStatus());
+        bill.requestCancellation();
+        bill.approveCancellation();
+
+        assertEquals(BillStatus.Cancelled, bill.getBillStatus());
     }
 
     @Test
     void canNotCancelBillThatHasNotBeenSettledAlready() {
-        Bill bill = new Bill(new BillId(),null,null,null,new OutstandingAmount(1000.00));
+        billData.setOutstandingAmount(new OutstandingAmount(1000));
+
         bill.settle();
 
         assertThrows(InvalidOperationException.class, () -> {
-            bill.cancel();
+            bill.approveCancellation();
+        });
+    }
+
+    @Test
+    void canNotSettleBillThatIsPendingCancellation() {
+        bill.requestCancellation();
+        assertThrows(InvalidOperationException.class,() -> {
+           bill.settle();
         });
     }
 
     @Test
     void canNotSettleABillThatWasCanceled() {
-        Bill bill = new Bill(new BillId(),null,null,null,new OutstandingAmount(1000.00));
-        bill.cancel();
+        bill.requestCancellation();
+        bill.approveCancellation();
 
         assertThrows(InvalidOperationException.class, () -> {
             bill.settle();
@@ -72,8 +87,6 @@ public class BillTest {
 
     @Test
     void canNotSettleAnAlreadySettledBill() {
-        Bill bill = new Bill(new BillId(),null,null,null,new OutstandingAmount(1000.00));
-
         bill.settle();
 
         assertThrows(InvalidOperationException.class, () -> {
@@ -81,18 +94,10 @@ public class BillTest {
         });
     }
 
-    @Test
-    void canSetAndGetRemarkAboutBill() {
-        Bill bill = new Bill(new BillId(),null,null,null,new OutstandingAmount(1000.00));
-        String remark = "Transaction Id: 96sd8954814r";
-        bill.addRemark(remark);
-
-        assertEquals(remark, bill.getRemark());
-    }
 
     @Test
     void emitsBillSettledEvent() {
-        Bill bill = new Bill(new BillId(),null,null,null,new OutstandingAmount(1000.00));
+        billData.setOutstandingAmount(new OutstandingAmount(1000));
 
         bill.settle();
 

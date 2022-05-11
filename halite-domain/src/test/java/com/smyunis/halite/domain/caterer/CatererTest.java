@@ -2,6 +2,7 @@ package com.smyunis.halite.domain.caterer;
 
 import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.billing.Bill;
+import com.smyunis.halite.domain.billing.BillData;
 import com.smyunis.halite.domain.billing.BillId;
 import com.smyunis.halite.domain.billing.OutstandingAmount;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
@@ -21,7 +22,10 @@ public class CatererTest {
 
     @Test
     void canHandleBillSettledEvent() {
-        Bill bill = new Bill(new BillId(),caterer.getId(),null,null,new OutstandingAmount(6000));
+        BillData billData = new BillData();
+        billData.setOutstandingAmount(new OutstandingAmount(6000))
+                .setPayeeId(caterer.getId());
+        Bill bill = new Bill(billData);
 
         BillSettledEvent billSettledEvent = new BillSettledEvent(bill);
         caterer.new DomainEventHandler()

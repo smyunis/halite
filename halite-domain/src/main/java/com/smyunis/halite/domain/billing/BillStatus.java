@@ -1,7 +1,8 @@
 package com.smyunis.halite.domain.billing;
 
 public enum BillStatus {
-    Pending,
+    PendingSettlement,
     Settled,
+    PendingCancellation,
     Cancelled
 }

@@ -4,16 +4,14 @@ import com.smyunis.halite.domain.DomainEventHandler;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 
 public class Caterer {
-    private CatererId id = new CatererId();
-    private String name;
-    private int recommendationMetric;
+    private final CatererData catererData;
 
-    public CatererId getId() {
-        return id;
+    public Caterer(CatererData catererData) {
+        this.catererData = catererData;
     }
 
     public int getRecommendationMetric() {
-        return recommendationMetric;
+        return catererData.getRecommendationMetric();
     }
 
     public class BillSettledEventHandler implements DomainEventHandler<BillSettledEvent> {
@@ -21,7 +19,7 @@ public class Caterer {
         public void handleEvent(BillSettledEvent billSettledEvent) {
             var settledBill = billSettledEvent.getBill();
             if (settledBill.getOutstandingAmount().amount() > 5000)
-                recommendationMetric += 5;
+                catererData.setRecommendationMetric(catererData.getRecommendationMetric() + 5);
         }
     }
 }

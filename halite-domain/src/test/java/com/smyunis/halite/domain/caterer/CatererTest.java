@@ -11,26 +11,31 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CatererTest {
     private Caterer caterer;
+    private CatererData catererData;
 
     @BeforeEach
     void setup() {
-        caterer = new Caterer();
+        catererData = new CatererData();
+        caterer = new Caterer(catererData);
     }
-
 
     @Test
     void canHandleBillSettledEvent() {
         BillData billData = new BillData();
+
+        catererData.setId(new CatererId());
+        Caterer handlerCaterer = new Caterer(catererData);
+
         billData.setOutstandingAmount(new OutstandingAmount(6000))
-                .setPayeeId(caterer.getId());
+                .setPayeeId(catererData.getId());
+
         Bill bill = new Bill(billData);
 
         BillSettledEvent billSettledEvent = new BillSettledEvent(bill);
-        caterer.new BillSettledEventHandler()
+        handlerCaterer.new BillSettledEventHandler()
                 .handleEvent(billSettledEvent);
 
-        assertEquals(5,caterer.getRecommendationMetric());
-
+        assertEquals(5,handlerCaterer.getRecommendationMetric());
     }
 
 }

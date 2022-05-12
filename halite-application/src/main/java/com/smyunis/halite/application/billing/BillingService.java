@@ -20,14 +20,14 @@ public class BillingService {
         billRepository.save(bill);
     }
 
-    private void publishDomainEvents(Bill bill) {
-        domainEventManager.registerDomainEvents(bill.getDomainEvents());
-        domainEventManager.publish();
-    }
-
     public void requestBillCancellation(BillId billId) {
         Bill bill = billRepository.get(billId);
         bill.requestCancellation();
         billRepository.save(bill);
+    }
+
+    private void publishDomainEvents(Bill bill) {
+        domainEventManager.registerDomainEvents(bill.getDomainEvents());
+        domainEventManager.publish();
     }
 }

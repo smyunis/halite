@@ -5,6 +5,7 @@ import com.smyunis.halite.domain.billing.BillData;
 import com.smyunis.halite.domain.billing.OutstandingAmount;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.Caterer;
+import com.smyunis.halite.domain.caterer.CatererData;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class DomainEventManagerTest {
 
         var domainEventManager = new DomainEventsDispatcher();
 
-        var caterer = new Caterer();
+        var caterer = new Caterer(new CatererData());
         int rec = caterer.getRecommendationMetric();
 
         domainEventManager.assignHandler(BillSettledEvent.class,

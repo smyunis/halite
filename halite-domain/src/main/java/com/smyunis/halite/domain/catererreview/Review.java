@@ -1,19 +1,14 @@
 package com.smyunis.halite.domain.catererreview;
 
-import com.smyunis.halite.domain.caterer.CatererId;
-import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
-
 public class Review {
-    private ReviewId id;
-    private CateringEventHostId reviewerId;
-    private CatererId reviewedCatererId;
-    private String title;
-    private String content;
-    private Rating rating;
+    private final ReviewData data;
 
-    void setRating(Rating rating) {
-        this.rating = rating;
+    public Review(ReviewData data) {
+        this.data = data;
     }
 
-
+    public boolean isFavorable() {
+        Rating rating = data.getRating();
+        return rating.isFavorable();
+    }
 }

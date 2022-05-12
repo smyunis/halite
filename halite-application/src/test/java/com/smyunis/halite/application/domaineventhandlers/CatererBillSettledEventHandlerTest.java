@@ -5,6 +5,7 @@ import com.smyunis.halite.domain.billing.BillData;
 import com.smyunis.halite.domain.billing.OutstandingAmount;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.Caterer;
+import com.smyunis.halite.domain.caterer.CatererData;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.caterer.CatererRepository;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ public class CatererBillSettledEventHandlerTest {
     void canHandleBillSettledEvent() {
         CatererId catererId = new CatererId();
         CatererRepository mockedCatererRepository = mock(CatererRepository.class);
-        when(mockedCatererRepository.get(catererId)).thenReturn(new Caterer());
+        when(mockedCatererRepository.get(catererId)).thenReturn(new Caterer(new CatererData().setId(catererId)));
         CatererBillSettledEventHandler handler = new CatererBillSettledEventHandler(mockedCatererRepository);
         handler.handleEvent(new BillSettledEvent(new Bill(new BillData()
                 .setOutstandingAmount(new OutstandingAmount(6000))

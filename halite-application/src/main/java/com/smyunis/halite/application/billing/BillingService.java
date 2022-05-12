@@ -1,14 +1,14 @@
 package com.smyunis.halite.application.billing;
 
-import com.smyunis.halite.domain.DomainEventsDispatcher;
+import com.smyunis.halite.domain.DomainEventDispatcher;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillId;
 import com.smyunis.halite.domain.billing.BillRepository;
 
 public class BillingService {
-    private DomainEventsDispatcher domainEventManager;
+    private DomainEventDispatcher domainEventManager;
     private final BillRepository billRepository;
-    public BillingService(DomainEventsDispatcher domainEventManager, BillRepository billRepository) {
+    public BillingService(DomainEventDispatcher domainEventManager, BillRepository billRepository) {
         this.domainEventManager = domainEventManager;
         this.billRepository = billRepository;
     }

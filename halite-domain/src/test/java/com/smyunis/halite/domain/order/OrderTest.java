@@ -7,13 +7,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class OrderTest {
     private Order order;
+    private OrderData data;
 
     @BeforeEach
     void setup() {
-        order = new Order();
+        data = new OrderData();
+        order = new Order(data);
     }
 
     @Test

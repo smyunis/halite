@@ -17,14 +17,14 @@ public class DomainEventManagerTest {
 
     @Test
     void canAssignHandlerToAnEvent() {
-        var domainEventRegistrar = new DomainEventsDispatcher();
+        var domainEventRegistrar = new DomainEventDispatcher();
         domainEventRegistrar.assignHandler(BillSettledEvent.class, (DomainEvent event) -> {});
     }
 
     @Test
     void assignAHandlerAndVerifyStateChangeForAShunt() {
 
-        var domainEventManager = new DomainEventsDispatcher();
+        var domainEventManager = new DomainEventDispatcher();
 
         var caterer = new Caterer(new CatererData());
         int rec = caterer.getRecommendationMetric();
@@ -43,13 +43,13 @@ public class DomainEventManagerTest {
 
     @Test
     void canPublishEventsWhoHadHandlersAssignedToThem() {
-        var domainEventRegistrar = new DomainEventsDispatcher();
+        var domainEventRegistrar = new DomainEventDispatcher();
         domainEventRegistrar.publish();
     }
 
     @Test
     void canRegisterDomainEvents() {
-        var domainEventRegistrar = new DomainEventsDispatcher();
+        var domainEventRegistrar = new DomainEventDispatcher();
         domainEventRegistrar.registerDomainEvents(
                 List.of(new BillSettledEvent(new Bill(new BillData())))
         );
@@ -57,7 +57,7 @@ public class DomainEventManagerTest {
 
     @Test
     void publishARRegisteredEvent() {
-        var domainEventManager = new DomainEventsDispatcher();
+        var domainEventManager = new DomainEventDispatcher();
         StringBuilder sb = new StringBuilder("A");
         domainEventManager.assignHandler(BillSettledEvent.class,(event) -> {
             sb.append("B");
@@ -72,7 +72,7 @@ public class DomainEventManagerTest {
 
     @Test
     void canHandleMultipleHandlersForAnEvent() {
-        var domainEventManager = new DomainEventsDispatcher();
+        var domainEventManager = new DomainEventDispatcher();
         StringBuilder sb = new StringBuilder("A");
         domainEventManager.registerDomainEvents(List.of(new BillSettledEvent(new Bill(new BillData()
                 .setOutstandingAmount(new OutstandingAmount(7000))))));
@@ -90,7 +90,7 @@ public class DomainEventManagerTest {
 
     @Test
     void onceEventsArePublishedTheyGetClearedFromTheManager() {
-        var domainEventManager = new DomainEventsDispatcher();
+        var domainEventManager = new DomainEventDispatcher();
         StringBuilder sb = new StringBuilder("A");
         domainEventManager.registerDomainEvents(List.of(new BillSettledEvent(null)));
         domainEventManager.assignHandler(BillSettledEvent.class,(event) -> {

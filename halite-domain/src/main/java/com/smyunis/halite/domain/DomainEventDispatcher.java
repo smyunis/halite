@@ -3,7 +3,7 @@ package com.smyunis.halite.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DomainEventsDispatcher {
+public class DomainEventDispatcher {
 
     private final List<DomainEvent> registeredDomainEvents = new ArrayList<>();
     private final static List<DomainEventHandlerCatalogue> domainEventHandlerCatalogue = new ArrayList<>();

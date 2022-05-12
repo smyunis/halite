@@ -4,7 +4,7 @@ import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
 
 public class ReviewData {
-    private ReviewId id;
+    private ReviewId id = new ReviewId();
     private CateringEventHostId reviewerId;
     private CatererId reviewedCatererId;
     private String title;

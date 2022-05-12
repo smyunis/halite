@@ -10,25 +10,27 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Order {
-    private OrderId id;
-    private OrderStatus status = OrderStatus.Pending;
-    private CateringEventId cateringEventId;
-    private CateringEventHostId cateringEventHostId;
-    private CatererId catererId;
-    private Set<OrderedCateringMenuItem> orderedCateringMenuItems = new HashSet<>();
+    private final OrderData data;
+
+    public Order(OrderData data) {
+        this.data = data;
+    }
 
     public void addCateringMenuItem(CateringMenuItemId cateringMenuItemId, int quantity) {
-        orderedCateringMenuItems.add(new OrderedCateringMenuItem(cateringMenuItemId,quantity));
+        var orderedCateringMenuItems = data.getOrderedCateringMenuItems();
+        orderedCateringMenuItems.add(new OrderedCateringMenuItem(cateringMenuItemId, quantity));
     }
 
     public Set<OrderedCateringMenuItem> getOrderedCateringMenuItems() {
-        return orderedCateringMenuItems;
+        return data.getOrderedCateringMenuItems();
     }
 
     public void removeCateringMenuItem(CateringMenuItemId cateringMenuItemId) {
-        orderedCateringMenuItems = orderedCateringMenuItems.stream()
+        var orderedCateringMenuItems = data.getOrderedCateringMenuItems();
+        var orderedCateringMenuItemsWithRemoved = orderedCateringMenuItems.stream()
                 .filter(o -> o.cateringMenuItemId() != cateringMenuItemId)
                 .collect(Collectors.toSet());
+        data.setOrderedCateringMenuItems(orderedCateringMenuItemsWithRemoved);
     }
 
 }

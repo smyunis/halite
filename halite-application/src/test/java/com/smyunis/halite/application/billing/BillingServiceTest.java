@@ -1,6 +1,6 @@
 package com.smyunis.halite.application.billing;
 
-import com.smyunis.halite.domain.DomainEventsDispatcher;
+import com.smyunis.halite.domain.DomainEventDispatcher;
 import com.smyunis.halite.domain.billing.*;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ public class BillingServiceTest {
     void setup() {
         billId = new BillId();
         billRepository = mock(BillRepository.class);
-        billingService = new BillingService(new DomainEventsDispatcher(),billRepository);
+        billingService = new BillingService(new DomainEventDispatcher(),billRepository);
     }
 
     @Test

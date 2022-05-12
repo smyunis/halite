@@ -5,6 +5,7 @@ import com.smyunis.halite.domain.cateringevent.CateringEventId;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
+import com.smyunis.halite.domain.order.OrderId;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +14,7 @@ public class BillData {
     private BillStatus billStatus = BillStatus.PendingSettlement;
     private CatererId payeeId;
     private CateringEventHostId payerId;
-    private CateringEventId cateringEventId;
+    private OrderId orderId;
     private OutstandingAmount outstandingAmount;
     private LocalDateTime dueDateTime = LocalDateTime.now().plusMonths(1);
     private LocalDateTime settlementDateTime;
@@ -55,15 +56,6 @@ public class BillData {
         return this;
     }
 
-    public CateringEventId getCateringEventId() {
-        return cateringEventId;
-    }
-
-    public BillData setCateringEventId(CateringEventId cateringEventId) {
-        this.cateringEventId = cateringEventId;
-        return this;
-    }
-
     public OutstandingAmount getOutstandingAmount() {
         return outstandingAmount;
     }
@@ -99,6 +91,15 @@ public class BillData {
 
     public BillData setRemark(String remark) {
         this.remark = remark;
+        return this;
+    }
+
+    public OrderId getOrderId() {
+        return orderId;
+    }
+
+    public BillData setOrderId(OrderId orderId) {
+        this.orderId = orderId;
         return this;
     }
 }

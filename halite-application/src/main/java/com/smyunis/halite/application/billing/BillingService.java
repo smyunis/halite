@@ -1,14 +1,14 @@
 package com.smyunis.halite.application.billing;
 
-import com.smyunis.halite.domain.DomainEventManager;
+import com.smyunis.halite.domain.DomainEventsDispatcher;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillId;
 import com.smyunis.halite.domain.billing.BillRepository;
 
 public class BillingService {
-    private DomainEventManager domainEventManager;
+    private DomainEventsDispatcher domainEventManager;
     private final BillRepository billRepository;
-    public BillingService(DomainEventManager domainEventManager, BillRepository billRepository) {
+    public BillingService(DomainEventsDispatcher domainEventManager, BillRepository billRepository) {
         this.domainEventManager = domainEventManager;
         this.billRepository = billRepository;
     }
@@ -16,9 +16,13 @@ public class BillingService {
     public void settleBill(BillId billId) {
         Bill bill = billRepository.get(billId);
         bill.settle();
-        domainEventManager.registerDomainEvents(bill.getDomainEvents());
-
+        publishDomainEvents(bill);
         billRepository.save(bill);
+    }
+
+    private void publishDomainEvents(Bill bill) {
+        domainEventManager.registerDomainEvents(bill.getDomainEvents());
+        domainEventManager.publish();
     }
 
     public void requestBillCancellation(BillId billId) {

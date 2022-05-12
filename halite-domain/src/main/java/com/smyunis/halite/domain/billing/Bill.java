@@ -2,6 +2,7 @@ package com.smyunis.halite.domain.billing;
 
 import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
+import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 
 import java.time.LocalDateTime;
@@ -51,6 +52,10 @@ public class Bill {
 
     public OutstandingAmount getOutstandingAmount() {
         return billData.getOutstandingAmount();
+    }
+
+    public CatererId getPayeeId() {
+        return billData.getPayeeId();
     }
 
 }

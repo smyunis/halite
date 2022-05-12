@@ -1,15 +1,12 @@
 package com.smyunis.halite.domain;
 
-import com.smyunis.halite.domain.DomainEvent;
-import com.smyunis.halite.domain.DomainEventHandler;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class DomainEventManager {
+public class DomainEventsDispatcher {
 
     private final List<DomainEvent> registeredDomainEvents = new ArrayList<>();
-    private final List<DomainEventHandlerCatalogue> domainEventHandlerCatalogue = new ArrayList<>();
+    private final static List<DomainEventHandlerCatalogue> domainEventHandlerCatalogue = new ArrayList<>();
 
     public void assignHandler(Class<? extends DomainEvent> domainEventClass,
                               DomainEventHandler<? extends DomainEvent> handler) {
@@ -28,6 +25,7 @@ public class DomainEventManager {
             handlerPairs.forEach(e -> e.domainEventHandler().handleEvent(
                     e.domainEventClass().cast(event)));
         }
+        registeredDomainEvents.clear();
     }
 
     private record DomainEventHandlerCatalogue(

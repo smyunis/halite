@@ -5,7 +5,6 @@ import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -38,7 +37,7 @@ public class BillTest {
         billData.setOutstandingAmount(new OutstandingAmount(1000));
 
         bill.settle();
-        assertEquals(BillStatus.Settled, bill.getBillStatus());
+        assertEquals(BillStatus.SETTLED, bill.getBillStatus());
     }
 
     @Test
@@ -53,7 +52,7 @@ public class BillTest {
         bill.requestCancellation();
         bill.approveCancellation();
 
-        assertEquals(BillStatus.Cancelled, bill.getBillStatus());
+        assertEquals(BillStatus.CANCELLED, bill.getBillStatus());
     }
 
     @Test

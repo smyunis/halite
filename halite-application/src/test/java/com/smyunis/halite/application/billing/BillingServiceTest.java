@@ -30,7 +30,7 @@ public class BillingServiceTest {
         billingService.settleBill(billId);
 
         Bill settledBill = billRepository.get(billId);
-        assertEquals(BillStatus.Settled, settledBill.getBillStatus());
+        assertEquals(BillStatus.SETTLED, settledBill.getBillStatus());
         assertEquals(BillSettledEvent.class,settledBill.getDomainEvents().get(0).getClass());
     }
 
@@ -38,12 +38,12 @@ public class BillingServiceTest {
     void cateringEventHostCanRequestCancellationOfABillPendingSettlement() {
         var billData = new BillData()
                 .setId(billId)
-                .setBillStatus(BillStatus.PendingSettlement);
+                .setBillStatus(BillStatus.PENDING_SETTLEMENT);
         when(billRepository.get(billId)).thenReturn(new Bill(billData));
 
         billingService.requestBillCancellation(billId);
 
-        assertEquals(BillStatus.PendingCancellation,billRepository.get(billId).getBillStatus());
+        assertEquals(BillStatus.PENDING_CANCELLATION,billRepository.get(billId).getBillStatus());
     }
 
 

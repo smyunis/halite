@@ -1,9 +1,14 @@
 package com.smyunis.halite.domain.order;
 
+import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
+import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
+import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,6 +47,53 @@ public class OrderTest {
         assertTrue(order.getOrderedCateringMenuItems().isEmpty());
     }
 
+    @Test
+    void acceptOrder() {
+        order.accept();
+    }
+
+    @Test
+    void canNotAcceptOrderThatIsPendingAcceptance() {
+        data.setStatus(OrderStatus.ACCEPTED);
+        assertThrows(InvalidOperationException.class,() -> {
+            order.accept();
+        });
+    }
+
+    @Test
+    void canSetOrderStatusToAccepted() {
+        order.accept();
+        assertEquals(OrderStatus.ACCEPTED,data.getStatus());
+    }
+
+    @Test
+    void rejectOrder() {
+        order.reject();
+    }
+
+    @Test
+    void canSetStatusWhenRejected() {
+        order.reject();
+        assertEquals(OrderStatus.REJECTED,data.getStatus());
+    }
+
+    @Test
+    void canNotRejectAnAlreadyRejectedOrder() {
+        order.reject();
+        assertThrows(InvalidOperationException.class,() -> {
+           order.reject();
+        });
+    }
+
+    @Test
+    void addingAMenuItemRaisesACateringMenuItemAddedToOrderEvent() {
+        CateringMenuItemId itemId = new CateringMenuItemId();
+        order.addCateringMenuItem(itemId,1);
+
+        List<DomainEvent> domainEvents = order.getDomainEvents();
+
+        assertEquals(CateringMenuItemAddedToOrderEvent.class,domainEvents.get(0).getClass());
+    }
 
 
 }

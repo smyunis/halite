@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class OrderData {
     private OrderId id = new OrderId();
-    private OrderStatus status = OrderStatus.Pending;
+    private OrderStatus status = OrderStatus.PENDING_ACCEPTANCE;
     private CateringEventId cateringEventId;
     private CateringEventHostId cateringEventHostId;
     private CatererId catererId;

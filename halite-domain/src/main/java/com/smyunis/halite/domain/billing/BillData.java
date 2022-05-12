@@ -1,9 +1,7 @@
 package com.smyunis.halite.domain.billing;
 
 import com.smyunis.halite.domain.caterer.CatererId;
-import com.smyunis.halite.domain.cateringevent.CateringEventId;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
-import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import com.smyunis.halite.domain.order.OrderId;
 
@@ -11,7 +9,7 @@ import java.time.LocalDateTime;
 
 public class BillData {
     private BillId id = new BillId();
-    private BillStatus billStatus = BillStatus.PendingSettlement;
+    private BillStatus billStatus = BillStatus.PENDING_SETTLEMENT;
     private CatererId payeeId;
     private CateringEventHostId payerId;
     private OrderId orderId;

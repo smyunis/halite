@@ -3,8 +3,11 @@ package com.smyunis.halite.domain.order;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.cateringevent.CateringEventId;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
+import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
+import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class OrderData {
@@ -13,7 +16,7 @@ public class OrderData {
     private CateringEventId cateringEventId;
     private CateringEventHostId cateringEventHostId;
     private CatererId catererId;
-    private Set<OrderedCateringMenuItem> orderedCateringMenuItems = new HashSet<>();
+    private Map<CateringMenuItemId, Integer> orderedCateringMenuItems = new HashMap<>();
 
     public OrderId getId() {
         return id;
@@ -60,11 +63,15 @@ public class OrderData {
         return this;
     }
 
-    public Set<OrderedCateringMenuItem> getOrderedCateringMenuItems() {
+    public Map<CateringMenuItemId, Integer> getOrderedCateringMenuItems() {
         return orderedCateringMenuItems;
     }
 
-    public OrderData setOrderedCateringMenuItems(Set<OrderedCateringMenuItem> orderedCateringMenuItems) {
+    public OrderData setOrderedCateringMenuItems(Map<CateringMenuItemId, Integer> orderedCateringMenuItems) {
+        for (var quantity : orderedCateringMenuItems.values()) {
+            if (quantity < 1)
+                throw new InvalidValueException(this.getClass().getName());
+        }
         this.orderedCateringMenuItems = orderedCateringMenuItems;
         return this;
     }

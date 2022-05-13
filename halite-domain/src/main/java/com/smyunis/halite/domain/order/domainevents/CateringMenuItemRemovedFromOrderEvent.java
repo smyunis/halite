@@ -5,12 +5,18 @@ import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 
 public class CateringMenuItemRemovedFromOrderEvent extends DomainEvent {
     private final CateringMenuItemId itemId;
+    private final Integer quantity;
 
-    public CateringMenuItemRemovedFromOrderEvent(CateringMenuItemId itemId) {
+    public CateringMenuItemRemovedFromOrderEvent(CateringMenuItemId itemId, Integer quantity) {
         this.itemId = itemId;
+        this.quantity = quantity;
     }
 
-    public CateringMenuItemId getRemovedItemId() {
+    public CateringMenuItemId getItemId() {
         return itemId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
     }
 }

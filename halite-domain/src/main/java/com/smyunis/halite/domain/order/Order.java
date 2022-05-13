@@ -3,13 +3,13 @@ package com.smyunis.halite.domain.order;
 import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
+import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemRemovedFromOrderEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class Order {
     private final OrderData data;
@@ -20,39 +20,33 @@ public class Order {
     }
 
     public void addCateringMenuItem(CateringMenuItemId itemId, int quantity) {
-        var orderedCateringMenuItems = data.getOrderedCateringMenuItems();
-        orderedCateringMenuItems.add(new OrderedCateringMenuItem(itemId, quantity));
+        var orderedItems = data.getOrderedCateringMenuItems();
 
-        domainEvents.add(new CateringMenuItemAddedToOrderEvent(itemId));
+        if (!isValidMenuItemQuantity(quantity))
+            throw new InvalidValueException("Invalid catering menu item quantity");
+
+        orderedItems.computeIfPresent(itemId, (cateringMenuItemId, prevQuantity) -> prevQuantity + quantity);
+        orderedItems.putIfAbsent(itemId, quantity);
+
+        domainEvents.add(new CateringMenuItemAddedToOrderEvent(itemId, orderedItems.get(itemId)));
     }
 
-    public Set<OrderedCateringMenuItem> getOrderedCateringMenuItems() {
+
+    public Map<CateringMenuItemId, Integer> getOrderedCateringMenuItems() {
         return data.getOrderedCateringMenuItems();
     }
 
     public void removeCateringMenuItem(CateringMenuItemId itemId) {
         var orderedCateringMenuItems = data.getOrderedCateringMenuItems();
-        Set<OrderedCateringMenuItem> orderedCateringMenuItemsWithRemoved =
-                filterByCateringMenuItemId(itemId, orderedCateringMenuItems);
-
-        data.setOrderedCateringMenuItems(orderedCateringMenuItemsWithRemoved);
-        domainEvents.add(new CateringMenuItemRemovedFromOrderEvent(itemId));
+        domainEvents.add(new CateringMenuItemRemovedFromOrderEvent(itemId, orderedCateringMenuItems.get(itemId)));
+        orderedCateringMenuItems.remove(itemId);
     }
 
-    private Set<OrderedCateringMenuItem> filterByCateringMenuItemId(CateringMenuItemId itemId, Set<OrderedCateringMenuItem> menuItems) {
-        return menuItems.stream()
-                .filter(o -> o.cateringMenuItemId() != itemId)
-                .collect(Collectors.toSet());
-    }
 
     public void accept() {
         if (orderCanNotBeAccepted())
             throw new InvalidOperationException("Order is not pending acceptance");
         data.setStatus(OrderStatus.ACCEPTED);
-    }
-
-    private boolean orderCanNotBeAccepted() {
-        return data.getStatus() != OrderStatus.PENDING_ACCEPTANCE;
     }
 
     public void reject() {
@@ -61,11 +55,19 @@ public class Order {
         data.setStatus(OrderStatus.REJECTED);
     }
 
+    public List<DomainEvent> getDomainEvents() {
+        return domainEvents;
+    }
+
+    private boolean isValidMenuItemQuantity(int quantity) {
+        return quantity >= 1;
+    }
+
     private boolean isOrderRejected() {
         return data.getStatus() == OrderStatus.REJECTED;
     }
 
-    public List<DomainEvent> getDomainEvents() {
-        return domainEvents;
+    private boolean orderCanNotBeAccepted() {
+        return data.getStatus() != OrderStatus.PENDING_ACCEPTANCE;
     }
 }

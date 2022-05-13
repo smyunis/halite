@@ -1,9 +1,11 @@
 package com.smyunis.halite.domain.billing;
 
 import com.smyunis.halite.domain.DomainEvent;
+import com.smyunis.halite.domain.DomainEventHandler;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
+import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -58,6 +60,7 @@ public class Bill {
         return data.getPayeeId();
     }
 
-    //TODO Handle Catering menu updated and removed events
+
+    //TODO Should know how to update its outstanding amount
 
 }

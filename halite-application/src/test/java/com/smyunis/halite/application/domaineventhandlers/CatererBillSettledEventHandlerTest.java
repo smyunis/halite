@@ -2,7 +2,7 @@ package com.smyunis.halite.application.domaineventhandlers;
 
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
-import com.smyunis.halite.domain.billing.OutstandingAmount;
+import com.smyunis.halite.domain.billing.MonetaryAmount;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererData;
@@ -22,7 +22,7 @@ public class CatererBillSettledEventHandlerTest {
         when(mockedCatererRepository.get(catererId)).thenReturn(new Caterer(new CatererData().setId(catererId)));
         CatererBillSettledEventHandler handler = new CatererBillSettledEventHandler(mockedCatererRepository);
         handler.handleEvent(new BillSettledEvent(new Bill(new BillData()
-                .setOutstandingAmount(new OutstandingAmount(6000))
+                .setOutstandingAmount(new MonetaryAmount(6000))
                 .setPayeeId(catererId))));
 
         assertEquals(5,mockedCatererRepository.get(catererId).getRecommendationMetric());

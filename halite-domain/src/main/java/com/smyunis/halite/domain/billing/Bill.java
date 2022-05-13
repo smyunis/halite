@@ -51,7 +51,7 @@ public class Bill {
         return data.getBillStatus() != BillStatus.PENDING_SETTLEMENT || data.getDueDateTime().isBefore(LocalDateTime.now());
     }
 
-    public OutstandingAmount getOutstandingAmount() {
+    public MonetaryAmount getOutstandingAmount() {
         return data.getOutstandingAmount();
     }
 
@@ -59,15 +59,15 @@ public class Bill {
         return data.getPayeeId();
     }
 
-    public void incrementOutstandingAmount(double addend) {
-        OutstandingAmount initialAmount = data.getOutstandingAmount();
-        data.setOutstandingAmount(new OutstandingAmount(initialAmount.amount() + addend));
+    public void incrementOutstandingAmount(MonetaryAmount addend) {
+        MonetaryAmount initialAmount = data.getOutstandingAmount();
+        var newOutstandingAmount = initialAmount.amount() + addend.amount();
+        data.setOutstandingAmount(new MonetaryAmount(newOutstandingAmount));
     }
 
-
-    public void decrementOutstandingAmount(double subtrahend) {
+    public void decrementOutstandingAmount(MonetaryAmount subtrahend) {
         var initialAmount = data.getOutstandingAmount();
-        var newOutstandingAmount = initialAmount.amount() - subtrahend;
-        data.setOutstandingAmount(new OutstandingAmount(newOutstandingAmount));
+        var newOutstandingAmount = initialAmount.amount() - subtrahend.amount();
+        data.setOutstandingAmount(new MonetaryAmount(newOutstandingAmount));
     }
 }

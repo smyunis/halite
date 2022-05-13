@@ -12,8 +12,7 @@ public class BillData {
     private BillStatus billStatus = BillStatus.PENDING_SETTLEMENT;
     private CatererId payeeId;
     private CateringEventHostId payerId;
-    private OrderId orderId;
-    private OutstandingAmount outstandingAmount;
+    private MonetaryAmount outstandingAmount = new MonetaryAmount(0.0);
     private LocalDateTime dueDateTime = LocalDateTime.now().plusMonths(1);
     private LocalDateTime settlementDateTime;
     private String remark;
@@ -54,11 +53,11 @@ public class BillData {
         return this;
     }
 
-    public OutstandingAmount getOutstandingAmount() {
+    public MonetaryAmount getOutstandingAmount() {
         return outstandingAmount;
     }
 
-    public BillData setOutstandingAmount(OutstandingAmount outstandingAmount) {
+    public BillData setOutstandingAmount(MonetaryAmount outstandingAmount) {
         this.outstandingAmount = outstandingAmount;
         return this;
     }
@@ -92,12 +91,4 @@ public class BillData {
         return this;
     }
 
-    public OrderId getOrderId() {
-        return orderId;
-    }
-
-    public BillData setOrderId(OrderId orderId) {
-        this.orderId = orderId;
-        return this;
-    }
 }

@@ -2,7 +2,7 @@ package com.smyunis.halite.domain.caterer;
 
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
-import com.smyunis.halite.domain.billing.OutstandingAmount;
+import com.smyunis.halite.domain.billing.MonetaryAmount;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,14 +26,12 @@ public class CatererTest {
         catererData.setId(new CatererId());
         Caterer handlerCaterer = new Caterer(catererData);
 
-        billData.setOutstandingAmount(new OutstandingAmount(6000))
+        billData.setOutstandingAmount(new MonetaryAmount(6000))
                 .setPayeeId(catererData.getId());
 
         Bill bill = new Bill(billData);
 
-        BillSettledEvent billSettledEvent = new BillSettledEvent(bill);
-        handlerCaterer.new BillSettledEventHandler()
-                .handleEvent(billSettledEvent);
+        handlerCaterer.handleBillSettledEvent(bill);
 
         assertEquals(5,handlerCaterer.getRecommendationMetric());
     }

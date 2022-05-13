@@ -1,5 +1,6 @@
 package com.smyunis.halite.domain.order;
 
+import com.smyunis.halite.domain.billing.BillId;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.cateringevent.CateringEventId;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
@@ -15,6 +16,7 @@ public class OrderData {
     private CateringEventId cateringEventId;
     private CateringEventHostId cateringEventHostId;
     private CatererId catererId;
+    private BillId billId;
     private Map<CateringMenuItemId, Integer> orderedCateringMenuItems = new HashMap<>();
 
     public OrderId getId() {
@@ -72,6 +74,15 @@ public class OrderData {
                 throw new InvalidValueException("Quantity must be at least 1");
         }
         this.orderedCateringMenuItems = orderedCateringMenuItems;
+        return this;
+    }
+
+    public BillId getBillId() {
+        return billId;
+    }
+
+    public OrderData setBillId(BillId billId) {
+        this.billId = billId;
         return this;
     }
 }

@@ -2,10 +2,8 @@ package com.smyunis.halite.domain.billing;
 
 import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
-import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
-import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,16 +25,16 @@ public class BillTest {
     @Test
     void outStandingBillAmountIsAValidPositiveNumber() {
         assertThrows(InvalidValueException.class, () -> {
-            data.setOutstandingAmount(new OutstandingAmount(0.00));
+            data.setOutstandingAmount(new MonetaryAmount(-1.00));
         });
         assertDoesNotThrow(() -> {
-            data.setOutstandingAmount(new OutstandingAmount(1000.00));
+            data.setOutstandingAmount(new MonetaryAmount(1000.00));
         });
     }
 
     @Test
     void canSettleBill() {
-        data.setOutstandingAmount(new OutstandingAmount(1000));
+        data.setOutstandingAmount(new MonetaryAmount(1000));
 
         bill.settle();
         assertEquals(BillStatus.SETTLED, bill.getBillStatus());
@@ -59,7 +57,7 @@ public class BillTest {
 
     @Test
     void canNotCancelBillThatHasNotBeenSettledAlready() {
-        data.setOutstandingAmount(new OutstandingAmount(1000));
+        data.setOutstandingAmount(new MonetaryAmount(1000));
 
         bill.settle();
 
@@ -98,7 +96,7 @@ public class BillTest {
 
     @Test
     void emitsBillSettledEvent() {
-        data.setOutstandingAmount(new OutstandingAmount(1000));
+        data.setOutstandingAmount(new MonetaryAmount(1000));
 
         bill.settle();
 
@@ -108,27 +106,22 @@ public class BillTest {
 
     @Test
     void incrementOutstandingAmount() {
-        data.setOutstandingAmount(new OutstandingAmount(10));
-        OutstandingAmount initialValue = bill.getOutstandingAmount();
-        bill.incrementOutstandingAmount(10.0);
+        data.setOutstandingAmount(new MonetaryAmount(10));
+        MonetaryAmount initialValue = bill.getOutstandingAmount();
+        bill.incrementOutstandingAmount(new MonetaryAmount(10.0));
 
         assertEquals(initialValue.amount() + 10, bill.getOutstandingAmount().amount());
     }
 
     @Test
     void decrementOutstandingAmount() {
-        data.setOutstandingAmount(new OutstandingAmount(10));
-        OutstandingAmount initialValue = bill.getOutstandingAmount();
+        data.setOutstandingAmount(new MonetaryAmount(10));
+        MonetaryAmount initialValue = bill.getOutstandingAmount();
 
-        bill.decrementOutstandingAmount(5);
+        bill.decrementOutstandingAmount(new MonetaryAmount(5));
 
         assertEquals(initialValue.amount() - 5,bill.getOutstandingAmount().amount());
     }
-
-
-
-
-
 
 
 }

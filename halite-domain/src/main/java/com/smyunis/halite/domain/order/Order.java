@@ -1,6 +1,7 @@
 package com.smyunis.halite.domain.order;
 
 import com.smyunis.halite.domain.DomainEvent;
+import com.smyunis.halite.domain.billing.BillId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
@@ -29,7 +30,7 @@ public class Order {
         orderedItems.computeIfPresent(itemId, (cateringMenuItemId, prevQuantity) -> prevQuantity + quantity);
         orderedItems.putIfAbsent(itemId, quantity);
 
-        domainEvents.add(new CateringMenuItemAddedToOrderEvent(itemId, orderedItems.get(itemId)));
+        domainEvents.add(new CateringMenuItemAddedToOrderEvent(itemId, quantity, this));
     }
 
 
@@ -70,5 +71,9 @@ public class Order {
 
     private boolean orderCanNotBeAccepted() {
         return data.getStatus() != OrderStatus.PENDING_ACCEPTANCE;
+    }
+
+    public BillId getBillId() {
+        return data.getBillId();
     }
 }

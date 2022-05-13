@@ -1,8 +1,9 @@
-package com.smyunis.halite.domain;
+package com.smyunis.halite.application.domaineventhandlers;
 
+import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
-import com.smyunis.halite.domain.billing.OutstandingAmount;
+import com.smyunis.halite.domain.billing.MonetaryAmount;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererData;
@@ -29,10 +30,9 @@ public class DomainEventManagerTest {
         var caterer = new Caterer(new CatererData());
         int rec = caterer.getRecommendationMetric();
 
-        domainEventManager.assignHandler(BillSettledEvent.class,
-                caterer.new BillSettledEventHandler());
+        domainEventManager.assignHandler(BillSettledEvent.class, caterer.new BillSettledEventHandler());
 
-        Bill bill = new Bill(new BillData().setOutstandingAmount(new OutstandingAmount(230000)));
+        Bill bill = new Bill(new BillData().setOutstandingAmount(new MonetaryAmount(230000)));
         domainEventManager.registerDomainEvents(List.of(new BillSettledEvent(bill)));
 
         domainEventManager.publish();
@@ -75,7 +75,7 @@ public class DomainEventManagerTest {
         var domainEventManager = new DomainEventDispatcher();
         StringBuilder sb = new StringBuilder("A");
         domainEventManager.registerDomainEvents(List.of(new BillSettledEvent(new Bill(new BillData()
-                .setOutstandingAmount(new OutstandingAmount(7000))))));
+                .setOutstandingAmount(new MonetaryAmount(7000))))));
         domainEventManager.assignHandler(BillSettledEvent.class,(event) -> {
             sb.append("B");
         });

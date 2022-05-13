@@ -1,4 +1,6 @@
-package com.smyunis.halite.domain;
+package com.smyunis.halite.application.domaineventhandlers;
+
+import com.smyunis.halite.domain.DomainEvent;
 
 import java.util.ArrayList;
 import java.util.List;

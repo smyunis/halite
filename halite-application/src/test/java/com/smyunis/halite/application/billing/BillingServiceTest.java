@@ -1,6 +1,6 @@
 package com.smyunis.halite.application.billing;
 
-import com.smyunis.halite.domain.DomainEventDispatcher;
+import com.smyunis.halite.application.domaineventhandlers.DomainEventDispatcher;
 import com.smyunis.halite.domain.billing.*;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import org.junit.jupiter.api.BeforeEach;

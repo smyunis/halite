@@ -3,6 +3,8 @@ package com.smyunis.halite.domain.order;
 import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
+import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
+import com.smyunis.halite.domain.order.domainevents.CateringMenuItemRemovedFromOrderEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,8 @@ public class Order {
     public void addCateringMenuItem(CateringMenuItemId itemId, int quantity) {
         var orderedCateringMenuItems = data.getOrderedCateringMenuItems();
         orderedCateringMenuItems.add(new OrderedCateringMenuItem(itemId, quantity));
+
+        domainEvents.add(new CateringMenuItemAddedToOrderEvent(itemId));
     }
 
     public Set<OrderedCateringMenuItem> getOrderedCateringMenuItems() {
@@ -30,7 +34,9 @@ public class Order {
         var orderedCateringMenuItems = data.getOrderedCateringMenuItems();
         Set<OrderedCateringMenuItem> orderedCateringMenuItemsWithRemoved =
                 filterByCateringMenuItemId(itemId, orderedCateringMenuItems);
+
         data.setOrderedCateringMenuItems(orderedCateringMenuItemsWithRemoved);
+        domainEvents.add(new CateringMenuItemRemovedFromOrderEvent(itemId));
     }
 
     private Set<OrderedCateringMenuItem> filterByCateringMenuItemId(CateringMenuItemId itemId, Set<OrderedCateringMenuItem> menuItems) {

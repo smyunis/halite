@@ -21,7 +21,6 @@ public class DomainEventDispatcher {
         for (var event : registeredDomainEvents) {
             var handlerPairs = domainEventHandlerCatalogue.stream()
                     .filter(e -> e.domainEventClass.equals(event.getClass())).toList();
-
             handlerPairs.forEach(e -> e.domainEventHandler().handleEvent(
                     e.domainEventClass().cast(event)));
         }

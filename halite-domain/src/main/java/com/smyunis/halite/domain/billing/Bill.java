@@ -58,4 +58,6 @@ public class Bill {
         return data.getPayeeId();
     }
 
+    //TODO Handle Catering menu updated and removed events
+
 }

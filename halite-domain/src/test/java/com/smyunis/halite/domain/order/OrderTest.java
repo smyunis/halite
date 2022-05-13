@@ -122,7 +122,8 @@ public class OrderTest {
         List<DomainEvent> domainEvents = order.getDomainEvents();
 
         assertEquals(CateringMenuItemRemovedFromOrderEvent.class, domainEvents.get(1).getClass());
-        //assertEquals(itemId, ((CateringMenuItemRemovedFromOrderEvent) domainEvents.get(1)).getRemovedItemId());
+        assertEquals(itemId, ((CateringMenuItemRemovedFromOrderEvent) domainEvents.get(1)).getItemId());
+
     }
 
     @Test

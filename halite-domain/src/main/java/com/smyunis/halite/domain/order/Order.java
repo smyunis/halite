@@ -8,6 +8,7 @@ import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrder
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemRemovedFromOrderEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class Order {
 
 
     public Map<CateringMenuItemId, Integer> getOrderedCateringMenuItems() {
-        return data.getOrderedCateringMenuItems();
+        return Collections.unmodifiableMap(data.getOrderedCateringMenuItems());
     }
 
     public void removeCateringMenuItem(CateringMenuItemId itemId) {
@@ -56,7 +57,7 @@ public class Order {
     }
 
     public List<DomainEvent> getDomainEvents() {
-        return domainEvents;
+        return Collections.unmodifiableList(this.domainEvents);
     }
 
     private boolean isValidMenuItemQuantity(int quantity) {

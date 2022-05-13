@@ -106,6 +106,26 @@ public class BillTest {
         assertTrue(domainEvents.get(0) instanceof BillSettledEvent);
     }
 
+    @Test
+    void incrementOutstandingAmount() {
+        data.setOutstandingAmount(new OutstandingAmount(10));
+        OutstandingAmount initialValue = bill.getOutstandingAmount();
+        bill.incrementOutstandingAmount(10.0);
+
+        assertEquals(initialValue.amount() + 10, bill.getOutstandingAmount().amount());
+    }
+
+    @Test
+    void decrementOutstandingAmount() {
+        data.setOutstandingAmount(new OutstandingAmount(10));
+        OutstandingAmount initialValue = bill.getOutstandingAmount();
+
+        bill.decrementOutstandingAmount(5);
+
+        assertEquals(initialValue.amount() - 5,bill.getOutstandingAmount().amount());
+    }
+
+
 
 
 

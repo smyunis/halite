@@ -8,7 +8,6 @@ import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class OrderData {
     private OrderId id = new OrderId();
@@ -70,7 +69,7 @@ public class OrderData {
     public OrderData setOrderedCateringMenuItems(Map<CateringMenuItemId, Integer> orderedCateringMenuItems) {
         for (var quantity : orderedCateringMenuItems.values()) {
             if (quantity < 1)
-                throw new InvalidValueException(this.getClass().getName());
+                throw new InvalidValueException("Quantity must be at least 1");
         }
         this.orderedCateringMenuItems = orderedCateringMenuItems;
         return this;

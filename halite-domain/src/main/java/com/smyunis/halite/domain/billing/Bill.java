@@ -1,14 +1,13 @@
 package com.smyunis.halite.domain.billing;
 
 import com.smyunis.halite.domain.DomainEvent;
-import com.smyunis.halite.domain.DomainEventHandler;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
-import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Bill {
@@ -41,7 +40,7 @@ public class Bill {
     }
 
     public List<DomainEvent> getDomainEvents() {
-        return this.domainEvents;
+        return Collections.unmodifiableList(this.domainEvents);
     }
 
     public BillStatus getBillStatus() {
@@ -60,7 +59,15 @@ public class Bill {
         return data.getPayeeId();
     }
 
+    public void incrementOutstandingAmount(double addend) {
+        OutstandingAmount initialAmount = data.getOutstandingAmount();
+        data.setOutstandingAmount(new OutstandingAmount(initialAmount.amount() + addend));
+    }
 
-    //TODO Should know how to update its outstanding amount
 
+    public void decrementOutstandingAmount(double subtrahend) {
+        var initialAmount = data.getOutstandingAmount();
+        var newOutstandingAmount = initialAmount.amount() - subtrahend;
+        data.setOutstandingAmount(new OutstandingAmount(newOutstandingAmount));
+    }
 }

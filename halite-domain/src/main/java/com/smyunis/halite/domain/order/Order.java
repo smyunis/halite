@@ -1,7 +1,9 @@
 package com.smyunis.halite.domain.order;
 
+import com.smyunis.halite.domain.DomainEntityId;
 import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.billing.BillId;
+import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
@@ -79,4 +81,7 @@ public class Order {
         return data.getBillId();
     }
 
+    public CatererId getCatererId() {
+        return data.getCatererId();
+    }
 }

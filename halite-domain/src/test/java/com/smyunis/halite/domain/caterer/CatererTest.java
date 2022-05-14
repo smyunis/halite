@@ -3,7 +3,6 @@ package com.smyunis.halite.domain.caterer;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
 import com.smyunis.halite.domain.billing.MonetaryAmount;
-import com.smyunis.halite.domain.order.Order;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,10 +42,10 @@ public class CatererTest {
     void catererRecommendationMetricWillBeDeductedIfOrderIsRejected() {
         var orderData = new OrderData();
         orderData.setStatus(OrderStatus.REJECTED);
-        var rejectedOrder = new Order(orderData);
+
         int initialRecMetric = caterer.getRecommendationMetric();
 
-        caterer.handleOrderRejectedEvent(rejectedOrder);
+        caterer.handleOrderRejectedEvent();
 
         assertTrue(initialRecMetric > caterer.getRecommendationMetric());
         assertEquals(-1,caterer.getRecommendationMetric());

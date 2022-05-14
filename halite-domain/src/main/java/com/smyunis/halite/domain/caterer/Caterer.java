@@ -19,7 +19,7 @@ public class Caterer {
             data.setRecommendationMetric(data.getRecommendationMetric() + 5);
     }
 
-    public void handleOrderRejectedEvent(Order rejectedOrder) {
+    public void handleOrderRejectedEvent() {
         data.setRecommendationMetric(data.getRecommendationMetric() - 1);
     }
 }

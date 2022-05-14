@@ -6,6 +6,7 @@ import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemRemovedFromOrderEvent;
+import com.smyunis.halite.domain.order.domainevents.OrderRejectedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -125,14 +126,21 @@ public class OrderTest {
         assertEquals(itemId, ((CateringMenuItemRemovedFromOrderEvent) domainEvents.get(1)).getItemId());
 
     }
-
     @Test
-    void cannotSetQuantityOfOrderedItemToBeLessThanOne() {
+    void canNotSetQuantityOfOrderedItemToBeLessThanOne() {
         var m = new HashMap<CateringMenuItemId, Integer>();
         m.put(new CateringMenuItemId(), -1);
         assertThrows(InvalidValueException.class, () -> {
             data.setOrderedCateringMenuItems(m);
         });
+    }
+
+    @Test
+    void rejectingAnOrderRaisesOrderRejectedEvent() {
+        order.reject();
+
+        var events = order.getDomainEvents();
+        assertEquals(OrderRejectedEvent.class,events.get(0).getClass());
     }
 
 

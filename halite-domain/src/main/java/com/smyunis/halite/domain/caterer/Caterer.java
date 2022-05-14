@@ -1,7 +1,7 @@
 package com.smyunis.halite.domain.caterer;
 
-import com.smyunis.halite.domain.DomainEventHandler;
 import com.smyunis.halite.domain.billing.Bill;
+import com.smyunis.halite.domain.order.Order;
 
 public class Caterer {
     private final CatererData data;
@@ -19,13 +19,7 @@ public class Caterer {
             data.setRecommendationMetric(data.getRecommendationMetric() + 5);
     }
 
-
-//    public class BillSettledEventHandler implements DomainEventHandler<BillSettledEvent> {
-//        @Override
-//        public void handleEvent(BillSettledEvent billSettledEvent) {
-//            var settledBill = billSettledEvent.getBill();
-//            if (settledBill.getOutstandingAmount().amount() > 5000)
-//                data.setRecommendationMetric(data.getRecommendationMetric() + 5);
-//        }
-//    }
+    public void handleOrderRejectedEvent(Order rejectedOrder) {
+        data.setRecommendationMetric(data.getRecommendationMetric() - 1);
+    }
 }

@@ -7,37 +7,49 @@ import com.smyunis.halite.domain.billing.MonetaryAmount;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererData;
+import com.smyunis.halite.domain.caterer.CatererId;
+import com.smyunis.halite.domain.caterer.CatererRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class DomainEventManagerTest {
 
     @Test
     void canAssignHandlerToAnEvent() {
         var domainEventRegistrar = new DomainEventDispatcher();
-        domainEventRegistrar.assignHandler(BillSettledEvent.class, (DomainEvent event) -> {});
+        domainEventRegistrar.assignHandler(BillSettledEvent.class, (DomainEvent event) -> {
+        });
     }
 
     @Test
-    void assignAHandlerAndVerifyStateChangeForAShunt() {
+    void assignAHandlerAndVerifyStateChange() {
 
         var domainEventManager = new DomainEventDispatcher();
 
-        var caterer = new Caterer(new CatererData());
+        var catererId = new CatererId();
+        var caterer = new Caterer(new CatererData().setId(catererId));
         int rec = caterer.getRecommendationMetric();
 
-        domainEventManager.assignHandler(BillSettledEvent.class, caterer.new BillSettledEventHandler());
+        CatererRepository catererRepository = mock(CatererRepository.class);
+        when(catererRepository.get(catererId)).thenReturn(caterer);
 
-        Bill bill = new Bill(new BillData().setOutstandingAmount(new MonetaryAmount(230000)));
+        domainEventManager.assignHandler(BillSettledEvent.class,
+                new CatererBillSettledEventHandler(catererRepository));
+
+        Bill bill = new Bill(new BillData()
+                .setPayeeId(catererId)
+                .setOutstandingAmount(new MonetaryAmount(230000)));
         domainEventManager.registerDomainEvents(List.of(new BillSettledEvent(bill)));
 
         domainEventManager.publish();
 
-        assertEquals(5,caterer.getRecommendationMetric());
+        assertEquals(5, caterer.getRecommendationMetric());
     }
 
 
@@ -56,17 +68,22 @@ public class DomainEventManagerTest {
     }
 
     @Test
-    void publishARRegisteredEvent() {
+    void publishARegisteredEvent() {
         var domainEventManager = new DomainEventDispatcher();
         StringBuilder sb = new StringBuilder("A");
-        domainEventManager.assignHandler(BillSettledEvent.class,(event) -> {
+
+        var event = new DomainEvent() {
+
+        };
+
+        domainEventManager.assignHandler(event.getClass(), e -> {
             sb.append("B");
         });
-        domainEventManager.registerDomainEvents(List.of(new BillSettledEvent(null)));
+        domainEventManager.registerDomainEvents(List.of(event));
 
         domainEventManager.publish();
 
-        assertEquals("AB",sb.toString());
+        assertEquals("AB", sb.toString());
     }
 
 
@@ -74,18 +91,20 @@ public class DomainEventManagerTest {
     void canHandleMultipleHandlersForAnEvent() {
         var domainEventManager = new DomainEventDispatcher();
         StringBuilder sb = new StringBuilder("A");
-        domainEventManager.registerDomainEvents(List.of(new BillSettledEvent(new Bill(new BillData()
-                .setOutstandingAmount(new MonetaryAmount(7000))))));
-        domainEventManager.assignHandler(BillSettledEvent.class,(event) -> {
+        var event = new DomainEvent() {};
+
+
+        domainEventManager.registerDomainEvents(List.of(event));
+        domainEventManager.assignHandler(event.getClass(), (e) -> {
             sb.append("B");
         });
-        domainEventManager.assignHandler(BillSettledEvent.class,(event) -> {
+        domainEventManager.assignHandler(event.getClass(), (e) -> {
             sb.append("C");
         });
 
         domainEventManager.publish();
 
-        assertEquals("ABC",sb.toString());
+        assertEquals("ABC", sb.toString());
     }
 
     @Test
@@ -93,7 +112,7 @@ public class DomainEventManagerTest {
         var domainEventManager = new DomainEventDispatcher();
         StringBuilder sb = new StringBuilder("A");
         domainEventManager.registerDomainEvents(List.of(new BillSettledEvent(null)));
-        domainEventManager.assignHandler(BillSettledEvent.class,(event) -> {
+        domainEventManager.assignHandler(BillSettledEvent.class, (event) -> {
             sb.append("B");
         });
         domainEventManager.publish();
@@ -101,7 +120,7 @@ public class DomainEventManagerTest {
 
         domainEventManager.publish();   // should do nothing
 
-        assertEquals("AB",sb.toString());
-        assertNotEquals("ABB",sb.toString());
+        assertEquals("AB", sb.toString());
+        assertNotEquals("ABB", sb.toString());
     }
 }

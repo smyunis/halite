@@ -7,6 +7,7 @@ import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemRemovedFromOrderEvent;
+import com.smyunis.halite.domain.order.domainevents.OrderRejectedEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +56,7 @@ public class Order {
         if (isOrderRejected())
             throw new InvalidOperationException("Order is already rejected");
         data.setStatus(OrderStatus.REJECTED);
+        domainEvents.add(new OrderRejectedEvent(this));
     }
 
     public List<DomainEvent> getDomainEvents() {
@@ -76,4 +78,5 @@ public class Order {
     public BillId getBillId() {
         return data.getBillId();
     }
+
 }

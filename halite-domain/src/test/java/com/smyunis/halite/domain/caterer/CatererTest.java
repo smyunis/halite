@@ -3,11 +3,14 @@ package com.smyunis.halite.domain.caterer;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
 import com.smyunis.halite.domain.billing.MonetaryAmount;
-import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
+import com.smyunis.halite.domain.order.Order;
+import com.smyunis.halite.domain.order.OrderData;
+import com.smyunis.halite.domain.order.OrderStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CatererTest {
     private Caterer caterer;
@@ -34,6 +37,19 @@ public class CatererTest {
         handlerCaterer.handleBillSettledEvent(bill);
 
         assertEquals(5,handlerCaterer.getRecommendationMetric());
+    }
+
+    @Test
+    void catererRecommendationMetricWillBeDeductedIfOrderIsRejected() {
+        var orderData = new OrderData();
+        orderData.setStatus(OrderStatus.REJECTED);
+        var rejectedOrder = new Order(orderData);
+        int initialRecMetric = caterer.getRecommendationMetric();
+
+        caterer.handleOrderRejectedEvent(rejectedOrder);
+
+        assertTrue(initialRecMetric > caterer.getRecommendationMetric());
+        assertEquals(-1,caterer.getRecommendationMetric());
     }
 
 }

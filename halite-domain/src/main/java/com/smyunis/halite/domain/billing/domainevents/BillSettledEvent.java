@@ -4,7 +4,7 @@ import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.billing.Bill;
 
 public class BillSettledEvent extends DomainEvent {
-    private Bill bill;
+    private final Bill bill;
 
     public BillSettledEvent(Bill bill) {
         this.bill = bill;

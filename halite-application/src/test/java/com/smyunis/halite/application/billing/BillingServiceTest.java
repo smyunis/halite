@@ -13,12 +13,15 @@ public class BillingServiceTest {
     private BillRepository billRepository;
     private BillingService billingService;
     private BillId billId;
+    private BillData billData;
 
     @BeforeEach
     void setup() {
         billId = new BillId();
+        billData = new BillData();
         billRepository = mock(BillRepository.class);
-        billingService = new BillingService(new DomainEventDispatcher(),billRepository);
+        when(billRepository.get(billId)).thenReturn(new Bill(billData));
+        billingService = new BillingService(new DomainEventDispatcher(), billRepository);
     }
 
     @Test
@@ -31,20 +34,30 @@ public class BillingServiceTest {
 
         Bill settledBill = billRepository.get(billId);
         assertEquals(BillStatus.SETTLED, settledBill.getBillStatus());
-        assertEquals(BillSettledEvent.class,settledBill.getDomainEvents().get(0).getClass());
+        assertEquals(BillSettledEvent.class, settledBill.getDomainEvents().get(0).getClass());
     }
 
     @Test
     void cateringEventHostCanRequestCancellationOfABillPendingSettlement() {
-        var billData = new BillData()
-                .setId(billId)
+        billData.setId(billId)
                 .setBillStatus(BillStatus.PENDING_SETTLEMENT);
-        when(billRepository.get(billId)).thenReturn(new Bill(billData));
 
         billingService.requestBillCancellation(billId);
 
-        assertEquals(BillStatus.PENDING_CANCELLATION,billRepository.get(billId).getBillStatus());
+        assertEquals(BillStatus.PENDING_CANCELLATION, billRepository.get(billId).getBillStatus());
     }
+
+    @Test
+    void catererCanApproveCancellationOfABillPendingCancellation() {
+        billData.setId(billId)
+                .setBillStatus(BillStatus.PENDING_CANCELLATION);
+
+        billingService.approveBillCancellation(billId);
+
+        assertEquals(BillStatus.CANCELLED,billRepository.get(billId).getBillStatus());
+    }
+
+
 
 
 }

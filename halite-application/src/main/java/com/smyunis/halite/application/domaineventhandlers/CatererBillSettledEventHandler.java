@@ -15,12 +15,8 @@ public class CatererBillSettledEventHandler implements DomainEventHandler<BillSe
     public void handleEvent(BillSettledEvent domainEvent) {
         var settledBill = domainEvent.getBill();
         var payeeCatererId = settledBill.getPayeeId();
-
         Caterer payeeCaterer = catererRepository.get(payeeCatererId);
-
-        payeeCaterer.new BillSettledEventHandler()
-                .handleEvent(domainEvent);
-
+        payeeCaterer.handleBillSettledEvent(settledBill);
         catererRepository.save(payeeCaterer);
     }
 }

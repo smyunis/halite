@@ -26,6 +26,12 @@ public class BillingService {
         billRepository.save(bill);
     }
 
+    public void approveBillCancellation(BillId billId) {
+        Bill bill = billRepository.get(billId);
+        bill.approveCancellation();
+        billRepository.save(bill);
+    }
+
     private void publishDomainEvents(Bill bill) {
         domainEventManager.registerDomainEvents(bill.getDomainEvents());
         domainEventManager.publish();

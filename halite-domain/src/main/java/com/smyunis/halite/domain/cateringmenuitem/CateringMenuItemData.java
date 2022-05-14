@@ -1,6 +1,7 @@
 package com.smyunis.halite.domain.cateringmenuitem;
 
 import com.smyunis.halite.domain.cateringmenu.CateringMenuId;
+import com.smyunis.halite.domain.shared.MonetaryAmount;
 
 import java.net.URL;
 import java.util.List;
@@ -10,7 +11,7 @@ public class CateringMenuItemData {
     private CateringMenuItemId id = new CateringMenuItemId();
     private CateringMenuId cateringMenuId;
     private String name;
-    private double price;
+    private MonetaryAmount price;
     private Set<String> ingredients;
     private List<URL> images;
 
@@ -41,11 +42,11 @@ public class CateringMenuItemData {
         return this;
     }
 
-    public double getPrice() {
+    public MonetaryAmount getPrice() {
         return price;
     }
 
-    public CateringMenuItemData setPrice(double price) {
+    public CateringMenuItemData setPrice(MonetaryAmount price) {
         this.price = price;
         return this;
     }

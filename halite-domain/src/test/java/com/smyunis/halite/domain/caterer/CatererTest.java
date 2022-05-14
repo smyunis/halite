@@ -2,7 +2,7 @@ package com.smyunis.halite.domain.caterer;
 
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
-import com.smyunis.halite.domain.billing.MonetaryAmount;
+import com.smyunis.halite.domain.shared.MonetaryAmount;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderStatus;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,5 +1,7 @@
 package com.smyunis.halite.domain.cateringeventhost;
 
+import com.smyunis.halite.domain.shared.PhoneNumber;
+
 public class CateringEventHostData {
     private CateringEventHostId id = new CateringEventHostId();
     private String name;

@@ -8,6 +8,7 @@ import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
 import com.smyunis.halite.domain.order.Order;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
+import com.smyunis.halite.domain.shared.MonetaryAmount;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,7 +25,7 @@ public class BillCateringMenuItemAddedToOrderEventHandlerTest {
         when(cateringMenuItemRepository.get(cateringMenuItemId))
                 .thenReturn(new CateringMenuItem(new CateringMenuItemData()
                         .setId(cateringMenuItemId)
-                        .setPrice(100)));
+                        .setPrice(new MonetaryAmount(100))));
         var eventHandler = new BillCateringMenuItemAddedToOrderEventHandler(cateringMenuItemRepository, billRepository);
         var order = new Order(new OrderData().setBillId(billId));
         var event = new CateringMenuItemAddedToOrderEvent(cateringMenuItemId, 5, order);

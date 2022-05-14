@@ -3,7 +3,7 @@ package com.smyunis.halite.domain.billing;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
-import com.smyunis.halite.domain.order.OrderId;
+import com.smyunis.halite.domain.shared.MonetaryAmount;
 
 import java.time.LocalDateTime;
 

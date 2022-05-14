@@ -1,4 +1,4 @@
-package com.smyunis.halite.domain.billing;
+package com.smyunis.halite.domain.shared;
 
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 

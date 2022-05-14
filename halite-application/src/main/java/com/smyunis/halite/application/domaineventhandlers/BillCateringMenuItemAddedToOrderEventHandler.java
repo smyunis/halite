@@ -3,7 +3,7 @@ package com.smyunis.halite.application.domaineventhandlers;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillId;
 import com.smyunis.halite.domain.billing.BillRepository;
-import com.smyunis.halite.domain.billing.MonetaryAmount;
+import com.smyunis.halite.domain.shared.MonetaryAmount;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItem;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
@@ -35,7 +35,7 @@ public class BillCateringMenuItemAddedToOrderEventHandler implements DomainEvent
         CateringMenuItemId addedItemId = event.getAddedItemId();
         Integer addedQuantity = event.getAddedItemQuantity();
         CateringMenuItem addedItem = cateringMenuItemRepository.get(addedItemId);
-        billToBeUpdated.incrementOutstandingAmount(new MonetaryAmount(addedItem.getPrice() * addedQuantity));
+        billToBeUpdated.incrementOutstandingAmount(new MonetaryAmount(addedItem.getPrice().amount() * addedQuantity));
     }
 
     private Bill getBillToBeUpdated(Order orderWhoHadAnItemAdded) {

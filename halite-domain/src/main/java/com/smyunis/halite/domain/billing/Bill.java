@@ -4,6 +4,7 @@ import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
+import com.smyunis.halite.domain.shared.MonetaryAmount;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

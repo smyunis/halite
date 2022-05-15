@@ -22,4 +22,8 @@ public class Caterer {
     public void handleOrderRejectedEvent() {
         data.setRecommendationMetric(data.getRecommendationMetric() - 1);
     }
+
+    public void handleFavorableReviewGivenEvent() {
+        data.setRecommendationMetric(data.getRecommendationMetric() + 2);
+    }
 }

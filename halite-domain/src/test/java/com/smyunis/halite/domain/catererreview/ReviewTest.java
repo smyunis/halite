@@ -1,5 +1,6 @@
 package com.smyunis.halite.domain.catererreview;
 
+import com.smyunis.halite.domain.catererreview.domainevents.FavorableReviewGivenEvent;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,35 +9,43 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ReviewTest {
     private Review review;
-    private ReviewData reviewData;
+    private ReviewData data;
 
     @BeforeEach
     void setup() {
-        reviewData = new ReviewData();
-        review = new Review(reviewData);
+        data = new ReviewData();
+        review = new Review(data);
     }
 
     @Test
     void ratingIsBetween1and5() {
         assertThrows(InvalidValueException.class,() -> {
-           reviewData.setRating(new Rating(6));
+           data.setRating(new Rating(6));
         });
         assertThrows(InvalidValueException.class,() -> {
-            reviewData.setRating(new Rating(-1));
+            data.setRating(new Rating(-1));
         });
     }
 
     @Test
     void isFavorableBasedOnRatingValue() {
-        reviewData.setRating(new Rating(5));
+        data.setRating(new Rating(5));
         assertTrue(review.isFavorable());
     }
 
     @Test
     void isUnfavorableBasedOnRatingValue() {
-        reviewData.setRating(new Rating(1));
+        data.setRating(new Rating(1));
         assertFalse(review.isFavorable());
     }
 
+    @Test
+    void createANewReviewUsingReviewService() {
+        data.setRating(new Rating(5));
+        ReviewDomainService reviewDomainService = new ReviewDomainService();
+        Review rev = reviewDomainService.createReview(data);
+
+        assertEquals(FavorableReviewGivenEvent.class,rev.getDomainEvents().get(0).getClass());
+    }
 
 }

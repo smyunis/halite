@@ -3,7 +3,7 @@ package com.smyunis.halite.domain.cateringeventhost;
 import com.smyunis.halite.domain.DomainEntityId;
 
 public class CateringEventHostId extends DomainEntityId {
-    CateringEventHostId() {
+    public CateringEventHostId() {
         super();
     }
 

@@ -2,6 +2,9 @@ package com.smyunis.halite.domain.caterer;
 
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
+import com.smyunis.halite.domain.catererreview.Rating;
+import com.smyunis.halite.domain.catererreview.Review;
+import com.smyunis.halite.domain.catererreview.ReviewData;
 import com.smyunis.halite.domain.shared.MonetaryAmount;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderStatus;
@@ -49,6 +52,20 @@ public class CatererTest {
 
         assertTrue(initialRecMetric > caterer.getRecommendationMetric());
         assertEquals(-1,caterer.getRecommendationMetric());
+    }
+
+    @Test
+    void catererRecommendationMetricWillBeIncreasedForAFavorableReview() {
+        var reviewData = new ReviewData();
+        reviewData.setRating(new Rating(5));
+
+        int initialRecMetric = caterer.getRecommendationMetric();
+
+        caterer.handleFavorableReviewGivenEvent();
+
+        assertTrue(initialRecMetric < caterer.getRecommendationMetric());
+        assertEquals(2,caterer.getRecommendationMetric());
+
     }
 
 }

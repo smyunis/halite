@@ -39,13 +39,6 @@ public class ReviewTest {
         assertFalse(review.isFavorable());
     }
 
-    @Test
-    void createANewReviewUsingReviewService() {
-        data.setRating(new Rating(5));
-        ReviewDomainService reviewDomainService = new ReviewDomainService();
-        Review rev = reviewDomainService.createReview(data);
 
-        assertEquals(FavorableReviewGivenEvent.class,rev.getDomainEvents().get(0).getClass());
-    }
 
 }

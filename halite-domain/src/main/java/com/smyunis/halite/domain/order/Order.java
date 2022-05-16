@@ -1,6 +1,5 @@
 package com.smyunis.halite.domain.order;
 
-import com.smyunis.halite.domain.DomainEntityId;
 import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.billing.BillId;
 import com.smyunis.halite.domain.caterer.CatererId;
@@ -30,10 +29,14 @@ public class Order {
         if (!isValidMenuItemQuantity(quantity))
             throw new InvalidValueException("Invalid catering menu item quantity");
 
-        orderedItems.computeIfPresent(itemId, (cateringMenuItemId, prevQuantity) -> prevQuantity + quantity);
-        orderedItems.putIfAbsent(itemId, quantity);
+        addMenuItem(itemId, quantity, orderedItems);
 
         domainEvents.add(new CateringMenuItemAddedToOrderEvent(itemId, quantity, this));
+    }
+
+    private void addMenuItem(CateringMenuItemId itemId, int quantity, Map<CateringMenuItemId, Integer> orderedItems) {
+        orderedItems.computeIfPresent(itemId, (cateringMenuItemId, prevQuantity) -> prevQuantity + quantity);
+        orderedItems.putIfAbsent(itemId, quantity);
     }
 
 

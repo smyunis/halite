@@ -1,15 +1,17 @@
 package com.smyunis.halite.domain.cateringmenuitem;
 
+import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.cateringmenu.CateringMenuId;
 import com.smyunis.halite.domain.shared.MonetaryAmount;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 public class CateringMenuItemData {
     private CateringMenuItemId id = new CateringMenuItemId();
-    private CateringMenuId cateringMenuId;
+    private CatererId catererId;
     private String name;
     private MonetaryAmount price;
     private Set<String> ingredients;
@@ -21,15 +23,6 @@ public class CateringMenuItemData {
 
     public CateringMenuItemData setId(CateringMenuItemId id) {
         this.id = id;
-        return this;
-    }
-
-    public CateringMenuId getCateringMenuId() {
-        return cateringMenuId;
-    }
-
-    public CateringMenuItemData setCateringMenuId(CateringMenuId cateringMenuId) {
-        this.cateringMenuId = cateringMenuId;
         return this;
     }
 
@@ -52,7 +45,7 @@ public class CateringMenuItemData {
     }
 
     public Set<String> getIngredients() {
-        return ingredients;
+        return Collections.unmodifiableSet(ingredients);
     }
 
     public CateringMenuItemData setIngredients(Set<String> ingredients) {
@@ -61,11 +54,20 @@ public class CateringMenuItemData {
     }
 
     public List<URL> getImages() {
-        return images;
+        return Collections.unmodifiableList(images);
     }
 
     public CateringMenuItemData setImages(List<URL> images) {
         this.images = images;
+        return this;
+    }
+
+    public CatererId getCatererId() {
+        return catererId;
+    }
+
+    public CateringMenuItemData setCatererId(CatererId catererId) {
+        this.catererId = catererId;
         return this;
     }
 }

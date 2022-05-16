@@ -34,6 +34,6 @@ public class ReviewServiceTest {
 
         reviewService.addReview(reviewPayload);
 
-        verify(reviewRepository).save(any());
+        verify(reviewRepository).save(any(Review.class));
     }
 }

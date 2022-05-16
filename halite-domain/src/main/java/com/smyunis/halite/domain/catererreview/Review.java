@@ -26,10 +26,11 @@ public class Review {
         return Collections.unmodifiableList(domainEvents);
     }
 
-    public void asNewReview() {
+    public Review asNewReview() {
         if (this.isFavorable()) {
             domainEvents.add(new FavorableReviewGivenEvent(this));
         }
+        return this;
     }
 
     public CatererId getReviewedCatererId() {

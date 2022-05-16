@@ -3,8 +3,8 @@ package com.smyunis.halite.application.billing;
 import com.smyunis.halite.application.domaineventhandlers.DomainEventHandler;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
-import com.smyunis.halite.domain.billing.BillId;
 import com.smyunis.halite.domain.billing.BillRepository;
+import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
 import com.smyunis.halite.domain.order.Order;
 import com.smyunis.halite.domain.order.domainevents.OrderFulfilledEvent;
@@ -17,7 +17,8 @@ public class BillOrderFulfilledEventHandler implements DomainEventHandler<OrderF
     private final BillRepository billRepository;
     private final CateringMenuItemRepository cateringMenuItemRepository;
 
-    public BillOrderFulfilledEventHandler(BillRepository billRepository, CateringMenuItemRepository cateringMenuItemRepository) {
+    public BillOrderFulfilledEventHandler(BillRepository billRepository,
+                                          CateringMenuItemRepository cateringMenuItemRepository) {
         this.billRepository = billRepository;
         this.cateringMenuItemRepository = cateringMenuItemRepository;
     }
@@ -25,22 +26,32 @@ public class BillOrderFulfilledEventHandler implements DomainEventHandler<OrderF
     @Override
     public void handleEvent(OrderFulfilledEvent domainEvent) {
         Order fulfilledOrder = domainEvent.getFulfilledOrder();
-        var orderedCateringMenuItems = fulfilledOrder.getOrderedCateringMenuItems();
+        Bill bill = createBill(fulfilledOrder);
+        billRepository.save(bill);
+    }
 
-        double orderedItemsPriceTotal = orderedCateringMenuItems.keySet().stream()
+    private Bill createBill(Order fulfilledOrder) {
+        double orderedItemsTotalPrice = getOrderedItemsTotalPrice(fulfilledOrder);
+        BillData billData = new BillData()
+                .setPayeeId(fulfilledOrder.getCatererId())
+                .setPayerId(fulfilledOrder.getCateringEventHostId())
+                .setOutstandingAmount(new MonetaryAmount(orderedItemsTotalPrice));
+        return new Bill(billData);
+    }
+
+    private double getOrderedItemsTotalPrice(Order fulfilledOrder) {
+        var orderedCateringMenuItems = fulfilledOrder.getOrderedCateringMenuItems();
+        return orderedCateringMenuItems.keySet().stream()
                 .reduce(0.0, (acc, itemId) -> {
-                    var orderedMenuItem = cateringMenuItemRepository.get(itemId);
-                    var price = orderedMenuItem.getPrice();
-                    var quantity = orderedCateringMenuItems.get(itemId);
-                    var priceByQuantity = price.amount() * quantity;
+                    double priceByQuantity = getMenuItemPriceByQuantity(orderedCateringMenuItems, itemId);
                     return acc + priceByQuantity;
                 }, Double::sum);
+    }
 
-        BillData billData = new BillData();
-        billData.setPayeeId(fulfilledOrder.getCatererId())
-                .setPayerId(fulfilledOrder.getCateringEventHostId())
-                .setOutstandingAmount(new MonetaryAmount(orderedItemsPriceTotal));
-        Bill bill = new Bill(billData);
-        billRepository.save(bill);
+    private double getMenuItemPriceByQuantity(Map<CateringMenuItemId, Integer> orderedCateringMenuItems, CateringMenuItemId itemId) {
+        var orderedMenuItem = cateringMenuItemRepository.get(itemId);
+        var price = orderedMenuItem.getPrice();
+        var quantity = orderedCateringMenuItems.get(itemId);
+        return price.amount() * quantity;
     }
 }

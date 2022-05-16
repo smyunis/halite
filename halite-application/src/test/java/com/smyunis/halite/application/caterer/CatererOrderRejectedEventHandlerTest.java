@@ -1,5 +1,7 @@
-package com.smyunis.halite.application.domaineventhandlers;
+package com.smyunis.halite.application.caterer;
 
+import com.smyunis.halite.application.caterer.CatererOrderRejectedEventHandler;
+import com.smyunis.halite.application.domaineventhandlers.DomainEventDispatcher;
 import com.smyunis.halite.application.order.OrderService;
 import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererData;

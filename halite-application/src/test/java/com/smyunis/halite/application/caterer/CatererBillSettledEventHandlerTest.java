@@ -1,5 +1,6 @@
-package com.smyunis.halite.application.domaineventhandlers;
+package com.smyunis.halite.application.caterer;
 
+import com.smyunis.halite.application.caterer.CatererBillSettledEventHandler;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
 import com.smyunis.halite.domain.shared.MonetaryAmount;

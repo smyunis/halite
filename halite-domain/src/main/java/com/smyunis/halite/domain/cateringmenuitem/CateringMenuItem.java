@@ -26,7 +26,7 @@ public class CateringMenuItem {
     }
 
     public CateringMenuItem asRemovedMenuItem() {
-        domainEvents.add(new CateringMenuItemRemovedEvent());
+        domainEvents.add(new CateringMenuItemRemovedEvent(data.getId()));
         return this;
     }
 }

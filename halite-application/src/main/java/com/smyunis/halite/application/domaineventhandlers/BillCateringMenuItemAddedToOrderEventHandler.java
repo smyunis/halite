@@ -32,10 +32,16 @@ public class BillCateringMenuItemAddedToOrderEventHandler implements DomainEvent
     }
 
     private void incrementOutstandingBillAmount(CateringMenuItemAddedToOrderEvent event, Bill billToBeUpdated) {
+        MonetaryAmount amountToIncrement = getAmountToIncrement(event);
+        billToBeUpdated.incrementOutstandingAmount(amountToIncrement);
+        billRepository.save(billToBeUpdated);
+    }
+
+    private MonetaryAmount getAmountToIncrement(CateringMenuItemAddedToOrderEvent event) {
         CateringMenuItemId addedItemId = event.getAddedItemId();
         Integer addedQuantity = event.getAddedItemQuantity();
         CateringMenuItem addedItem = cateringMenuItemRepository.get(addedItemId);
-        billToBeUpdated.incrementOutstandingAmount(new MonetaryAmount(addedItem.getPrice().amount() * addedQuantity));
+        return new MonetaryAmount(addedItem.getPrice().amount() * addedQuantity);
     }
 
     private Bill getBillToBeUpdated(Order orderWhoHadAnItemAdded) {

@@ -23,15 +23,15 @@ public class Order {
         this.data = data;
     }
 
-    public void addCateringMenuItem(CateringMenuItemId itemId, int quantity) {
+    public void addCateringMenuItem(CateringMenuItemId itemId, int addedQuantity) {
         var orderedItems = data.getOrderedCateringMenuItems();
 
-        if (!isValidMenuItemQuantity(quantity))
+        if (!isValidMenuItemQuantity(addedQuantity))
             throw new InvalidValueException("Invalid catering menu item quantity");
 
-        addMenuItem(itemId, quantity, orderedItems);
+        addMenuItem(itemId, addedQuantity, orderedItems);
 
-        domainEvents.add(new CateringMenuItemAddedToOrderEvent(itemId, quantity, this));
+        domainEvents.add(new CateringMenuItemAddedToOrderEvent(itemId, addedQuantity, this));
     }
 
     private void addMenuItem(CateringMenuItemId itemId, int quantity, Map<CateringMenuItemId, Integer> orderedItems) {
@@ -44,10 +44,17 @@ public class Order {
         return Collections.unmodifiableMap(data.getOrderedCateringMenuItems());
     }
 
-    public void removeCateringMenuItem(CateringMenuItemId itemId) {
+    public void removeCateringMenuItem(CateringMenuItemId itemId, int quantityToBeRemoved) {
         var orderedCateringMenuItems = data.getOrderedCateringMenuItems();
-        domainEvents.add(new CateringMenuItemRemovedFromOrderEvent(itemId, orderedCateringMenuItems.get(itemId)));
-        orderedCateringMenuItems.remove(itemId);
+        removeMenuItems(itemId, quantityToBeRemoved, orderedCateringMenuItems);
+        domainEvents.add(new CateringMenuItemRemovedFromOrderEvent(itemId, quantityToBeRemoved, this));
+    }
+
+    private void removeMenuItems(CateringMenuItemId itemId, int quantityToBeRemoved, Map<CateringMenuItemId, Integer> orderedCateringMenuItems) {
+        if(orderedCateringMenuItems.get(itemId) > quantityToBeRemoved)
+            orderedCateringMenuItems.computeIfPresent(itemId,(id, prevQuantity) -> prevQuantity - quantityToBeRemoved);
+        else
+            orderedCateringMenuItems.remove(itemId);
     }
 
 

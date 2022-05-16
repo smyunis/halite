@@ -9,12 +9,9 @@ import com.smyunis.halite.domain.order.domainevents.CateringMenuItemRemovedFromO
 import com.smyunis.halite.domain.order.domainevents.OrderRejectedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,7 +43,7 @@ public class OrderTest {
         CateringMenuItemId cateringMenuItemId = new CateringMenuItemId();
         order.addCateringMenuItem(cateringMenuItemId, 2);
 
-        order.removeCateringMenuItem(cateringMenuItemId);
+        order.removeCateringMenuItem(cateringMenuItemId, 2);
 
         assertFalse(order.getOrderedCateringMenuItems().containsKey(cateringMenuItemId));
         assertTrue(order.getOrderedCateringMenuItems().isEmpty());
@@ -118,14 +115,14 @@ public class OrderTest {
         CateringMenuItemId itemId = new CateringMenuItemId();
         order.addCateringMenuItem(itemId, 1);
 
-        order.removeCateringMenuItem(itemId);
+        order.removeCateringMenuItem(itemId, 1);
 
         List<DomainEvent> domainEvents = order.getDomainEvents();
 
         assertEquals(CateringMenuItemRemovedFromOrderEvent.class, domainEvents.get(1).getClass());
         assertEquals(itemId, ((CateringMenuItemRemovedFromOrderEvent) domainEvents.get(1)).getItemId());
-
     }
+
     @Test
     void canNotSetQuantityOfOrderedItemToBeLessThanOne() {
         var m = new HashMap<CateringMenuItemId, Integer>();
@@ -140,7 +137,26 @@ public class OrderTest {
         order.reject();
 
         var events = order.getDomainEvents();
-        assertEquals(OrderRejectedEvent.class,events.get(0).getClass());
+        assertEquals(OrderRejectedEvent.class, events.get(0).getClass());
+    }
+
+    @Test
+    void removingAMenuItemWithQualityEqualToAvailableWillRemoveItem() {
+        CateringMenuItemId itemId = new CateringMenuItemId();
+        order.addCateringMenuItem(itemId,10);
+        order.removeCateringMenuItem(itemId,10);
+
+        assertNull(order.getOrderedCateringMenuItems().get(itemId));
+        assertFalse(order.getOrderedCateringMenuItems().containsKey(itemId));
+    }
+
+    @Test
+    void removingAMenuItemWithQualityLessThanAvailableWillDecreaseRemainingQuantity() {
+        CateringMenuItemId itemId = new CateringMenuItemId();
+        order.addCateringMenuItem(itemId,10);
+        order.removeCateringMenuItem(itemId,5);
+
+        assertEquals(5,order.getOrderedCateringMenuItems().get(itemId));
     }
 
 

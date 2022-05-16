@@ -40,6 +40,7 @@ public class OrderServiceTest {
         });
     }
 
+
     @Test
     void catererCanRejectOrderOnce() {
         orderService.rejectOrder(orderId);
@@ -58,5 +59,13 @@ public class OrderServiceTest {
 
         verify(eventDispatcher).registerDomainEvents(anyList());
         verify(eventDispatcher).publish();
+        verify(orderRepository).save(any(Order.class));
+    }
+
+    @Test
+    void createANewOrder() {
+        orderService.createOrder(orderData);
+
+        verify(orderRepository).save(any(Order.class));
     }
 }

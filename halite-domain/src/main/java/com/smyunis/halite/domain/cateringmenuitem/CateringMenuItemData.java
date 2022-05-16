@@ -1,7 +1,6 @@
 package com.smyunis.halite.domain.cateringmenuitem;
 
 import com.smyunis.halite.domain.caterer.CatererId;
-import com.smyunis.halite.domain.cateringmenu.CateringMenuId;
 import com.smyunis.halite.domain.shared.MonetaryAmount;
 
 import java.net.URL;

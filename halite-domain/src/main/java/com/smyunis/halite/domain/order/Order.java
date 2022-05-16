@@ -8,6 +8,7 @@ import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemRemovedFromOrderEvent;
+import com.smyunis.halite.domain.order.domainevents.OrderFulfilledEvent;
 import com.smyunis.halite.domain.order.domainevents.OrderRejectedEvent;
 
 import java.util.ArrayList;
@@ -51,24 +52,52 @@ public class Order {
     }
 
     private void removeMenuItems(CateringMenuItemId itemId, int quantityToBeRemoved, Map<CateringMenuItemId, Integer> orderedCateringMenuItems) {
-        if(orderedCateringMenuItems.get(itemId) > quantityToBeRemoved)
-            orderedCateringMenuItems.computeIfPresent(itemId,(id, prevQuantity) -> prevQuantity - quantityToBeRemoved);
+        if (orderedCateringMenuItems.get(itemId) > quantityToBeRemoved)
+            orderedCateringMenuItems.computeIfPresent(itemId, (id, prevQuantity) -> prevQuantity - quantityToBeRemoved);
         else
             orderedCateringMenuItems.remove(itemId);
     }
 
 
     public void accept() {
-        if (orderCanNotBeAccepted())
-            throw new InvalidOperationException("Order is not pending acceptance");
+        assertOrderIsPendingAcceptance();
         data.setStatus(OrderStatus.ACCEPTED);
     }
 
+    private void assertOrderIsPendingAcceptance() {
+        if (orderIsNotPendingAcceptance())
+            throw new InvalidOperationException("Order is not pending acceptance");
+    }
+
     public void reject() {
-        if (isOrderRejected())
-            throw new InvalidOperationException("Order is already rejected");
+        assertOrderIsNotRejected();
         data.setStatus(OrderStatus.REJECTED);
         domainEvents.add(new OrderRejectedEvent(this));
+    }
+
+    private void assertOrderIsNotRejected() {
+        if (isOrderRejected())
+            throw new InvalidOperationException("Order is already rejected");
+    }
+
+    public void fulfill() {
+        assertOrderIsAccepted();
+        data.setStatus(OrderStatus.FULFILLED);
+        domainEvents.add(new OrderFulfilledEvent(this));
+    }
+
+    public void cancel() {
+        assertOrderIsAccepted();
+        data.setStatus(OrderStatus.CANCELLED);
+    }
+
+    private void assertOrderIsAccepted() {
+        if (isOrderNotAccepted())
+            throw new InvalidOperationException("Unaccepted Orders Can Not be Fulfilled");
+    }
+
+    private boolean isOrderNotAccepted() {
+        return data.getStatus() != OrderStatus.ACCEPTED;
     }
 
     public List<DomainEvent> getDomainEvents() {
@@ -83,7 +112,7 @@ public class Order {
         return data.getStatus() == OrderStatus.REJECTED;
     }
 
-    private boolean orderCanNotBeAccepted() {
+    private boolean orderIsNotPendingAcceptance() {
         return data.getStatus() != OrderStatus.PENDING_ACCEPTANCE;
     }
 
@@ -94,4 +123,6 @@ public class Order {
     public CatererId getCatererId() {
         return data.getCatererId();
     }
+
+
 }

@@ -1,6 +1,5 @@
 package com.smyunis.halite.domain.cateringmenuitem;
 
-
 import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.cateringmenuitem.domainevents.CateringMenuItemRemovedEvent;
 import com.smyunis.halite.domain.shared.MonetaryAmount;

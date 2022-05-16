@@ -6,6 +6,7 @@ import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemRemovedFromOrderEvent;
+import com.smyunis.halite.domain.order.domainevents.OrderFulfilledEvent;
 import com.smyunis.halite.domain.order.domainevents.OrderRejectedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -157,6 +158,34 @@ public class OrderTest {
         order.removeCateringMenuItem(itemId,5);
 
         assertEquals(5,order.getOrderedCateringMenuItems().get(itemId));
+    }
+
+    @Test
+    void acceptedOrderCanGetFulfilled() {
+        order.accept();
+        order.fulfill();
+        assertThrows(InvalidOperationException.class,() -> {
+            order.fulfill();
+        });
+    }
+
+    @Test
+    void fulfillingAnOrderRaisesOrderFulfilledEvent(){
+        order.accept();
+        order.fulfill();
+
+        var events = order.getDomainEvents();
+        assertEquals(OrderFulfilledEvent.class,events.get(0).getClass());
+    }
+
+    @Test
+    void canCancelAnAcceptedOrder() {
+        order.accept();
+        order.cancel();
+
+        assertThrows(InvalidOperationException.class,() -> {
+            order.cancel();
+        });
     }
 
 

@@ -2,6 +2,7 @@ package com.smyunis.halite.application.order;
 
 import com.smyunis.halite.application.domaineventhandlers.DomainEventDispatcher;
 import com.smyunis.halite.domain.order.Order;
+import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderId;
 import com.smyunis.halite.domain.order.OrderRepository;
 
@@ -30,5 +31,10 @@ public class OrderService {
     private void dispatchEvents(Order order) {
         eventDispatcher.registerDomainEvents(order.getDomainEvents());
         eventDispatcher.publish();
+    }
+
+    public void createOrder(OrderData orderData) {
+        Order order = new Order(orderData);
+        orderRepository.save(order);
     }
 }

@@ -188,5 +188,12 @@ public class OrderTest {
         });
     }
 
+    @Test
+    void canCancelAnOrderPendingAcceptance() {
+       assertDoesNotThrow(() -> {
+           order.cancel();
+       });
+    }
+
 
 }

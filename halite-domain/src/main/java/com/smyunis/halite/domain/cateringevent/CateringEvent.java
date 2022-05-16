@@ -1,72 +1,21 @@
 package com.smyunis.halite.domain.cateringevent;
 
-import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
-import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
-
-import java.time.LocalDateTime;
+import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 
 public class CateringEvent {
-    private CateringEventId id = new CateringEventId();
-    private CateringEventHostId cateringEventHostId;
-    private NumberOfAttendees expectedNumberOfAttendees;
-    private Venue venue;
-    private CateringEventStatus status = CateringEventStatus.Open;
-    private String description;
-    private LocalDateTime eventStartTime;
-    private LocalDateTime eventEndTime;
+    private final CateringEventData data;
 
-    public CateringEventId getId() {
-        return id;
+    public CateringEvent(CateringEventData data) {
+        this.data = data;
     }
 
-    void setId(CateringEventId id) {
-        this.id = id;
+    public void closeCateringEvent() {
+        assertEventIsOpen();
+        data.setStatus(CateringEventStatus.CLOSED);
     }
 
-    public NumberOfAttendees getExpectedNumberOfAttendees() {
-        return expectedNumberOfAttendees;
+    private void assertEventIsOpen() {
+        if(data.getStatus() != CateringEventStatus.OPEN)
+            throw new InvalidOperationException("Can Not Close an Event which was not Open");
     }
-
-    void setExpectedNumberOfAttendees(NumberOfAttendees expectedNumberOfAttendees) {
-        this.expectedNumberOfAttendees = expectedNumberOfAttendees;
-    }
-
-    public Venue getVenue() {
-        return venue;
-    }
-
-    void setVenue(Venue venue) {
-        this.venue = venue;
-    }
-
-    public CateringEventStatus getStatus() {
-        return status;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getEventStartTime() {
-        return eventStartTime;
-    }
-
-    void setEventStartTime(LocalDateTime eventStartTime) {
-        this.eventStartTime = eventStartTime;
-    }
-
-    public LocalDateTime getEventEndTime() {
-        return eventEndTime;
-    }
-
-    void setEventEndTime(LocalDateTime eventEndTime) {
-        if (this.eventStartTime.isAfter(eventEndTime))
-            throw new InvalidValueException("End Time Can Not be before Start Time");
-        this.eventEndTime = eventEndTime;
-    }
-
 }

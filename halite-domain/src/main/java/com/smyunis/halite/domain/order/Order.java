@@ -88,16 +88,22 @@ public class Order {
     }
 
     public void cancel() {
-        assertOrderIsAccepted();
+        assertOrderIsAcceptedOrPendingAcceptance();
         data.setStatus(OrderStatus.CANCELLED);
     }
 
+    private void assertOrderIsAcceptedOrPendingAcceptance() {
+        if (!(data.getStatus() == OrderStatus.PENDING_ACCEPTANCE || data.getStatus() == OrderStatus.ACCEPTED))
+            throw new InvalidOperationException("Order is not accepted nor pending acceptance");
+    }
+
+
     private void assertOrderIsAccepted() {
-        if (isOrderNotAccepted())
+        if (orderIsNotAccepted())
             throw new InvalidOperationException("Unaccepted Orders Can Not be Fulfilled");
     }
 
-    private boolean isOrderNotAccepted() {
+    private boolean orderIsNotAccepted() {
         return data.getStatus() != OrderStatus.ACCEPTED;
     }
 

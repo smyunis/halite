@@ -24,17 +24,30 @@ public class OrderService {
     public void rejectOrder(OrderId orderId) {
         Order order = orderRepository.get(orderId);
         order.reject();
-        dispatchEvents(order);
         orderRepository.save(order);
-    }
-
-    private void dispatchEvents(Order order) {
-        eventDispatcher.registerDomainEvents(order.getDomainEvents());
-        eventDispatcher.publish();
+        dispatchEvents(order);
     }
 
     public void createOrder(OrderData orderData) {
         Order order = new Order(orderData);
         orderRepository.save(order);
+    }
+
+    public void cancelOrder(OrderId orderId) {
+        Order orderToBeCanceled = orderRepository.get(orderId);
+        orderToBeCanceled.cancel();
+        orderRepository.save(orderToBeCanceled);
+    }
+
+    public void fulfill(OrderId orderId) {
+        Order orderToBeFulfilled = orderRepository.get(orderId);
+        orderToBeFulfilled.fulfill();
+        orderRepository.save(orderToBeFulfilled);
+        dispatchEvents(orderToBeFulfilled);
+    }
+
+    private void dispatchEvents(Order order) {
+        eventDispatcher.registerDomainEvents(order.getDomainEvents());
+        eventDispatcher.publish();
     }
 }

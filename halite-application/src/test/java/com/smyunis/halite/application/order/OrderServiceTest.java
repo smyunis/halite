@@ -68,4 +68,25 @@ public class OrderServiceTest {
 
         verify(orderRepository).save(any(Order.class));
     }
+
+    @Test
+    void cancelAnOrder() {
+        orderService.cancelOrder(orderId);
+
+        verify(orderRepository).get(orderId);
+        verify(orderRepository).save(any(Order.class));
+    }
+
+    @Test
+    void fulfillAnOrder() {
+        orderData.setStatus(OrderStatus.ACCEPTED);
+
+        orderService.fulfill(orderId);
+
+        verify(orderRepository).get(orderId);
+        verify(orderRepository).save(any(Order.class));
+        verify(eventDispatcher).registerDomainEvents(anyList());
+        verify(eventDispatcher).publish();
+    }
+
 }

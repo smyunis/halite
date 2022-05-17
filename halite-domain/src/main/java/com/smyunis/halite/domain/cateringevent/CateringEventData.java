@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 public class CateringEventData {
     private CateringEventId id = new CateringEventId();
     private CateringEventHostId cateringEventHostId;
+    private CateringEventStatus status = CateringEventStatus.OPEN;
     private NumberOfAttendees expectedNumberOfAttendees;
     private Venue venue;
-    private CateringEventStatus status = CateringEventStatus.OPEN;
     private String description;
     private LocalDateTime eventStartTime;
     private LocalDateTime eventEndTime;

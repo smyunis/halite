@@ -1,5 +1,6 @@
 package com.smyunis.halite.domain.cateringevent;
 
+import com.smyunis.halite.domain.cateringevent.domainevents.CateringEventClosedEvent;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,7 +68,9 @@ public class CateringEventTest {
     void closingAnEventRaisesCateringEventClosedEvent() {
         cateringEvent.closeCateringEvent();
 
-        assertFalse(true);
+        var events = cateringEvent.getDomainEvents();
+
+        assertEquals(CateringEventClosedEvent.class,events.get(0).getClass());
     }
 
 

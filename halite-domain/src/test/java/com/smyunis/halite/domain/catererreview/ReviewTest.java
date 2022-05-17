@@ -1,6 +1,5 @@
 package com.smyunis.halite.domain.catererreview;
 
-import com.smyunis.halite.domain.catererreview.domainevents.FavorableReviewGivenEvent;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

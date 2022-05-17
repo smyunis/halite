@@ -1,6 +1,5 @@
 package com.smyunis.halite.domain.catererreview;
 
-import com.smyunis.halite.domain.DomainEntityRepository;
 import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.catererreview.domainevents.FavorableReviewGivenEvent;

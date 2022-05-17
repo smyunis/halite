@@ -3,11 +3,10 @@ package com.smyunis.halite.domain.caterer;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
 import com.smyunis.halite.domain.catererreview.Rating;
-import com.smyunis.halite.domain.catererreview.Review;
 import com.smyunis.halite.domain.catererreview.ReviewData;
-import com.smyunis.halite.domain.shared.MonetaryAmount;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderStatus;
+import com.smyunis.halite.domain.shared.MonetaryAmount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

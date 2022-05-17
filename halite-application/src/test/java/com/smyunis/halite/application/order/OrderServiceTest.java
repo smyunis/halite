@@ -1,16 +1,19 @@
 package com.smyunis.halite.application.order;
 
 import com.smyunis.halite.application.domaineventhandlers.DomainEventDispatcher;
+import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItem;
+import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemData;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
+import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.order.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class OrderServiceTest {
@@ -20,6 +23,8 @@ public class OrderServiceTest {
     private OrderData orderData;
     private OrderRepository orderRepository;
     private DomainEventDispatcher eventDispatcher;
+    private CateringMenuItemRepository cateringMenuItemRepository;
+    private CateringMenuItemId cateringMenuItemId;
 
     @BeforeEach
     void setup() {
@@ -29,7 +34,12 @@ public class OrderServiceTest {
         orderRepository = mock(OrderRepository.class);
         when(orderRepository.get(orderId)).thenReturn(order);
         eventDispatcher = mock(DomainEventDispatcher.class);
-        orderService = new OrderService(eventDispatcher, orderRepository);
+
+        cateringMenuItemRepository = mock(CateringMenuItemRepository.class);
+        cateringMenuItemId = new CateringMenuItemId();
+        when(cateringMenuItemRepository.get(cateringMenuItemId))
+                .thenReturn(new CateringMenuItem(new CateringMenuItemData().setId(cateringMenuItemId)));
+        orderService = new OrderService(eventDispatcher, orderRepository, cateringMenuItemRepository);
     }
 
     @Test
@@ -94,14 +104,12 @@ public class OrderServiceTest {
 
     @Test
     void addCateringMenuItemToAnOrder() {
-        CateringMenuItemId itemId = new CateringMenuItemId();
-
-        orderService.addCateringMenuItem(orderId, itemId, 5);
+        orderService.addCateringMenuItem(orderId, cateringMenuItemId, 5);
 
         verify(orderRepository).get(orderId);
         verify(orderRepository).save(any(Order.class));
         verifyDomainEventsWereDispatched();
-        assertEquals(5, orderRepository.get(orderId).getOrderedCateringMenuItems().get(itemId));
+        assertEquals(5, orderRepository.get(orderId).getOrderedCateringMenuItems().get(cateringMenuItemId));
     }
 
     @Test

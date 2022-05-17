@@ -17,10 +17,13 @@ public class ReviewService {
     public void addReview(ReviewData reviewPayload) {
         Review review = new Review(reviewPayload);
         review.asNewReview();
+        saveThenDispatchDomainEvents(review);
+    }
+
+    private void saveThenDispatchDomainEvents(Review review) {
         reviewRepository.save(review);
         dispatchDomainEvents(review);
     }
-
 
     private void dispatchDomainEvents(Review review) {
         eventDispatcher.registerDomainEvents(review.getDomainEvents());

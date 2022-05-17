@@ -4,12 +4,12 @@ import com.smyunis.halite.application.domaineventhandlers.DomainEventHandler;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillId;
 import com.smyunis.halite.domain.billing.BillRepository;
-import com.smyunis.halite.domain.shared.MonetaryAmount;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItem;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
 import com.smyunis.halite.domain.order.Order;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
+import com.smyunis.halite.domain.shared.MonetaryAmount;
 
 public class BillCateringMenuItemAddedToOrderEventHandler implements DomainEventHandler<CateringMenuItemAddedToOrderEvent> {
 

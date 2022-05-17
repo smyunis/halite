@@ -5,7 +5,6 @@ import com.smyunis.halite.domain.cateringevent.CateringEvent;
 import com.smyunis.halite.domain.cateringevent.CateringEventData;
 import com.smyunis.halite.domain.cateringevent.CateringEventId;
 import com.smyunis.halite.domain.cateringevent.CateringEventRepository;
-import com.smyunis.halite.domain.order.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

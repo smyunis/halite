@@ -4,12 +4,12 @@ import com.smyunis.halite.application.caterer.CatererBillSettledEventHandler;
 import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
-import com.smyunis.halite.domain.shared.MonetaryAmount;
 import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererData;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.caterer.CatererRepository;
+import com.smyunis.halite.domain.shared.MonetaryAmount;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

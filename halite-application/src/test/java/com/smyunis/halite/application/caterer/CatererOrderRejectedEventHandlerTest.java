@@ -1,12 +1,12 @@
 package com.smyunis.halite.application.caterer;
 
-import com.smyunis.halite.application.caterer.CatererOrderRejectedEventHandler;
 import com.smyunis.halite.application.domaineventhandlers.DomainEventDispatcher;
 import com.smyunis.halite.application.order.OrderService;
 import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererData;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.caterer.CatererRepository;
+import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
 import com.smyunis.halite.domain.order.Order;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderId;
@@ -38,7 +38,7 @@ public class CatererOrderRejectedEventHandlerTest {
         DomainEventDispatcher eventDispatcher = new DomainEventDispatcher();
         OrderRepository orderRepository = mock(OrderRepository.class);
         when(orderRepository.get(orderId)).thenReturn(order);
-        orderService = new OrderService(eventDispatcher, orderRepository);
+        orderService = new OrderService(eventDispatcher, orderRepository, mock(CateringMenuItemRepository.class));
 
         catererRepository = mock(CatererRepository.class);
         when(catererRepository.get(catererId)).thenReturn(new Caterer(new CatererData().setId(catererId)));
@@ -53,6 +53,6 @@ public class CatererOrderRejectedEventHandlerTest {
 
         verify(catererRepository).get(catererId);
         verify(catererRepository).save(any());
-        assertEquals(-1,catererRepository.get(catererId).getRecommendationMetric());
+        assertEquals(-1, catererRepository.get(catererId).getRecommendationMetric());
     }
 }

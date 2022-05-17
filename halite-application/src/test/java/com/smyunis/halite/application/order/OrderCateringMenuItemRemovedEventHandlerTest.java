@@ -1,6 +1,5 @@
 package com.smyunis.halite.application.order;
 
-import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItem;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.cateringmenuitem.domainevents.CateringMenuItemRemovedEvent;
 import com.smyunis.halite.domain.order.Order;
@@ -9,7 +8,6 @@ import com.smyunis.halite.domain.order.OrderId;
 import com.smyunis.halite.domain.order.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Or;
 
 import java.util.HashMap;
 

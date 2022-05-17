@@ -9,7 +9,6 @@ import com.smyunis.halite.domain.order.domainevents.CateringMenuItemRemovedFromO
 import com.smyunis.halite.domain.order.domainevents.OrderFulfilledEvent;
 import com.smyunis.halite.domain.order.domainevents.OrderRejectedEvent;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

@@ -1,6 +1,5 @@
 package com.smyunis.halite.application.caterer;
 
-import com.smyunis.halite.application.caterer.CatererFavorableReviewGivenEventHandler;
 import com.smyunis.halite.application.catererreview.ReviewService;
 import com.smyunis.halite.application.domaineventhandlers.DomainEventDispatcher;
 import com.smyunis.halite.domain.caterer.Caterer;

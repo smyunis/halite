@@ -1,6 +1,5 @@
 package com.smyunis.halite.application.billing;
 
-import com.smyunis.halite.application.billing.BillCateringMenuItemRemovedFromOrderEventHandler;
 import com.smyunis.halite.domain.billing.Bill;
 import com.smyunis.halite.domain.billing.BillData;
 import com.smyunis.halite.domain.billing.BillId;

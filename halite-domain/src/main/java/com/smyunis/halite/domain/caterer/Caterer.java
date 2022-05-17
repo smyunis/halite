@@ -1,7 +1,6 @@
 package com.smyunis.halite.domain.caterer;
 
 import com.smyunis.halite.domain.billing.Bill;
-import com.smyunis.halite.domain.order.Order;
 
 public class Caterer {
     private final CatererData data;

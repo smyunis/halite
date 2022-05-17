@@ -1,7 +1,6 @@
 package com.smyunis.halite.domain.shared;
 
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
-import com.smyunis.halite.domain.shared.PhoneNumber;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

@@ -1,7 +1,9 @@
 package com.smyunis.halite.application.billing;
 
-import com.smyunis.halite.application.billing.BillCateringMenuItemAddedToOrderEventHandler;
-import com.smyunis.halite.domain.billing.*;
+import com.smyunis.halite.domain.billing.Bill;
+import com.smyunis.halite.domain.billing.BillData;
+import com.smyunis.halite.domain.billing.BillId;
+import com.smyunis.halite.domain.billing.BillRepository;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItem;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemData;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;

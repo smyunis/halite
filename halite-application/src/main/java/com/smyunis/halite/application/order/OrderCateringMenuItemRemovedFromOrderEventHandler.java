@@ -1,4 +1,4 @@
-package com.smyunis.halite.application.order.bill;
+package com.smyunis.halite.application.order;
 
 import com.smyunis.halite.application.domaineventhandlers.DomainEventHandler;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItem;

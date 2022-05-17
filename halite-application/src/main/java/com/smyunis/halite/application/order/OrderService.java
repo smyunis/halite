@@ -2,7 +2,6 @@ package com.smyunis.halite.application.order;
 
 import com.smyunis.halite.application.domaineventhandlers.DomainEventDispatcher;
 import com.smyunis.halite.domain.caterer.CatererId;
-import com.smyunis.halite.domain.cateringevent.CateringEventRepository;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItem;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
@@ -11,8 +10,6 @@ import com.smyunis.halite.domain.order.Order;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderId;
 import com.smyunis.halite.domain.order.OrderRepository;
-import com.smyunis.halite.domain.order.bill.Bill;
-import com.smyunis.halite.domain.order.bill.BillId;
 
 public class OrderService {
     private final DomainEventDispatcher eventDispatcher;
@@ -50,7 +47,7 @@ public class OrderService {
         orderRepository.save(orderToBeCanceled);
     }
 
-    public void fulfill(OrderId orderId) {
+    public void fulfillOrder(OrderId orderId) {
         Order orderToBeFulfilled = orderRepository.get(orderId);
         orderToBeFulfilled.fulfill();
         saveAndDispatchDomainEvents(orderToBeFulfilled);

@@ -1,9 +1,9 @@
 package com.smyunis.halite.application.domaineventhandlers;
 
 import com.smyunis.halite.application.caterer.CatererBillSettledEventHandler;
+import com.smyunis.halite.application.order.OrderCateringMenuItemAddedToOrderEventHandler;
 import com.smyunis.halite.application.order.OrderCateringMenuItemRemovedEventHandler;
-import com.smyunis.halite.application.order.bill.OrderCateringMenuItemAddedToOrderEventHandler;
-import com.smyunis.halite.application.order.bill.OrderCateringMenuItemRemovedFromOrderEventHandler;
+import com.smyunis.halite.application.order.OrderCateringMenuItemRemovedFromOrderEventHandler;
 import com.smyunis.halite.domain.caterer.CatererRepository;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
 import com.smyunis.halite.domain.cateringmenuitem.domainevents.CateringMenuItemRemovedEvent;

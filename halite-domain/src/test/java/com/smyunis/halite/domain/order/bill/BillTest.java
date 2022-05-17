@@ -1,7 +1,5 @@
 package com.smyunis.halite.domain.order.bill;
 
-import com.smyunis.halite.domain.DomainEvent;
-import com.smyunis.halite.domain.order.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import com.smyunis.halite.domain.shared.MonetaryAmount;
@@ -9,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

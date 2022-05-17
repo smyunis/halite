@@ -2,7 +2,6 @@ package com.smyunis.halite.domain.order.domainevents;
 
 import com.smyunis.halite.domain.DomainEvent;
 import com.smyunis.halite.domain.order.Order;
-import com.smyunis.halite.domain.order.bill.Bill;
 
 public class BillSettledEvent extends DomainEvent {
     private final Order order;

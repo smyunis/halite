@@ -25,7 +25,6 @@ public class OrderServiceTest {
     private OrderData orderData;
     private OrderRepository orderRepository;
     private DomainEventDispatcher eventDispatcher;
-    private CateringMenuItemRepository cateringMenuItemRepository;
     private CateringMenuItemId cateringMenuItemId;
 
     @BeforeEach
@@ -37,7 +36,7 @@ public class OrderServiceTest {
         when(orderRepository.get(orderId)).thenReturn(order);
         eventDispatcher = mock(DomainEventDispatcher.class);
 
-        cateringMenuItemRepository = mock(CateringMenuItemRepository.class);
+        CateringMenuItemRepository cateringMenuItemRepository = mock(CateringMenuItemRepository.class);
         cateringMenuItemId = new CateringMenuItemId();
         when(cateringMenuItemRepository.get(cateringMenuItemId))
                 .thenReturn(new CateringMenuItem(new CateringMenuItemData().setId(cateringMenuItemId)));
@@ -96,13 +95,12 @@ public class OrderServiceTest {
     void fulfillAnOrder() {
         orderData.setStatus(OrderStatus.ACCEPTED);
 
-        orderService.fulfill(orderId);
+        orderService.fulfillOrder(orderId);
 
         verify(orderRepository).get(orderId);
         verify(orderRepository).save(any(Order.class));
         verifyDomainEventsWereDispatched();
     }
-
 
     @Test
     void addCateringMenuItemToAnOrder() {
@@ -142,7 +140,6 @@ public class OrderServiceTest {
 
     @Test
     void cateringEventHostCanRequestCancellationOfABillPendingSettlement() {
-        //orderData.getBill().setBillStatus(BillStatus.PENDING_SETTLEMENT);
 
         orderService.requestBillCancellation(orderId);
 
@@ -151,7 +148,6 @@ public class OrderServiceTest {
 
     @Test
     void catererCanApproveCancellationOfABillPendingCancellation() {
-        //orderData.setBillStatus(BillStatus.PENDING_CANCELLATION);
         orderService.requestBillCancellation(orderId);
 
         orderService.approveBillCancellation(orderId);

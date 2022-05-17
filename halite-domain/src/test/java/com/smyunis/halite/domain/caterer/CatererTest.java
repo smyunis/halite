@@ -5,8 +5,6 @@ import com.smyunis.halite.domain.catererreview.ReviewData;
 import com.smyunis.halite.domain.order.Order;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderStatus;
-import com.smyunis.halite.domain.order.bill.Bill;
-import com.smyunis.halite.domain.order.bill.BillData;
 import com.smyunis.halite.domain.shared.MonetaryAmount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

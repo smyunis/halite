@@ -124,5 +124,4 @@ public class OrderServiceTest {
         verify(eventDispatcher).publish();
     }
 
-
 }

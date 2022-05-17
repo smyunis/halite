@@ -1,11 +1,12 @@
 package com.smyunis.halite.domain.caterer;
 
-import com.smyunis.halite.domain.billing.Bill;
-import com.smyunis.halite.domain.billing.BillData;
 import com.smyunis.halite.domain.catererreview.Rating;
 import com.smyunis.halite.domain.catererreview.ReviewData;
+import com.smyunis.halite.domain.order.Order;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderStatus;
+import com.smyunis.halite.domain.order.bill.Bill;
+import com.smyunis.halite.domain.order.bill.BillData;
 import com.smyunis.halite.domain.shared.MonetaryAmount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,19 +26,12 @@ public class CatererTest {
 
     @Test
     void canHandleBillSettledEvent() {
-        BillData billData = new BillData();
+        Order order = new Order(new OrderData());
+        order.incrementBillOutstandingAmount(new MonetaryAmount(23000));
 
-        catererData.setId(new CatererId());
-        Caterer handlerCaterer = new Caterer(catererData);
+        caterer.handleBillSettledEvent(order);
 
-        billData.setOutstandingAmount(new MonetaryAmount(6000))
-                .setPayeeId(catererData.getId());
-
-        Bill bill = new Bill(billData);
-
-        handlerCaterer.handleBillSettledEvent(bill);
-
-        assertEquals(5,handlerCaterer.getRecommendationMetric());
+        assertEquals(5, caterer.getRecommendationMetric());
     }
 
     @Test
@@ -50,7 +44,7 @@ public class CatererTest {
         caterer.handleOrderRejectedEvent();
 
         assertTrue(initialRecMetric > caterer.getRecommendationMetric());
-        assertEquals(-1,caterer.getRecommendationMetric());
+        assertEquals(-1, caterer.getRecommendationMetric());
     }
 
     @Test
@@ -63,7 +57,7 @@ public class CatererTest {
         caterer.handleFavorableReviewGivenEvent();
 
         assertTrue(initialRecMetric < caterer.getRecommendationMetric());
-        assertEquals(2,caterer.getRecommendationMetric());
+        assertEquals(2, caterer.getRecommendationMetric());
 
     }
 

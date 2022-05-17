@@ -1,41 +1,35 @@
-package com.smyunis.halite.application.billing;
+package com.smyunis.halite.application.order.bill;
 
 import com.smyunis.halite.application.domaineventhandlers.DomainEventHandler;
-import com.smyunis.halite.domain.billing.Bill;
-import com.smyunis.halite.domain.billing.BillId;
-import com.smyunis.halite.domain.billing.BillRepository;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItem;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
 import com.smyunis.halite.domain.order.Order;
+import com.smyunis.halite.domain.order.OrderRepository;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
 import com.smyunis.halite.domain.shared.MonetaryAmount;
 
-public class BillCateringMenuItemAddedToOrderEventHandler implements DomainEventHandler<CateringMenuItemAddedToOrderEvent> {
+public class OrderCateringMenuItemAddedToOrderEventHandler implements DomainEventHandler<CateringMenuItemAddedToOrderEvent> {
 
     private final CateringMenuItemRepository cateringMenuItemRepository;
-    private final BillRepository billRepository;
+    private final OrderRepository orderRepository;
 
-    public BillCateringMenuItemAddedToOrderEventHandler(CateringMenuItemRepository cateringMenuItemRepository, BillRepository billRepository) {
+    public OrderCateringMenuItemAddedToOrderEventHandler(CateringMenuItemRepository cateringMenuItemRepository,
+                                                         OrderRepository orderRepository) {
         this.cateringMenuItemRepository = cateringMenuItemRepository;
-        this.billRepository = billRepository;
+        this.orderRepository = orderRepository;
     }
 
     @Override
     public void handleEvent(CateringMenuItemAddedToOrderEvent domainEvent) {
-        Bill billToBeUpdated = getBillToBeUpdated(domainEvent);
-        incrementOutstandingBillAmount(domainEvent, billToBeUpdated);
-    }
-
-    private Bill getBillToBeUpdated(CateringMenuItemAddedToOrderEvent domainEvent) {
         Order orderWhoHadAnItemAdded = domainEvent.getOrder();
-        return getBillToBeUpdated(orderWhoHadAnItemAdded);
+        incrementOutstandingBillAmount(domainEvent, orderWhoHadAnItemAdded);
+        orderRepository.save(orderWhoHadAnItemAdded);
     }
 
-    private void incrementOutstandingBillAmount(CateringMenuItemAddedToOrderEvent event, Bill billToBeUpdated) {
+    private void incrementOutstandingBillAmount(CateringMenuItemAddedToOrderEvent event, Order orderWhoHadAnItemAdded) {
         MonetaryAmount amountToIncrement = getAmountToIncrement(event);
-        billToBeUpdated.incrementOutstandingAmount(amountToIncrement);
-        billRepository.save(billToBeUpdated);
+        orderWhoHadAnItemAdded.incrementBillOutstandingAmount(amountToIncrement);
     }
 
     private MonetaryAmount getAmountToIncrement(CateringMenuItemAddedToOrderEvent event) {
@@ -45,8 +39,4 @@ public class BillCateringMenuItemAddedToOrderEventHandler implements DomainEvent
         return new MonetaryAmount(addedItem.getPrice().amount() * addedQuantity);
     }
 
-    private Bill getBillToBeUpdated(Order orderWhoHadAnItemAdded) {
-        BillId billId = orderWhoHadAnItemAdded.getBillId();
-        return billRepository.get(billId);
-    }
 }

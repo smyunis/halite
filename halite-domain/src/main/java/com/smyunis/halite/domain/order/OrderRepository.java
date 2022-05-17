@@ -6,6 +6,5 @@ import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 
 public interface OrderRepository extends DomainEntityRepository<Order> {
     void removeMenuItemFromAllOrdersPendingAcceptanceByMenuItemId(CateringMenuItemId cateringMenuItemId);
-
     void cancelAllOrdersByCateringEventId(CateringEventId cateringEventId);
 }

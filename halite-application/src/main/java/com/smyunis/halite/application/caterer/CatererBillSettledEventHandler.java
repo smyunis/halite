@@ -1,9 +1,9 @@
 package com.smyunis.halite.application.caterer;
 
 import com.smyunis.halite.application.domaineventhandlers.DomainEventHandler;
-import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererRepository;
+import com.smyunis.halite.domain.order.domainevents.BillSettledEvent;
 
 public class CatererBillSettledEventHandler implements DomainEventHandler<BillSettledEvent> {
     private final CatererRepository catererRepository;
@@ -14,10 +14,11 @@ public class CatererBillSettledEventHandler implements DomainEventHandler<BillSe
 
     @Override
     public void handleEvent(BillSettledEvent domainEvent) {
-        var settledBill = domainEvent.getBill();
-        var payeeCatererId = settledBill.getPayeeId();
+        var order = domainEvent.getOrder();
+        var payeeCatererId = order.getCatererId();
+
         Caterer payeeCaterer = catererRepository.get(payeeCatererId);
-        payeeCaterer.handleBillSettledEvent(settledBill);
+        payeeCaterer.handleBillSettledEvent(order);
         catererRepository.save(payeeCaterer);
     }
 }

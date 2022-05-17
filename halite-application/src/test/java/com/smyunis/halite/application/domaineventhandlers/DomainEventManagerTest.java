@@ -2,13 +2,13 @@ package com.smyunis.halite.application.domaineventhandlers;
 
 import com.smyunis.halite.application.caterer.CatererBillSettledEventHandler;
 import com.smyunis.halite.domain.DomainEvent;
-import com.smyunis.halite.domain.billing.Bill;
-import com.smyunis.halite.domain.billing.BillData;
-import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererData;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.caterer.CatererRepository;
+import com.smyunis.halite.domain.order.Order;
+import com.smyunis.halite.domain.order.OrderData;
+import com.smyunis.halite.domain.order.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.shared.MonetaryAmount;
 import org.junit.jupiter.api.Test;
 
@@ -43,10 +43,10 @@ public class DomainEventManagerTest {
         domainEventManager.assignHandler(BillSettledEvent.class,
                 new CatererBillSettledEventHandler(catererRepository));
 
-        Bill bill = new Bill(new BillData()
-                .setPayeeId(catererId)
-                .setOutstandingAmount(new MonetaryAmount(230000)));
-        domainEventManager.registerDomainEvents(List.of(new BillSettledEvent(bill)));
+        Order order = new Order(new OrderData().setCatererId(catererId));
+        order.incrementBillOutstandingAmount(new MonetaryAmount(23000));
+
+        domainEventManager.registerDomainEvents(List.of(new BillSettledEvent(order)));
 
         domainEventManager.publish();
 
@@ -64,7 +64,7 @@ public class DomainEventManagerTest {
     void canRegisterDomainEvents() {
         var domainEventRegistrar = new DomainEventDispatcher();
         domainEventRegistrar.registerDomainEvents(
-                List.of(new BillSettledEvent(new Bill(new BillData())))
+                List.of(new BillSettledEvent(new Order(new OrderData())))
         );
     }
 

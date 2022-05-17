@@ -1,7 +1,7 @@
-package com.smyunis.halite.domain.billing;
+package com.smyunis.halite.domain.order.bill;
 
 import com.smyunis.halite.domain.DomainEvent;
-import com.smyunis.halite.domain.billing.domainevents.BillSettledEvent;
+import com.smyunis.halite.domain.order.domainevents.BillSettledEvent;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import com.smyunis.halite.domain.shared.MonetaryAmount;
@@ -92,17 +92,6 @@ public class BillTest {
         assertThrows(InvalidOperationException.class, () -> {
             bill.settle();
         });
-    }
-
-
-    @Test
-    void emitsBillSettledEvent() {
-        data.setOutstandingAmount(new MonetaryAmount(1000));
-
-        bill.settle();
-
-        List<DomainEvent> domainEvents = bill.getDomainEvents();
-        assertTrue(domainEvents.get(0) instanceof BillSettledEvent);
     }
 
     @Test

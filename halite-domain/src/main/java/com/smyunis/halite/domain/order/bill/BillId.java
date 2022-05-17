@@ -1,4 +1,4 @@
-package com.smyunis.halite.domain.billing;
+package com.smyunis.halite.domain.order.bill;
 
 import com.smyunis.halite.domain.DomainEntityId;
 

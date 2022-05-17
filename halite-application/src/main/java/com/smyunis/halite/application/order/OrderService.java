@@ -11,6 +11,8 @@ import com.smyunis.halite.domain.order.Order;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderId;
 import com.smyunis.halite.domain.order.OrderRepository;
+import com.smyunis.halite.domain.order.bill.Bill;
+import com.smyunis.halite.domain.order.bill.BillId;
 
 public class OrderService {
     private final DomainEventDispatcher eventDispatcher;
@@ -39,7 +41,6 @@ public class OrderService {
 
     public void createOrder(OrderData orderData) {
         Order order = new Order(orderData);
-        order.asNewOrder();
         saveAndDispatchDomainEvents(order);
     }
 
@@ -67,13 +68,31 @@ public class OrderService {
         CateringMenuItem cateringMenuItem = cateringMenuItemRepository.get(itemId);
         var catererForMenuItem = cateringMenuItem.getCatererId();
 
-        if(catererForMenuItem != orderedCatererId)
+        if (catererForMenuItem != orderedCatererId)
             throw new InvalidOperationException("This Menu Item does not belong to the caterer this order is made for");
     }
 
     public void removeCateringMenuItem(OrderId orderId, CateringMenuItemId itemId, int quantity) {
         Order order = orderRepository.get(orderId);
         order.removeCateringMenuItem(itemId, quantity);
+        saveAndDispatchDomainEvents(order);
+    }
+
+    public void settleBill(OrderId orderId) {
+        Order order = orderRepository.get(orderId);
+        order.settleBill();
+        saveAndDispatchDomainEvents(order);
+    }
+
+    public void requestBillCancellation(OrderId orderId) {
+        Order order = orderRepository.get(orderId);
+        order.requestBillCancellation();
+        saveAndDispatchDomainEvents(order);
+    }
+
+    public void approveBillCancellation(OrderId orderId) {
+        Order order = orderRepository.get(orderId);
+        order.approveBillCancellation();
         saveAndDispatchDomainEvents(order);
     }
 

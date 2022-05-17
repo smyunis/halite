@@ -1,15 +1,15 @@
-package com.smyunis.halite.application.billing;
+package com.smyunis.halite.application.order.bill;
 
-import com.smyunis.halite.domain.billing.Bill;
-import com.smyunis.halite.domain.billing.BillData;
-import com.smyunis.halite.domain.billing.BillId;
-import com.smyunis.halite.domain.billing.BillRepository;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItem;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemData;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
 import com.smyunis.halite.domain.order.Order;
 import com.smyunis.halite.domain.order.OrderData;
+import com.smyunis.halite.domain.order.OrderId;
+import com.smyunis.halite.domain.order.OrderRepository;
+import com.smyunis.halite.domain.order.bill.Bill;
+import com.smyunis.halite.domain.order.bill.BillData;
 import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
 import com.smyunis.halite.domain.shared.MonetaryAmount;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,37 +18,38 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class BillCateringMenuItemAddedToOrderEventHandlerTest {
-    private BillCateringMenuItemAddedToOrderEventHandler eventHandler;
-    private BillId billId;
+public class OrderCateringMenuItemAddedToOrderEventHandlerTest {
+    private OrderCateringMenuItemAddedToOrderEventHandler eventHandler;
     private CateringMenuItemId cateringMenuItemId;
-    private BillRepository billRepository;
     private CateringMenuItemRepository cateringMenuItemRepository;
+    private OrderRepository orderRepository;
+    private OrderId orderId;
+    private Order order;
 
     @BeforeEach
     void setup() {
-        billId = new BillId();
+        orderId = new OrderId();
         cateringMenuItemId = new CateringMenuItemId();
-        billRepository = mock(BillRepository.class);
+        orderRepository = mock(OrderRepository.class);
         cateringMenuItemRepository = mock(CateringMenuItemRepository.class);
-        when(billRepository.get(billId)).thenReturn(new Bill(new BillData().setId(billId)));
+        order = new Order(new OrderData().setId(orderId));
+        when(orderRepository.get(orderId)).thenReturn(order);
         when(cateringMenuItemRepository.get(cateringMenuItemId))
                 .thenReturn(new CateringMenuItem(new CateringMenuItemData()
                         .setId(cateringMenuItemId)
                         .setPrice(new MonetaryAmount(100))));
-        eventHandler = new BillCateringMenuItemAddedToOrderEventHandler(cateringMenuItemRepository, billRepository);
+        eventHandler = new OrderCateringMenuItemAddedToOrderEventHandler(cateringMenuItemRepository, orderRepository);
     }
 
     @Test
     void canHandleEvent() {
-        var order = new Order(new OrderData().setBillId(billId));
         var event = new CateringMenuItemAddedToOrderEvent(cateringMenuItemId, 5, order);
 
         eventHandler.handleEvent(event);
 
-        verify(billRepository).get(billId);
         verify(cateringMenuItemRepository).get(cateringMenuItemId);
-        assertEquals(new MonetaryAmount(500), billRepository.get(billId).getOutstandingAmount());
+        verify(orderRepository).save(any(Order.class));
+        assertEquals(new MonetaryAmount(500), orderRepository.get(orderId).getBillOutstandingAmount());
     }
 
 }

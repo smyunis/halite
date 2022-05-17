@@ -7,6 +7,8 @@ import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.order.*;
+import com.smyunis.halite.domain.order.bill.BillStatus;
+import com.smyunis.halite.domain.order.domainevents.BillSettledEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -125,6 +127,36 @@ public class OrderServiceTest {
         verify(orderRepository).save(any(Order.class));
         verifyDomainEventsWereDispatched();
         assertEquals(1, orderRepository.get(orderId).getOrderedCateringMenuItems().get(itemId));
+    }
+
+
+    @Test
+    void cateringEventHostCanSettleBill() {
+        orderService.settleBill(orderId);
+
+        Order orderWhoseBillIsSettled = orderRepository.get(orderId);
+
+        assertEquals(BillStatus.SETTLED, orderWhoseBillIsSettled.getBillStatus());
+        assertEquals(BillSettledEvent.class, orderWhoseBillIsSettled.getDomainEvents().get(0).getClass());
+    }
+
+    @Test
+    void cateringEventHostCanRequestCancellationOfABillPendingSettlement() {
+        //orderData.getBill().setBillStatus(BillStatus.PENDING_SETTLEMENT);
+
+        orderService.requestBillCancellation(orderId);
+
+        assertEquals(BillStatus.PENDING_CANCELLATION, orderRepository.get(orderId).getBillStatus());
+    }
+
+    @Test
+    void catererCanApproveCancellationOfABillPendingCancellation() {
+        //orderData.setBillStatus(BillStatus.PENDING_CANCELLATION);
+        orderService.requestBillCancellation(orderId);
+
+        orderService.approveBillCancellation(orderId);
+
+        assertEquals(BillStatus.CANCELLED, orderRepository.get(orderId).getBillStatus());
     }
 
     private void verifyDomainEventsWereDispatched() {

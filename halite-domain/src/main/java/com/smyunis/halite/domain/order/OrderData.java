@@ -1,11 +1,12 @@
 package com.smyunis.halite.domain.order;
 
-import com.smyunis.halite.domain.billing.BillId;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.cateringevent.CateringEventId;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
+import com.smyunis.halite.domain.order.bill.Bill;
+import com.smyunis.halite.domain.order.bill.BillData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class OrderData {
     private CateringEventId cateringEventId;
     private CateringEventHostId cateringEventHostId;
     private CatererId catererId;
-    private BillId billId;
+    private Bill bill = new Bill(new BillData());
     private Map<CateringMenuItemId, Integer> orderedCateringMenuItems = new HashMap<>();
 
     public OrderId getId() {
@@ -77,12 +78,13 @@ public class OrderData {
         return this;
     }
 
-    public BillId getBillId() {
-        return billId;
+
+    public Bill getBill() {
+        return bill;
     }
 
-    public OrderData setBillId(BillId billId) {
-        this.billId = billId;
+    public OrderData setBill(Bill bill) {
+        this.bill = bill;
         return this;
     }
 }

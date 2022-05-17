@@ -16,8 +16,8 @@ public class BillingService {
     public void settleBill(BillId billId) {
         Bill bill = billRepository.get(billId);
         bill.settle();
-        publishDomainEvents(bill);
         billRepository.save(bill);
+        dispatchDomainEvents(bill);
     }
 
     public void requestBillCancellation(BillId billId) {
@@ -32,7 +32,7 @@ public class BillingService {
         billRepository.save(bill);
     }
 
-    private void publishDomainEvents(Bill bill) {
+    private void dispatchDomainEvents(Bill bill) {
         domainEventManager.registerDomainEvents(bill.getDomainEvents());
         domainEventManager.publish();
     }

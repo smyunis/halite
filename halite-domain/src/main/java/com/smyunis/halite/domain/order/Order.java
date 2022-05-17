@@ -7,10 +7,7 @@ import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.domainexceptions.InvalidOperationException;
 import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
-import com.smyunis.halite.domain.order.domainevents.CateringMenuItemAddedToOrderEvent;
-import com.smyunis.halite.domain.order.domainevents.CateringMenuItemRemovedFromOrderEvent;
-import com.smyunis.halite.domain.order.domainevents.OrderFulfilledEvent;
-import com.smyunis.halite.domain.order.domainevents.OrderRejectedEvent;
+import com.smyunis.halite.domain.order.domainevents.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,6 +56,10 @@ public class Order {
             orderedCateringMenuItems.remove(itemId);
     }
 
+    public Order asNewOrder() {
+        domainEvents.add(new OrderCreatedEvent(this));
+        return this;
+    }
 
     public void accept() {
         assertOrderIsPendingAcceptance();
@@ -134,6 +135,5 @@ public class Order {
     public CateringEventHostId getCateringEventHostId() {
         return data.getCateringEventHostId();
     }
-
 
 }

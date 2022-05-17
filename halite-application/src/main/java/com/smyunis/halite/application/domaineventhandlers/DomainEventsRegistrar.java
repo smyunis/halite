@@ -35,10 +35,10 @@ public class DomainEventsRegistrar {
 
     public void assignHandlersForDomainEvents() {
         domainEventManager.assignHandler(BillSettledEvent.class, new CatererBillSettledEventHandler(catererRepository));
-        domainEventManager.assignHandler(CateringMenuItemAddedToOrderEvent.class,
-                new BillCateringMenuItemAddedToOrderEventHandler(cateringMenuItemRepository, billRepository));
-        domainEventManager.assignHandler(CateringMenuItemRemovedFromOrderEvent.class,
-                new BillCateringMenuItemRemovedFromOrderEventHandler(cateringMenuItemRepository,billRepository));
+//        domainEventManager.assignHandler(CateringMenuItemAddedToOrderEvent.class,
+//                new BillCateringMenuItemAddedToOrderEventHandler(cateringMenuItemRepository, billRepository));
+//        domainEventManager.assignHandler(CateringMenuItemRemovedFromOrderEvent.class,
+//                new BillCateringMenuItemRemovedFromOrderEventHandler(cateringMenuItemRepository,billRepository));
         domainEventManager.assignHandler(CateringMenuItemRemovedEvent.class,
                 new OrderCateringMenuItemRemovedEventHandler(orderRepository));
     }

@@ -1,6 +1,7 @@
 package com.smyunis.halite.application.order;
 
 import com.smyunis.halite.application.domaineventhandlers.DomainEventDispatcher;
+import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.order.Order;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderId;
@@ -24,13 +25,13 @@ public class OrderService {
     public void rejectOrder(OrderId orderId) {
         Order order = orderRepository.get(orderId);
         order.reject();
-        orderRepository.save(order);
-        dispatchEvents(order);
+        saveAndDispatchDomainEvents(order);
     }
 
     public void createOrder(OrderData orderData) {
         Order order = new Order(orderData);
-        orderRepository.save(order);
+        order.asNewOrder();
+        saveAndDispatchDomainEvents(order);
     }
 
     public void cancelOrder(OrderId orderId) {
@@ -42,8 +43,24 @@ public class OrderService {
     public void fulfill(OrderId orderId) {
         Order orderToBeFulfilled = orderRepository.get(orderId);
         orderToBeFulfilled.fulfill();
-        orderRepository.save(orderToBeFulfilled);
-        dispatchEvents(orderToBeFulfilled);
+        saveAndDispatchDomainEvents(orderToBeFulfilled);
+    }
+
+    public void addCateringMenuItem(OrderId orderId, CateringMenuItemId itemId, int quantity) {
+        Order order = orderRepository.get(orderId);
+        order.addCateringMenuItem(itemId, quantity);
+        saveAndDispatchDomainEvents(order);
+    }
+
+    public void removeCateringMenuItem(OrderId orderId, CateringMenuItemId itemId, int quantity) {
+        Order order = orderRepository.get(orderId);
+        order.removeCateringMenuItem(itemId, quantity);
+        saveAndDispatchDomainEvents(order);
+    }
+
+    private void saveAndDispatchDomainEvents(Order order) {
+        orderRepository.save(order);
+        dispatchEvents(order);
     }
 
     private void dispatchEvents(Order order) {

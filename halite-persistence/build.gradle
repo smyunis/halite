@@ -1,7 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.7'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'java-library'
+    id "org.flywaydb.flyway" version "8.5.11"
 }
 
 group = 'com.smyunis'
@@ -9,16 +8,27 @@ version = '0.0.1'
 sourceCompatibility = '17'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
 
-	implementation project(':halite-application')
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.6.7'
+    runtimeOnly 'org.postgresql:postgresql:42.3.3'
+
+    implementation project(':halite-application')
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
+
+flyway {
+    url = 'jdbc:postgresql://127.0.0.1:5432/halite_test'
+    user = 'postgres'
+    password = '123456seven'
+    locations = ['classpath:db/migration']
+}
+
+flywayMigrate.dependsOn classes

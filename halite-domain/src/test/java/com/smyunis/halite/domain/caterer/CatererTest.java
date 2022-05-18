@@ -9,8 +9,7 @@ import com.smyunis.halite.domain.shared.MonetaryAmount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CatererTest {
     private Caterer caterer;
@@ -57,6 +56,16 @@ public class CatererTest {
         assertTrue(initialRecMetric < caterer.getRecommendationMetric());
         assertEquals(2, caterer.getRecommendationMetric());
 
+    }
+
+    @Test
+    void checkCloneIsADeepCopyOfCatererData() {
+        Caterer naruto = new Caterer(new CatererData().setRecommendationMetric(10));
+        CatererData bunshinNarutoData = naruto.getCopyOfData();
+        bunshinNarutoData.setRecommendationMetric(20);
+        Caterer bunshinNaruto = new Caterer(bunshinNarutoData);
+
+        assertNotEquals(naruto.getRecommendationMetric(),bunshinNaruto.getRecommendationMetric());
     }
 
 }

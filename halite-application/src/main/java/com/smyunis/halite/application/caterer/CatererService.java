@@ -6,7 +6,6 @@ import com.smyunis.halite.domain.caterer.CatererRepository;
 
 public class CatererService {
     private final CatererRepository catererRepository;
-
     public CatererService(CatererRepository catererRepository) {
         this.catererRepository = catererRepository;
     }

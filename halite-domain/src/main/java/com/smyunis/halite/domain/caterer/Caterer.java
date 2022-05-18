@@ -13,7 +13,7 @@ public class Caterer {
         return data.getRecommendationMetric();
     }
 
-    public void handleBillSettledEvent (Order orderWithSettledBill) {
+    public void handleBillSettledEvent(Order orderWithSettledBill) {
         if (orderWithSettledBill.getBillOutstandingAmount().amount() > 5000)
             data.setRecommendationMetric(data.getRecommendationMetric() + 5);
     }
@@ -24,5 +24,9 @@ public class Caterer {
 
     public void handleFavorableReviewGivenEvent() {
         data.setRecommendationMetric(data.getRecommendationMetric() + 2);
+    }
+
+    public CatererDataReadOnlyProxy getDataReadOnlyProxy() {
+        return new CatererDataReadOnlyProxy(data);
     }
 }

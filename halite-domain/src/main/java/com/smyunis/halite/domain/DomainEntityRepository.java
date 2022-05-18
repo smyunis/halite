@@ -1,7 +1,9 @@
 package com.smyunis.halite.domain;
 
-public interface DomainEntityRepository<T>{
-    T get(DomainEntityId id);
+public interface DomainEntityRepository<T, I extends DomainEntityId> {
+    T get(I id);
+
     void save(T domainEntity);
-    void remove(DomainEntityId id);
+
+    void remove(I id);
 }

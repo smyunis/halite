@@ -18,9 +18,8 @@ public class CatererRepositoryImpl implements CatererRepository {
     }
 
     @Override
-    public Caterer get(DomainEntityId id) {
-        CatererId catererId = (CatererId) id;
-        var caterer = catererJdbcRepository.findById(catererId);
+    public Caterer get(CatererId id) {
+        var caterer = catererJdbcRepository.findById(id);
         if (caterer.isEmpty())
             throw new NoSuchElementException();
         return caterer.get();
@@ -32,7 +31,7 @@ public class CatererRepositoryImpl implements CatererRepository {
     }
 
     @Override
-    public void remove(DomainEntityId id) {
+    public void remove(CatererId id) {
 
     }
 }

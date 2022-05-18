@@ -6,7 +6,10 @@ import java.util.regex.Pattern;
 
 public record PhoneNumber(String phoneNumber) {
     public PhoneNumber {
-        boolean isValidPhoneNumber = Pattern.compile("(\\+251|0)[0-9]{9}")
+        String internationalPhoneNumberRegexPattern = "^\\+(?:[0-9] ?){6,14}[0-9]$";
+        //String ethiopianPhoneNumberRegexPattern = "(\\+251|0)[0-9]{9}";
+
+        boolean isValidPhoneNumber = Pattern.compile(internationalPhoneNumberRegexPattern)
                 .matcher(phoneNumber)
                 .matches();
 

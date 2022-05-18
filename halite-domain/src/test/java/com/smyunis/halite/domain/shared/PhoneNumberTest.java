@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PhoneNumberTest {
 
-    @ParameterizedTest
-    @ValueSource(strings = {"0912096265","+251929186232"})
-    void acceptsValidPhoneNumber(String phoneNo) {
+    @Test
+    void acceptsValidPhoneNumber() {
+        String phoneNo = "+251929186232";
         PhoneNumber phoneNumber = new PhoneNumber(phoneNo);
 
         assertEquals(phoneNo, phoneNumber.phoneNumber());
@@ -22,7 +22,7 @@ public class PhoneNumberTest {
     void throwsExceptionForInvalidPhoneNumber() {
         String invalidPhoneNo = "INV-Err_091209...";
 
-        assertThrows(InvalidValueException.class,() -> {
+        assertThrows(InvalidValueException.class, () -> {
             PhoneNumber phoneNumber = new PhoneNumber(invalidPhoneNo);
         });
     }

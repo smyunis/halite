@@ -1,6 +1,9 @@
 package com.smyunis.halite.mockitolearningtests;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
 
 import java.util.List;
 
@@ -9,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 /*
-*  docs can be found at : https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html
-* */
+ *  docs can be found at : https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html
+ * */
 
 public class MockitoLearningTest {
     @Test
@@ -28,7 +31,7 @@ public class MockitoLearningTest {
         List<Integer> mockedList = mock(List.class);
         when(mockedList.get(2)).thenReturn(63);
 
-        assertEquals(63,mockedList.get(2));
+        assertEquals(63, mockedList.get(2));
     }
 
     @Test
@@ -36,7 +39,7 @@ public class MockitoLearningTest {
         List<Integer> mockedList = mock(List.class);
         when(mockedList.get(anyInt())).thenReturn(23);
 
-        assertEquals(23,mockedList.get(5));
+        assertEquals(23, mockedList.get(5));
         verify(mockedList).get(anyInt());
     }
 
@@ -45,8 +48,8 @@ public class MockitoLearningTest {
         List<Integer> mockedList = mock(List.class);
         when(mockedList.get(10000)).thenThrow(IndexOutOfBoundsException.class);
 
-        assertThrows(IndexOutOfBoundsException.class,() -> {
-           mockedList.get(10000);
+        assertThrows(IndexOutOfBoundsException.class, () -> {
+            mockedList.get(10000);
         });
         verify(mockedList).get(10000);
     }
@@ -69,7 +72,24 @@ public class MockitoLearningTest {
             return 4;
         }).when(mockedList).get(2);
 
-        assertEquals(4,mockedList.get(2));
-        assertEquals("initsec",s.toString());
+        assertEquals(4, mockedList.get(2));
+        assertEquals("initsec", s.toString());
     }
+
+
+    @Captor
+    private ArgumentCaptor<Integer> resCaptor = ArgumentCaptor.forClass(Integer.class);
+    @Test
+    void captors() {
+
+        List<Integer> mockedList = mock(List.class);
+        mockedList.add(8);
+
+        verify(mockedList).add(resCaptor.capture());
+
+        Integer capturedVal = resCaptor.getValue();
+        assertEquals(8, capturedVal);
+    }
+
+
 }

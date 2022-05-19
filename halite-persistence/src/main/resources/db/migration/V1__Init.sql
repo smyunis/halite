@@ -20,3 +20,17 @@ CREATE TABLE review(
 --    FOREIGN KEY (reviewer_id) REFERENCES catering_event_host(catering_event_host_id),
 --    FOREIGN KEY (reviewed_caterer_id) REFERENCES caterer(caterer_id)
 );
+
+CREATE TYPE event_status AS ENUM('open','closed');
+CREATE TABLE catering_event(
+    catering_event_id VARCHAR PRIMARY KEY,
+    catering_event_host_id VARCHAR,
+--    status event_status,
+    status VARCHAR,
+    venue VARCHAR,
+    description TEXT,
+    expected_number_of_attendees INTEGER,
+    event_start_time TIMESTAMP,
+    event_end_time TIMESTAMP
+--    FOREIGN KEY (catering_event_host_id) REFERENCES catering_event_host (catering_event_host_id)
+);

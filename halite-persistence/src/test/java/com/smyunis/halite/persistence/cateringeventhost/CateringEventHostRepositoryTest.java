@@ -24,7 +24,7 @@ public class CateringEventHostRepositoryTest {
     }
 
     @Test
-    void t() {
+    void canSaveThenGetCateringEventHost() {
         CateringEventHostId cateringEventHostId = new CateringEventHostId("Id-00001-TEST-HOST");
         CateringEventHostData cateringEventHostData = new CateringEventHostData()
                 .setId(cateringEventHostId)
@@ -37,8 +37,8 @@ public class CateringEventHostRepositoryTest {
         assertThrows(EntityNotFoundException.class,() -> {
             cateringEventHostRepository.get(new CateringEventHostId());
         });
-        assertEquals("Id-0000-1",res.getDataReadOnlyProxy().getId().toString());
-        assertEquals("bob",res.getDataReadOnlyProxy().getName());
-        assertEquals("+69124578963",res.getDataReadOnlyProxy().getPhoneNumber().phoneNumber());
+        assertEquals(cateringEventHostData.getId(),res.getDataReadOnlyProxy().getId());
+        assertEquals(cateringEventHostData.getName(),res.getDataReadOnlyProxy().getName());
+        assertEquals(cateringEventHostData.getPhoneNumber(),res.getDataReadOnlyProxy().getPhoneNumber());
     }
 }

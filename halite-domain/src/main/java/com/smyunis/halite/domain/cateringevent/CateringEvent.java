@@ -35,4 +35,8 @@ public class CateringEvent {
     public CateringEventId getId() {
         return data.getId();
     }
+
+    public CateringEventDataReadOnlyProxy getDataReadOnlyProxy() {
+        return new CateringEventDataReadOnlyProxy(data);
+    }
 }

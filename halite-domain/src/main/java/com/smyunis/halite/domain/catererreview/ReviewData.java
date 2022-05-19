@@ -7,9 +7,8 @@ public class ReviewData {
     private ReviewId id = new ReviewId();
     private CateringEventHostId reviewerId;
     private CatererId reviewedCatererId;
-    private String title;
     private String content;
-    private Rating rating;
+    private Rating rating = new Rating(1);
 
     public ReviewId getId() {
         return id;
@@ -35,15 +34,6 @@ public class ReviewData {
 
     public ReviewData setReviewedCatererId(CatererId reviewedCatererId) {
         this.reviewedCatererId = reviewedCatererId;
-        return this;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public ReviewData setTitle(String title) {
-        this.title = title;
         return this;
     }
 

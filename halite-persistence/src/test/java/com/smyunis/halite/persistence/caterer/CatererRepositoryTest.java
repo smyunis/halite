@@ -26,10 +26,11 @@ public class CatererRepositoryTest {
 
     @Test
     void catererRepoTest() {
-        CatererId catererId = new CatererId("Id-00001-TST");
+        CatererId catererId = new CatererId("Id-00001-TEST-CATER");
         Caterer caterer = new Caterer(new CatererData()
-                .setName("T Cat")
-                .setPhoneNumber(new PhoneNumber("+251978452396"))
+                .setName("Gordon Ramsey")
+                .setPhoneNumber(new PhoneNumber("+441962359874"))
+                .setRecommendationMetric(200)
                 .setId(catererId));
 
         catererRepository.save(caterer);
@@ -39,8 +40,8 @@ public class CatererRepositoryTest {
         assertThrows(EntityNotFoundException.class,() -> {
             catererRepository.get(new CatererId());
         });
-        assertEquals(0, fetchedData.getRecommendationMetric());
-        assertEquals("T Cat", fetchedData.getName());
-        assertEquals(new PhoneNumber("+251978452396"), fetchedData.getPhoneNumber());
+        assertEquals(200, fetchedData.getRecommendationMetric());
+        assertEquals("Gordon Ramsey", fetchedData.getName());
+        assertEquals(new PhoneNumber("+441962359874"), fetchedData.getPhoneNumber());
     }
 }

@@ -36,4 +36,8 @@ public class Review {
         return data.getReviewedCatererId();
     }
 
+    public ReviewDataReadOnlyProxy getDataReadOnlyProxy() {
+        return new ReviewDataReadOnlyProxy(data);
+    }
+
 }

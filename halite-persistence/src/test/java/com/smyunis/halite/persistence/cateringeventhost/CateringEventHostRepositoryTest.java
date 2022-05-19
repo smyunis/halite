@@ -25,10 +25,10 @@ public class CateringEventHostRepositoryTest {
 
     @Test
     void t() {
-        CateringEventHostId cateringEventHostId = new CateringEventHostId("Id-0000-1");
+        CateringEventHostId cateringEventHostId = new CateringEventHostId("Id-00001-TEST-HOST");
         CateringEventHostData cateringEventHostData = new CateringEventHostData()
                 .setId(cateringEventHostId)
-                .setName("bob")
+                .setName("Bob Burger")
                 .setPhoneNumber(new PhoneNumber("+69124578963"));
 
         cateringEventHostRepository.save(new CateringEventHost(cateringEventHostData));

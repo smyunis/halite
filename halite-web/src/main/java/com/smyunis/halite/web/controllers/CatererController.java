@@ -1,8 +1,6 @@
 package com.smyunis.halite.web.controllers;
 
 import com.smyunis.halite.application.caterer.CatererService;
-import com.smyunis.halite.domain.caterer.CatererData;
-import com.smyunis.halite.domain.shared.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +16,7 @@ public class CatererController {
     }
 
     @GetMapping("/")
-    Integer getHello() {
+    Integer signUpNewCaterer() {
        return 7;
     }
 }

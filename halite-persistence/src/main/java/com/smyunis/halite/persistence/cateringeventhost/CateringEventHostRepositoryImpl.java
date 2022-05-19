@@ -6,10 +6,12 @@ import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostRepository;
 import com.smyunis.halite.domain.shared.PhoneNumber;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Repository
 public class CateringEventHostRepositoryImpl implements CateringEventHostRepository {
     private final JdbcTemplate jdbcTemplate;
 

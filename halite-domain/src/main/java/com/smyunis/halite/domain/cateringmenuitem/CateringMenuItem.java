@@ -33,4 +33,8 @@ public class CateringMenuItem {
     public CatererId getCatererId() {
         return data.getCatererId();
     }
+
+    public CateringMenuItemDataReadOnlyProxy getDataReadOnlyProxy() {
+        return new CateringMenuItemDataReadOnlyProxy(data);
+    }
 }

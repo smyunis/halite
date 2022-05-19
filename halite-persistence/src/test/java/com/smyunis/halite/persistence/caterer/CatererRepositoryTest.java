@@ -1,8 +1,10 @@
 package com.smyunis.halite.persistence.caterer;
 
+import com.smyunis.halite.application.applicationexceptions.EntityNotFoundException;
 import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererData;
 import com.smyunis.halite.domain.caterer.CatererId;
+import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
 import com.smyunis.halite.domain.shared.PhoneNumber;
 import com.smyunis.halite.persistence.DatabaseFixture;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CatererRepositoryTest {
 
@@ -33,6 +36,9 @@ public class CatererRepositoryTest {
         Caterer fetchedCaterer = catererRepository.get(catererId);
         var fetchedData = fetchedCaterer.getDataReadOnlyProxy();
 
+        assertThrows(EntityNotFoundException.class,() -> {
+            catererRepository.get(new CatererId());
+        });
         assertEquals(0, fetchedData.getRecommendationMetric());
         assertEquals("T Cat", fetchedData.getName());
         assertEquals(new PhoneNumber("+251978452396"), fetchedData.getPhoneNumber());

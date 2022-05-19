@@ -1,10 +1,12 @@
 package com.smyunis.halite.persistence.cateringeventhost;
 
+import com.smyunis.halite.application.applicationexceptions.EntityNotFoundException;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHost;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostData;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostRepository;
 import com.smyunis.halite.domain.shared.PhoneNumber;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +24,14 @@ public class CateringEventHostRepositoryImpl implements CateringEventHostReposit
 
     @Override
     public CateringEventHost get(CateringEventHostId id) {
+        try {
+            return tryGetCateringEventHost(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new EntityNotFoundException(id.toString(), exception);
+        }
+    }
+
+    private CateringEventHost tryGetCateringEventHost(CateringEventHostId id) {
         String sql = "SELECT * FROM catering_event_host WHERE catering_event_host_id = ?";
         CateringEventHostData cateringEventHostData = jdbcTemplate.queryForObject(sql, this::mapCateringEventHostData, id.toString());
         return new CateringEventHost(cateringEventHostData);

@@ -1,5 +1,6 @@
 package com.smyunis.halite.persistence.cateringeventhost;
 
+import com.smyunis.halite.application.applicationexceptions.EntityNotFoundException;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHost;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostData;
 import com.smyunis.halite.domain.cateringeventhost.CateringEventHostId;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CateringEventHostRepositoryTest {
     private static CateringEventHostRepository cateringEventHostRepository;
@@ -32,6 +34,9 @@ public class CateringEventHostRepositoryTest {
         cateringEventHostRepository.save(new CateringEventHost(cateringEventHostData));
         var res = cateringEventHostRepository.get(cateringEventHostId);
 
+        assertThrows(EntityNotFoundException.class,() -> {
+            cateringEventHostRepository.get(new CateringEventHostId());
+        });
         assertEquals("Id-0000-1",res.getDataReadOnlyProxy().getId().toString());
         assertEquals("bob",res.getDataReadOnlyProxy().getName());
         assertEquals("+69124578963",res.getDataReadOnlyProxy().getPhoneNumber().phoneNumber());

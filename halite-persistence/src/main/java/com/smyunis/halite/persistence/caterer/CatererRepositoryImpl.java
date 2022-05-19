@@ -1,18 +1,18 @@
 package com.smyunis.halite.persistence.caterer;
 
+import com.smyunis.halite.application.applicationexceptions.EntityNotFoundException;
 import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererData;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.caterer.CatererRepository;
 import com.smyunis.halite.domain.shared.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 @Repository
 public class CatererRepositoryImpl implements CatererRepository {
@@ -25,12 +25,16 @@ public class CatererRepositoryImpl implements CatererRepository {
 
     @Override
     public Caterer get(CatererId id) {
+        try {
+            return tryGetCaterer(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new EntityNotFoundException(id.toString(), exception);
+        }
+    }
+
+    private Caterer tryGetCaterer(CatererId id) {
         String sql = "SELECT * FROM caterer WHERE caterer_id = ?";
-       CatererData catererData = jdbcTemplate.queryForObject(sql, this::mapCatererData, id.toString());
-
-        if (catererData == null)
-            throw new NoSuchElementException(String.format("CatererId : %s Does Not Exist", id.toString()));
-
+        CatererData catererData = jdbcTemplate.queryForObject(sql, this::mapCatererData, id.toString());
         return new Caterer(catererData);
     }
 

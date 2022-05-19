@@ -25,14 +25,13 @@ public class CatererRepositoryImpl implements CatererRepository {
 
     @Override
     public Caterer get(CatererId id) {
-        String sql = "SELECT * FROM caterer WHERE id = ?";
-        List<CatererData> catererData = jdbcTemplate.query(sql, this::mapCatererData, id.toString());
+        String sql = "SELECT * FROM caterer WHERE caterer_id = ?";
+       CatererData catererData = jdbcTemplate.queryForObject(sql, this::mapCatererData, id.toString());
 
-        if (catererData.isEmpty())
-            throw new NoSuchElementException();
+        if (catererData == null)
+            throw new NoSuchElementException(String.format("CatererId : %s Does Not Exist", id.toString()));
 
-        CatererData data = catererData.get(0);
-        return new Caterer(data);
+        return new Caterer(catererData);
     }
 
     @Override
@@ -41,7 +40,7 @@ public class CatererRepositoryImpl implements CatererRepository {
         String upsertSql = """
                 INSERT INTO caterer
                 VALUES (?,?,?,?)
-                ON CONFLICT (id) DO UPDATE
+                ON CONFLICT (caterer_id) DO UPDATE
                 SET name = excluded.name,
                     phone_number = excluded.phone_number,
                     recommendation_metric = excluded.recommendation_metric;
@@ -53,13 +52,10 @@ public class CatererRepositoryImpl implements CatererRepository {
                 data.getRecommendationMetric());
     }
 
-    @Override
-    public void remove(CatererId id) {
-    }
 
     private CatererData mapCatererData(ResultSet resultSet, int row) throws SQLException {
         return new CatererData()
-                .setId(new CatererId(resultSet.getString("id")))
+                .setId(new CatererId(resultSet.getString("caterer_id")))
                 .setName(resultSet.getString("name"))
                 .setPhoneNumber(new PhoneNumber(resultSet.getString("phone_number")))
                 .setRecommendationMetric(resultSet.getInt("recommendation_metric"));

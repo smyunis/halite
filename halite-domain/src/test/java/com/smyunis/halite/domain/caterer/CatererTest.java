@@ -58,14 +58,4 @@ public class CatererTest {
 
     }
 
-    @Test
-    void checkCloneIsADeepCopyOfCatererData() {
-        Caterer naruto = new Caterer(new CatererData().setRecommendationMetric(10));
-        CatererData bunshinNarutoData = naruto.getCopyOfData();
-        bunshinNarutoData.setRecommendationMetric(20);
-        Caterer bunshinNaruto = new Caterer(bunshinNarutoData);
-
-        assertNotEquals(naruto.getRecommendationMetric(),bunshinNaruto.getRecommendationMetric());
-    }
-
 }

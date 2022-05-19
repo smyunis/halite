@@ -7,5 +7,8 @@ public class CateringEventHost {
         this.data = data;
     }
 
+    public CateringEventHostDataReadOnlyProxy getDataReadOnlyProxy() {
+        return new CateringEventHostDataReadOnlyProxy(data);
+    }
 
 }

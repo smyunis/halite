@@ -24,7 +24,7 @@ CREATE TABLE review(
 --CREATE TYPE event_status AS ENUM('open','closed');
 CREATE TABLE catering_event(
     catering_event_id VARCHAR PRIMARY KEY,
-    catering_event_host_id VARCHAR,
+    catering_event_host_id VARCHAR NOT NULL,
 --    status event_status,
     status VARCHAR,
     venue VARCHAR,
@@ -37,21 +37,21 @@ CREATE TABLE catering_event(
 
 CREATE TABLE catering_menu_item(
     catering_menu_item_id VARCHAR PRIMARY KEY,
-    caterer_id VARCHAR,
+    caterer_id VARCHAR NOT NULL,
     name VARCHAR,
     price DECIMAL
 --    FOREIGN KEY (caterer_id) REFERENCES caterer (caterer_id)
 );
 
 CREATE TABLE catering_menu_item_ingredients(
-    catering_menu_item_id VARCHAR,
-    ingredient VARCHAR
---    FOREIGN KEY (catering_menu_item_id) REFERENCES catering_menu_item(catering_menu_item_id)
+    catering_menu_item_id VARCHAR NOT NULL,
+    ingredient VARCHAR,
+    FOREIGN KEY (catering_menu_item_id) REFERENCES catering_menu_item(catering_menu_item_id) ON DELETE CASCADE
 );
 
 CREATE TABLE catering_menu_item_images(
-    catering_menu_item_id VARCHAR,
-    url VARCHAR
---    FOREIGN KEY (catering_menu_item_id) REFERENCES catering_menu_item(catering_menu_item_id)
+    catering_menu_item_id VARCHAR NOT NULL,
+    url VARCHAR,
+    FOREIGN KEY (catering_menu_item_id) REFERENCES catering_menu_item(catering_menu_item_id) ON DELETE CASCADE
 );
 

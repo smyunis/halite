@@ -26,7 +26,7 @@ CREATE TABLE catering_event(
     catering_event_id VARCHAR PRIMARY KEY,
     catering_event_host_id VARCHAR NOT NULL,
 --    status event_status,
-    status VARCHAR,
+    status VARCHAR NOT NULL,
     venue VARCHAR,
     description TEXT,
     expected_number_of_attendees INTEGER,
@@ -56,8 +56,8 @@ CREATE TABLE catering_menu_item_images(
 );
 
 
-CREATE TABLE order(
-    order_id VARCHAR PRIMARY KEY,
+CREATE TABLE catering_order(
+    catering_order_id VARCHAR PRIMARY KEY,
     status VARCHAR,
     catering_event_id VARCHAR NOT NULL,
     catering_event_host_id VARCHAR NOT NULL,
@@ -68,17 +68,24 @@ CREATE TABLE order(
 --    FOREIGN KEY (caterer_id) REFERENCES caterer(caterer_id)
 );
 
-CREATE TABLE order_catering_menu_items(
-    order_id VARCHAR NOT NULL,
+CREATE TABLE catering_order_menu_items(
+    catering_order_id VARCHAR NOT NULL,
     catering_menu_item_id VARCHAR NOT NULL,
     quantity INTEGER,
 
-    FOREIGN KEY (order_id) REFERENCES order(order_id) ON DELETE CASCADE,
-    FOREIGN KEY (catering_menu_item_id) REFERENCES catering_menu_item(catering_menu_item_id)
+    FOREIGN KEY (catering_order_id) REFERENCES catering_order(catering_order_id) ON DELETE CASCADE
+--    FOREIGN KEY (catering_menu_item_id) REFERENCES catering_menu_item(catering_menu_item_id)
 );
 
-CREATE TABLE order_bill(
-    order_id VARCHAR NOT NULL,
-    -- get from bill data
-    FOREIGN KEY (order_id) REFERENCES order(order_id) ON DELETE CASCADE,
+CREATE TABLE catering_order_bill(
+    bill_id VARCHAR UNIQUE,
+    catering_order_id VARCHAR NOT NULL,
+    status VARCHAR NOT NULL,
+    outstanding_amount DECIMAL NOT NULL,
+    due_time TIMESTAMP,
+    settlement_time TIMESTAMP,
+    remark VARCHAR,
+
+    FOREIGN KEY (catering_order_id) REFERENCES catering_order(catering_order_id) ON DELETE CASCADE
+
 );

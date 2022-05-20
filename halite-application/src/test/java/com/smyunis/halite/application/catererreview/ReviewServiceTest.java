@@ -29,7 +29,6 @@ public class ReviewServiceTest {
         reviewPayload.setRating(new Rating(5));
         reviewPayload.setReviewerId(new CateringEventHostId());
         reviewPayload.setContent("Very good food.");
-        reviewPayload.setTitle("Queen's Wedding Catering Service");
         reviewPayload.setReviewedCatererId(new CatererId());
 
         reviewService.addReview(reviewPayload);

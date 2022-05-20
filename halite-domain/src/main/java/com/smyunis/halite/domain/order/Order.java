@@ -159,4 +159,8 @@ public class Order {
     public OrderId getId() {
         return data.getId();
     }
+
+    public OrderDataReadOnlyProxy getDataReadOnlyProxy() {
+        return new OrderDataReadOnlyProxy(data);
+    }
 }

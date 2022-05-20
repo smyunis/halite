@@ -54,6 +54,8 @@ public class BillData {
     }
 
     public BillData setSettlementDateTime(LocalDateTime settlementDateTime) {
+        if (settlementDateTime == null)
+            return this;
         assertSettlementDateTimeIsNotPastDueData(settlementDateTime);
         this.settlementDateTime = settlementDateTime;
         return this;

@@ -55,4 +55,8 @@ public class Bill {
     private boolean billNotValidForSettlement() {
         return data.getBillStatus() != BillStatus.PENDING_SETTLEMENT || data.getDueDateTime().isBefore(LocalDateTime.now());
     }
+
+    public BillDataReadOnlyProxy getDataReadOnlyProxy() {
+        return new BillDataReadOnlyProxy(data);
+    }
 }

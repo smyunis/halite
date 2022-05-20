@@ -29,14 +29,14 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     }
 
     private Review tryGetReview(ReviewId id) {
-        String sql = "SELECT * FROM review WHERE review_id = ?";
+        String sql = "SELECT * FROM caterer_review WHERE caterer_review_id = ?";
         ReviewData reviewData = jdbcTemplate.queryForObject(sql, this::mapReview, id.toString());
         return new Review(reviewData);
     }
 
     private ReviewData mapReview(ResultSet resultSet, int row) throws SQLException {
         return new ReviewData()
-                .setId(new ReviewId(resultSet.getString("review_id")))
+                .setId(new ReviewId(resultSet.getString("caterer_review_id")))
                 .setReviewerId(new CateringEventHostId(resultSet.getString("reviewer_id")))
                 .setReviewedCatererId(new CatererId(resultSet.getString("reviewed_caterer_id")))
                 .setRating(new Rating(resultSet.getInt("rating")))
@@ -47,9 +47,9 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     public void save(Review entity) {
         var data = entity.getDataReadOnlyProxy();
         String upsertSql = """
-                INSERT INTO review
+                INSERT INTO caterer_review
                 VALUES (?,?,?,?,?)
-                ON CONFLICT (review_id) DO UPDATE
+                ON CONFLICT (caterer_review_id) DO UPDATE
                 SET reviewer_id = excluded.reviewer_id,
                     reviewed_caterer_id = excluded.reviewed_caterer_id,
                     rating = excluded.rating,

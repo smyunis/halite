@@ -11,6 +11,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -43,25 +45,35 @@ public class CatererRepositoryImpl implements CatererRepository {
         var data = domainEntity.getDataReadOnlyProxy();
         String upsertSql = """
                 INSERT INTO caterer
-                VALUES (?,?,?,?)
+                VALUES (?,?,?,?,?,?)
                 ON CONFLICT (caterer_id) DO UPDATE
                 SET name = excluded.name,
                     phone_number = excluded.phone_number,
+                    personal_description = excluded.personal_description,         
+                    caterer_image = excluded.caterer_image,         
                     recommendation_metric = excluded.recommendation_metric;
                 """;
         jdbcTemplate.update(upsertSql,
                 data.getId().toString(),
                 data.getName(),
                 data.getPhoneNumber().phoneNumber(),
+                data.getPersonalDescription(),
+                data.getCatererImage().toString(),
                 data.getRecommendationMetric());
     }
 
 
-    private CatererData mapCatererData(ResultSet resultSet, int row) throws SQLException {
-        return new CatererData()
-                .setId(new CatererId(resultSet.getString("caterer_id")))
-                .setName(resultSet.getString("name"))
-                .setPhoneNumber(new PhoneNumber(resultSet.getString("phone_number")))
-                .setRecommendationMetric(resultSet.getInt("recommendation_metric"));
+    private CatererData mapCatererData(ResultSet resultSet, int row) {
+        try {
+            return new CatererData()
+                    .setId(new CatererId(resultSet.getString("caterer_id")))
+                    .setName(resultSet.getString("name"))
+                    .setPhoneNumber(new PhoneNumber(resultSet.getString("phone_number")))
+                    .setPersonalDescription(resultSet.getString("personal_description"))
+                    .setCatererImage(new URL(resultSet.getString("caterer_image")))
+                    .setRecommendationMetric(resultSet.getInt("recommendation_metric"));
+        } catch (SQLException | MalformedURLException ex) {
+            throw new RuntimeException(ex.getMessage(), ex);
+        }
     }
 }

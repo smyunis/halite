@@ -2,10 +2,14 @@ package com.smyunis.halite.domain.caterer;
 
 import com.smyunis.halite.domain.shared.PhoneNumber;
 
+import java.net.URL;
+
 public class CatererData {
     private CatererId id = new CatererId();
     private String name;
     private PhoneNumber phoneNumber;
+    private String personalDescription;
+    private URL catererImage;
     private int recommendationMetric;
 
     public CatererId getId() {
@@ -44,4 +48,21 @@ public class CatererData {
         return this;
     }
 
+    public String getPersonalDescription() {
+        return personalDescription;
+    }
+
+    public CatererData setPersonalDescription(String personalDescription) {
+        this.personalDescription = personalDescription;
+        return this;
+    }
+
+    public URL getCatererImage() {
+        return catererImage;
+    }
+
+    public CatererData setCatererImage(URL catererImage) {
+        this.catererImage = catererImage;
+        return this;
+    }
 }

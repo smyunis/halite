@@ -2,6 +2,8 @@ CREATE TABLE caterer (
     caterer_id VARCHAR PRIMARY KEY,
     name VARCHAR,
     phone_number VARCHAR,
+    personal_description TEXT,
+    caterer_image VARCHAR,
     recommendation_metric INTEGER
 );
 

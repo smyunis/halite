@@ -3,6 +3,7 @@ package com.smyunis.halite.persistence.cateringmenuitem;
 import com.smyunis.halite.application.applicationexceptions.EntityNotFoundException;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.cateringmenuitem.*;
+import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import com.smyunis.halite.domain.shared.MonetaryAmount;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -49,7 +50,7 @@ public class CateringMenuItemRepositoryImpl implements CateringMenuItemRepositor
             try {
                 return new URL(i);
             } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
+                throw new InvalidValueException(e.getMessage(),e);
             }
         }).collect(Collectors.toList());
         data.setImages(imageUrls);

@@ -5,6 +5,7 @@ import com.smyunis.halite.domain.caterer.Caterer;
 import com.smyunis.halite.domain.caterer.CatererData;
 import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.caterer.CatererRepository;
+import com.smyunis.halite.domain.domainexceptions.InvalidValueException;
 import com.smyunis.halite.domain.shared.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -72,7 +73,9 @@ public class CatererRepositoryImpl implements CatererRepository {
                     .setPersonalDescription(resultSet.getString("personal_description"))
                     .setCatererImage(new URL(resultSet.getString("caterer_image")))
                     .setRecommendationMetric(resultSet.getInt("recommendation_metric"));
-        } catch (SQLException | MalformedURLException ex) {
+        } catch (MalformedURLException ex) {
+            throw new InvalidValueException(ex.getMessage(), ex);
+        } catch (SQLException ex) {
             throw new RuntimeException(ex.getMessage(), ex);
         }
     }

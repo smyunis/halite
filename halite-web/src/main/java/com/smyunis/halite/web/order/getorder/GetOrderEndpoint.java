@@ -1,4 +1,4 @@
-package com.smyunis.halite.web.order;
+package com.smyunis.halite.web.order.getorder;
 
 import com.smyunis.halite.application.order.OrderService;
 import com.smyunis.halite.domain.order.Order;
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/orders")
-public class OrderController {
+public class GetOrderEndpoint {
 
     private final OrderService orderService;
     private final Mapper<OrderDataReadOnlyProxy, GetOrderResponsePayload> mapper;
 
     @Autowired
-    public OrderController(OrderService orderService, Mapper<OrderDataReadOnlyProxy, GetOrderResponsePayload> mapper) {
+    public GetOrderEndpoint(OrderService orderService, Mapper<OrderDataReadOnlyProxy, GetOrderResponsePayload> mapper) {
         this.orderService = orderService;
         this.mapper = mapper;
     }

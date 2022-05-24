@@ -102,4 +102,8 @@ public class OrderService {
         eventDispatcher.registerDomainEvents(order.getDomainEvents());
         eventDispatcher.publish();
     }
+
+    public Order getOrder(OrderId orderId) {
+        return orderRepository.get(orderId);
+    }
 }

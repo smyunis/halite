@@ -38,10 +38,5 @@ public class AppConfiguration {
         return new OrderService(eventDispatcher, orderRepository, cateringMenuItemRepository);
     }
 
-    public class MapperBeans {
-        @Bean
-        Mapper<OrderDataReadOnlyProxy, GetOrderResponsePayload> getOrderResponsePayloadMapper() {
-            return new OrderToGetOrderResponsePayloadMapper();
-        }
-    }
+
 }

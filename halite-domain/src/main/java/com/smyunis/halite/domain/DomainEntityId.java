@@ -4,23 +4,23 @@ import java.util.Objects;
 import java.util.UUID;
 
 public abstract class DomainEntityId {
-    private final String id;
+    private final String idString;
 
-    protected DomainEntityId(String id) {
-        this.id = id;
+    protected DomainEntityId(String idString) {
+        this.idString = idString;
     }
 
     protected DomainEntityId() {
         this(UUID.randomUUID().toString());
     }
 
-    public String getId() {
-        return id;
+    public String getIdString() {
+        return idString;
     }
 
     @Override
     public String toString() {
-        return id;
+        return idString;
     }
 
     @Override
@@ -28,11 +28,11 @@ public abstract class DomainEntityId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DomainEntityId that = (DomainEntityId) o;
-        return id.equals(that.id);
+        return idString.equals(that.idString);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(idString);
     }
 }

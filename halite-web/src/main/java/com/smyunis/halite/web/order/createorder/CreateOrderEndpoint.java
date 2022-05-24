@@ -4,9 +4,11 @@ import com.smyunis.halite.application.order.OrderService;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.web.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -28,11 +30,16 @@ public class CreateOrderEndpoint {
     public ResponseEntity<?> createOrder(@RequestBody CreateOrderRequestPayload payload) {
         OrderData newOrderData = mapper.map(payload);
         orderService.createOrder(newOrderData);
-        URI location = ServletUriComponentsBuilder
+        URI location = getCreatedResourceLocation(newOrderData);
+        return ResponseEntity.created(location).build();
+    }
+
+    private URI getCreatedResourceLocation(OrderData newOrderData) {
+        return ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(newOrderData.getId())
                 .toUri();
-        return ResponseEntity.created(location).build();
     }
 }
+

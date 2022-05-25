@@ -11,6 +11,8 @@ import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderId;
 import com.smyunis.halite.domain.order.OrderRepository;
 
+import java.util.Objects;
+
 public class OrderService {
     private final DomainEventDispatcher eventDispatcher;
     private final OrderRepository orderRepository;
@@ -55,7 +57,7 @@ public class OrderService {
 
     public void addCateringMenuItem(OrderId orderId, CateringMenuItemId itemId, int quantity) {
         Order order = orderRepository.get(orderId);
-        assertOrderedCatererOwnsMenuItem(itemId, order);
+        //assertOrderedCatererOwnsMenuItem(itemId, order);
         order.addCateringMenuItem(itemId, quantity);
         saveAndDispatchDomainEvents(order);
     }
@@ -65,7 +67,7 @@ public class OrderService {
         CateringMenuItem cateringMenuItem = cateringMenuItemRepository.get(itemId);
         var catererForMenuItem = cateringMenuItem.getCatererId();
 
-        if (catererForMenuItem != orderedCatererId)
+        if (!Objects.equals(catererForMenuItem.toString(), orderedCatererId.toString()))
             throw new InvalidOperationException("This Menu Item does not belong to the caterer this order is assigned to.");
     }
 

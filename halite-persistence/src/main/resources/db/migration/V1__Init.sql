@@ -1,3 +1,9 @@
+CREATE TABLE users (
+    phone_number VARCHAR PRIMARY KEY,
+    password VARCHAR,
+    role VARCHAR
+);
+
 CREATE TABLE caterer (
     caterer_id VARCHAR PRIMARY KEY,
     name VARCHAR,

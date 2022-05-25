@@ -3,6 +3,7 @@ package com.smyunis.halite.web;
 import com.smyunis.halite.application.caterer.CatererService;
 import com.smyunis.halite.application.domaineventhandlers.DomainEventDispatcher;
 import com.smyunis.halite.application.order.OrderService;
+import com.smyunis.halite.application.users.UserService;
 import com.smyunis.halite.domain.caterer.CatererRepository;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
 import com.smyunis.halite.domain.order.OrderRepository;
@@ -23,4 +24,5 @@ public class ApplicationServiceBeansConfiguration {
             CateringMenuItemRepository cateringMenuItemRepository) {
         return new OrderService(eventDispatcher, orderRepository, cateringMenuItemRepository);
     }
+
 }

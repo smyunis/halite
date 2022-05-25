@@ -11,10 +11,6 @@ public class CatererService {
         this.catererRepository = catererRepository;
     }
 
-    public void signUpAsCaterer(CatererData catererData) {
-        Caterer caterer = new Caterer(catererData);
-        catererRepository.save(caterer);
-    }
 
     public Caterer getCaterer(CatererId catererId) {
         return catererRepository.get(catererId);

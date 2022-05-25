@@ -21,16 +21,6 @@ public class CatererServiceTest {
         catererService = new CatererService(catererRepository);
     }
 
-    @Test
-    void signUpNewCaterer() {
-        CatererData catererData = new CatererData()
-                .setName("Gordon Ramsey")
-                .setPhoneNumber(new PhoneNumber("+4423568947"));
-        catererService.signUpAsCaterer(catererData);
-
-        verify(catererRepository).save(any(Caterer.class));
-    }
-
 
 
 

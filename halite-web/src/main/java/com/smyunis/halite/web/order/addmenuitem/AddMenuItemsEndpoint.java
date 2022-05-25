@@ -23,13 +23,11 @@ public class AddMenuItemsEndpoint {
     }
 
     @PostMapping("{id}/menu-items")
-    public ResponseEntity<?> addCateringMenuItems(@PathVariable String id,
-                                               @RequestBody List<OrderedCateringMenuItemPayload> payload) {
-        for (var menuItem : payload) {
+    public ResponseEntity<?> addCateringMenuItems(@PathVariable String id, @RequestBody OrderedCateringMenuItemPayload payload) {
+
             orderService.addCateringMenuItem(new OrderId(id),
-                    new CateringMenuItemId(menuItem.getOrderedMenuItemId()),
-                    menuItem.getOrderedQuantity());
-        }
+                    new CateringMenuItemId(payload.getOrderedMenuItemId()),
+                    payload.getOrderedQuantity());
 
         return ResponseEntity.created(getCreatedResourceLocation(id)).build();
     }

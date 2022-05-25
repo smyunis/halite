@@ -66,7 +66,7 @@ public class OrderService {
         var catererForMenuItem = cateringMenuItem.getCatererId();
 
         if (catererForMenuItem != orderedCatererId)
-            throw new InvalidOperationException("This Menu Item does not belong to the caterer this order is made for");
+            throw new InvalidOperationException("This Menu Item does not belong to the caterer this order is assigned to.");
     }
 
     public void removeCateringMenuItem(OrderId orderId, CateringMenuItemId itemId, int quantity) {

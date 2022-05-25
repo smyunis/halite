@@ -63,6 +63,20 @@ public class CatererRepositoryImpl implements CatererRepository {
                 data.getRecommendationMetric());
     }
 
+    @Override
+    public Caterer getByPhoneNumber(PhoneNumber phoneNumber) {
+        try {
+            return tryGetCatererByPhoneNumber(phoneNumber);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new EntityNotFoundException(phoneNumber.phoneNumber(), exception);
+        }
+    }
+
+    private Caterer tryGetCatererByPhoneNumber(PhoneNumber phoneNumber) {
+        String fetchByPhoneNumberSql = "SELECT * FROM caterer WHERE phone_number = ?";
+        var catererData = jdbcTemplate.queryForObject(fetchByPhoneNumberSql, this::mapCatererData, phoneNumber.phoneNumber());
+        return new Caterer(catererData);
+    }
 
     private CatererData mapCatererData(ResultSet resultSet, int row) {
         try {
@@ -79,4 +93,5 @@ public class CatererRepositoryImpl implements CatererRepository {
             throw new RuntimeException(ex.getMessage(), ex);
         }
     }
+
 }

@@ -3,8 +3,11 @@ package com.smyunis.halite.web;
 import com.smyunis.halite.application.users.User;
 import com.smyunis.halite.domain.caterer.CatererData;
 import com.smyunis.halite.domain.caterer.CatererDataReadOnlyProxy;
+import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemData;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderDataReadOnlyProxy;
+import com.smyunis.halite.web.caterer.addcateringmenuitem.AddMenuItemRequestPayload;
+import com.smyunis.halite.web.caterer.addcateringmenuitem.AddMenuItemRequestPayloadToMenuItemDataMapper;
 import com.smyunis.halite.web.caterer.getcaterer.GetCatererResponsePayload;
 import com.smyunis.halite.web.caterer.getcaterer.GetCatererResponsePayloadMapper;
 import com.smyunis.halite.web.caterer.signupcaterer.SignUpCatererRequestPayload;
@@ -42,6 +45,11 @@ public class MapperBeansConfiguration {
     @Bean
     Mapper<SignUpCatererRequestPayload, User> getSignUpCatererRequestPayloadToUserMapper() {
         return new SignUpCatererRequestPayloadToUserMapper();
+    }
+
+    @Bean
+    Mapper<AddMenuItemRequestPayload, CateringMenuItemData> getAddMenuItemRequestPayloadToMenuItemMapper() {
+        return new AddMenuItemRequestPayloadToMenuItemDataMapper();
     }
 }
 

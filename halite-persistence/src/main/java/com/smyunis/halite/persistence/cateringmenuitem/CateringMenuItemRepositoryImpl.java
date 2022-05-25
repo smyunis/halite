@@ -67,14 +67,6 @@ public class CateringMenuItemRepositoryImpl implements CateringMenuItemRepositor
         return jdbcTemplate.queryForObject(menuItemFetchSql, this::mapCateringMenuItem, id.toString());
     }
 
-    private CateringMenuItemData mapCateringMenuItem(ResultSet resultSet, int row) throws SQLException {
-        return new CateringMenuItemData()
-                .setId(new CateringMenuItemId(resultSet.getString("catering_menu_item_id")))
-                .setCatererId(new CatererId(resultSet.getString("caterer_id")))
-                .setName(resultSet.getString("name"))
-                .setPrice(new MonetaryAmount(resultSet.getDouble("price")));
-    }
-
     @Override
     public void save(CateringMenuItem entity) {
         var data = entity.getDataReadOnlyProxy();
@@ -147,4 +139,25 @@ public class CateringMenuItemRepositoryImpl implements CateringMenuItemRepositor
         String removeMenuItemSql = "DELETE FROM catering_menu_item WHERE catering_menu_item_id = ?;";
         jdbcTemplate.update(removeMenuItemSql, id.toString());
     }
+
+    @Override
+    public List<CateringMenuItem> getAllByCatererId(CatererId catererId) {
+        String fetchAllMenuItemsByCatererSql = "SELECT * FROM catering_menu_item WHERE caterer_id = ?";
+        List<CateringMenuItemData> menuItemDataList = jdbcTemplate.query(fetchAllMenuItemsByCatererSql,
+                this::mapCateringMenuItem,
+                catererId.toString());
+        return menuItemDataList.stream()
+                .map(CateringMenuItem::new)
+                .collect(Collectors.toList());
+    }
+
+    private CateringMenuItemData mapCateringMenuItem(ResultSet resultSet, int row) throws SQLException {
+        return new CateringMenuItemData()
+                .setId(new CateringMenuItemId(resultSet.getString("catering_menu_item_id")))
+                .setCatererId(new CatererId(resultSet.getString("caterer_id")))
+                .setName(resultSet.getString("name"))
+                .setPrice(new MonetaryAmount(resultSet.getDouble("price")));
+    }
+
+
 }

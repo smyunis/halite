@@ -1,10 +1,13 @@
 package com.smyunis.halite.application.cateringmenuitem;
 
 import com.smyunis.halite.application.domaineventhandlers.DomainEventDispatcher;
+import com.smyunis.halite.domain.caterer.CatererId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItem;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemData;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemId;
 import com.smyunis.halite.domain.cateringmenuitem.CateringMenuItemRepository;
+
+import java.util.List;
 
 public class CateringMenuItemService {
     private final DomainEventDispatcher eventDispatcher;
@@ -31,5 +34,9 @@ public class CateringMenuItemService {
     private void dispatchDomainEvents(CateringMenuItem menuItem) {
         eventDispatcher.registerDomainEvents(menuItem.getDomainEvents());
         eventDispatcher.publish();
+    }
+
+    public List<CateringMenuItem> getAllMenuItemsByCatererId(CatererId catererId){
+        return cateringMenuItemRepository.getAllByCatererId(catererId);
     }
 }

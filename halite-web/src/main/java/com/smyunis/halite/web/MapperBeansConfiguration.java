@@ -1,10 +1,15 @@
 package com.smyunis.halite.web;
 
+import com.smyunis.halite.application.users.User;
+import com.smyunis.halite.domain.caterer.CatererData;
 import com.smyunis.halite.domain.caterer.CatererDataReadOnlyProxy;
 import com.smyunis.halite.domain.order.OrderData;
 import com.smyunis.halite.domain.order.OrderDataReadOnlyProxy;
 import com.smyunis.halite.web.caterer.getcaterer.GetCatererResponsePayload;
 import com.smyunis.halite.web.caterer.getcaterer.GetCatererResponsePayloadMapper;
+import com.smyunis.halite.web.caterer.signupcaterer.SignUpCatererRequestPayload;
+import com.smyunis.halite.web.caterer.signupcaterer.SignUpCatererRequestPayloadToCatererDataMapper;
+import com.smyunis.halite.web.caterer.signupcaterer.SignUpCatererRequestPayloadToUserMapper;
 import com.smyunis.halite.web.order.createorder.CreateOrderRequestPayload;
 import com.smyunis.halite.web.order.createorder.CreateOrderRequestPayloadMapper;
 import com.smyunis.halite.web.order.getorder.GetOrderResponsePayload;
@@ -27,6 +32,16 @@ public class MapperBeansConfiguration {
     @Bean
     Mapper<CreateOrderRequestPayload, OrderData> getCreateOrderRequestPayloadMapper() {
         return new CreateOrderRequestPayloadMapper();
+    }
+
+    @Bean
+    Mapper<SignUpCatererRequestPayload, CatererData> getSignUpCatererRequestPayloadToCatererDataMapper() {
+        return new SignUpCatererRequestPayloadToCatererDataMapper();
+    }
+
+    @Bean
+    Mapper<SignUpCatererRequestPayload, User> getSignUpCatererRequestPayloadToUserMapper() {
+        return new SignUpCatererRequestPayloadToUserMapper();
     }
 }
 
